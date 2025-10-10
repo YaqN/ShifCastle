@@ -32,7 +32,8 @@
 </header>
 
 <main class="wrap">
-  <!-- Hero with candles -->
+
+  <!-- Hero -->
   <section class="card hero" aria-label="Birthday cake and candles">
     <div class="cake">
       <img src="birthday_center.png" alt="Creamy heart cake with cherries and candles" />
@@ -46,7 +47,7 @@
       <h2>Make a wish</h2>
       <p>Press <kbd>B</kbd> to blow out all candles. Tap a flame to toggle it. Wishes create confetti.</p>
       <div class="wish-box">
-        <input id="wishInput" placeholder="Type your wish…" maxlength="80" aria-label="Wish text" />
+        <input id="wishInput" placeholder="Type your wish…" maxlength="80" />
         <button id="wishBtn" class="btn small">Send ✨</button>
       </div>
     </div>
@@ -56,17 +57,16 @@
   <section class="grid-two">
     <article class="card">
       <h3>Party Checklist</h3>
-      <p class="muted">Because you love organizing.</p>
       <div class="todo">
         <form id="todoForm" autocomplete="off">
-          <input id="todoInput" placeholder="Add a task…" maxlength="60" aria-label="New task" />
+          <input id="todoInput" placeholder="Add a task…" maxlength="60" />
           <button class="btn small" type="submit">Add</button>
         </form>
         <ul id="todoList" class="todo-list"></ul>
         <div class="row">
           <button id="clearDone" class="btn small outline" type="button">Clear Completed</button>
           <button id="exportList" class="btn small outline" type="button">Export</button>
-          <input id="importList" type="file" accept="application/json" class="file" aria-label="Import checklist JSON" />
+          <input id="importList" type="file" accept="application/json" class="file" />
         </div>
       </div>
     </article>
@@ -75,24 +75,23 @@
       <h3>Baking Corner</h3>
       <p class="muted">Quick timers for your treats. One tap to start!</p>
       <div class="recipe-grid">
-        <button class="recipe btn small" data-min="0" data-sec="90" type="button">🍪 Cookies 1:30</button>
-        <button class="recipe btn small" data-min="12" data-sec="0" type="button">🧁 Cupcakes 12:00</button>
-        <button class="recipe btn small" data-min="25" data-sec="0" type="button">🍰 Sponge 25:00</button>
-        <span id="timeLeft" class="time" aria-live="polite">00:00</span>
+        <button class="recipe btn small" data-min="0" data-sec="90">🍪 Cookies 1:30</button>
+        <button class="recipe btn small" data-min="12" data-sec="0">🧁 Cupcakes 12:00</button>
+        <button class="recipe btn small" data-min="25" data-sec="0">🍰 Sponge 25:00</button>
+        <span id="timeLeft" class="time">00:00</span>
         <div class="timer-ctrl">
-          <button id="stopTimer" class="btn small outline" type="button">Stop</button>
+          <button id="stopTimer" class="btn small outline">Stop</button>
         </div>
       </div>
-      <p id="timerNote" class="tiny muted">The page will chime and celebrate when time’s up.</p>
     </article>
   </section>
 
-  <!-- Photo Booth & Moodboard -->
+  <!-- Photo Booth -->
   <section class="grid-two">
     <article class="card gallery">
       <h3>Photo Booth</h3>
       <p class="muted">Drag polaroids, double-click/tap to pin, and try filters.</p>
-      <div class="filter-row" role="radiogroup" aria-label="Photo filter">
+      <div class="filter-row">
         <label><input type="radio" name="f" value="none" checked /> None</label>
         <label><input type="radio" name="f" value="vintage" /> Vintage</label>
         <label><input type="radio" name="f" value="dreamy" /> Dreamy</label>
@@ -105,9 +104,9 @@
       </div>
     </article>
 
+    <!-- Moodboard -->
     <article class="card">
       <h3>Moodboard</h3>
-      <p class="muted">Tint the page to your favorite creamy &amp; cherry shades.</p>
       <div class="mood">
         <label>Accent <input id="accentPicker" type="color" value="#cc2035" /></label>
         <label>Cream <input id="creamPicker" type="color" value="#fff3e3" /></label>
@@ -123,41 +122,41 @@
   <section class="grid-two">
     <article class="card game">
       <h3>Cherry Clicker</h3>
-      <p class="muted">Click/tap cherries to score before they fade. Tiny arcade break!</p>
       <div id="gameArea" class="game-area"></div>
       <div class="row">
-        <button id="startGame" class="btn" type="button">Start</button>
+        <button id="startGame" class="btn">Start</button>
         <span id="score" class="time">Score: 0</span>
       </div>
     </article>
 
     <article class="card fortunes">
       <h3>Compliment Jar</h3>
-      <p class="muted">Pull a sweet note anytime you need a smile.</p>
       <div class="jar">
         <button id="drawFortune" class="btn" type="button">Pick a Note</button>
         <p id="fortuneText" class="fortune"></p>
       </div>
       <form id="addFortuneForm" class="row" autocomplete="off">
-        <input id="addFortune" placeholder="Add your own compliment…" maxlength="100" aria-label="Your compliment" />
+        <input id="addFortune" placeholder="Add your own compliment…" maxlength="100" />
         <button class="btn small" type="submit">Add</button>
       </form>
     </article>
   </section>
 
-  <!-- Cassette Player + Message -->
+  <!-- Cassette + Message -->
   <section class="card cassette">
-    <div class="cassette-ui" aria-label="Cassette player UI">
+    <div class="cassette-ui">
       <div class="reels"><div class="spool"></div><div class="spool"></div></div>
       <div class="label">Mixtape: Cherry Dreams (80s)</div>
       <div class="controls">
-        <button id="btnPlay" class="btn small" type="button">▶︎ Play</button>
-        <button id="btnPause" class="btn small outline" type="button">⏸ Pause</button>
-        <button id="btnRew" class="btn small outline" type="button">⏪ Rewind</button>
+        <button id="btnPlay" class="btn small">▶︎ Play</button>
+        <button id="btnPause" class="btn small outline">⏸ Pause</button>
+        <button id="btnRew" class="btn small outline">⏪ Rewind</button>
       </div>
     </div>
-    <audio id="player"><source src="track.mp3" type="audio/mpeg" /></audio>
-    <p class="muted tiny">Place <code>track.mp3</code> beside this page to enable music.</p>
+
+    <!-- 🎵 Updated reliable audio for GitHub Pages -->
+    <audio id="player" preload="metadata" src="./track.mp3"></audio>
+    <p class="muted tiny">Tap <strong>Play Cassette</strong> to start the music 🎵</p>
   </section>
 
   <section class="card message">
@@ -171,12 +170,13 @@
           <p id="notePreview" class="note"></p>
         </div>
         <div class="row">
-          <button id="copyNote" class="btn small" type="button">Copy to Clipboard</button>
-          <button id="clearNote" class="btn small outline" type="button">Clear</button>
+          <button id="copyNote" class="btn small">Copy</button>
+          <button id="clearNote" class="btn small outline">Clear</button>
         </div>
       </div>
     </div>
   </section>
+
 </main>
 
 <footer class="wrap footer">
