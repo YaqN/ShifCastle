@@ -183,7 +183,7 @@ safe('photobooth', () => {
   });
 });
 
-/* ========== Compliment Jar — warm, appreciative, not flirty ========== */
+/* ========== Compliment Jar — warm, personal, appreciative (not flirty) ========== */
 safe('compliments', () => {
   const drawBtn = document.getElementById('drawFortune');
   const addForm = document.getElementById('addFortuneForm');
@@ -192,40 +192,51 @@ safe('compliments', () => {
   if(!drawBtn || !addForm || !addInput || !out) return;
 
   const qualities = [
-    'kindness','thoughtfulness','patience','reliability','optimism','honesty','steadiness',
-    'encouragement','perspective','curiosity','creativity','clarity','care for others',
-    'attention to detail','follow-through','calm presence','integrity','fairness','openness'
+    'patience','integrity','dependability','empathy','focus',
+    'sense of balance','steady energy','encouragement','honesty',
+    'good judgment','fairness','follow-through','curiosity',
+    'calm presence','attention to detail','thoughtfulness','kindness'
   ];
+
   const strengths = [
-    'make tough moments feel manageable','bring out the best in people',
-    'help everyone feel welcome','find practical next steps',
-    'listen in a way that people feel understood','turn ideas into action',
-    'keep things moving without rushing','ask questions that open doors',
-    'stay grounded when plans change','notice the small wins that matter',
-    'add calm to busy days','help conversations stay kind and useful'
+    'make people feel comfortable being themselves',
+    'keep things calm when they could get stressful',
+    'bring out the best in others by how you listen',
+    'notice what needs to be done before anyone asks',
+    'stay kind even when things get complicated',
+    'find words that make people feel understood',
+    'make teamwork feel natural and easy',
+    'help everyone feel included and valued',
+    'turn plans into steady progress',
+    'handle challenges without losing patience',
+    'see both details and the bigger picture clearly'
   ];
+
   const closers = [
-    'I appreciate that a lot.',
-    'That really helps more than you know.',
-    'It genuinely makes a difference.',
-    'People notice and it matters.',
-    'That’s something to be proud of.',
-    'It lifts the whole day.',
-    'It sets such a good example.'
+    'That really stands out about you.',
+    'It makes a real difference every time.',
+    'It’s something people remember about you.',
+    'It quietly lifts the mood around you.',
+    'That quality shows genuine character.',
+    'People notice that more than you think.',
+    'It makes working with you a lot easier.'
   ];
+
   const starters = [
-    'You have a way of','You consistently','You’re great at','You naturally',
-    'You always seem to','You bring','You model','You remind others to',
-    'You make it easier to','You help us'
+    'You have a way of','You consistently','You’re really good at','You naturally',
+    'You always seem to','You bring','You remind people to','You make it easier to',
+    'You help others','You tend to'
   ];
+
   const softPraises = [
-    'You make ordinary moments feel special.',
-    'You add warmth wherever you are.',
-    'You make spaces feel safer and kinder.',
-    'You show up with care, every single time.',
-    'You balance thoughtfulness with getting things done.',
-    'You make people feel at ease.'
+    'You make ordinary moments feel steady and real.',
+    'You add a quiet kind of encouragement that matters.',
+    'You show care in the small things most people overlook.',
+    'You make spaces feel a bit more grounded and calm.',
+    'You balance patience with getting things done.',
+    'You help people feel safe to be themselves.'
   ];
+
   const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
 
   function generateWarm(n = 160){
@@ -238,7 +249,7 @@ safe('compliments', () => {
       if (type === 0){
         line = `${starters[Math.floor(Math.random()*starters.length)]} ${strengths[Math.floor(Math.random()*strengths.length)]}. ${closers[Math.floor(Math.random()*closers.length)]}`;
       } else if (type === 1){
-        line = `Your ${qualities[Math.floor(Math.random()*qualities.length)]} really stands out. ${closers[Math.floor(Math.random()*closers.length)]}`;
+        line = `Your ${qualities[Math.floor(Math.random()*qualities.length)]} really makes a difference. ${closers[Math.floor(Math.random()*closers.length)]}`;
       } else {
         line = `It’s clear you ${strengths[Math.floor(Math.random()*strengths.length)]}. ${closers[Math.floor(Math.random()*closers.length)]}`;
       }
