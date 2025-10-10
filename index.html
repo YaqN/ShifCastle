@@ -3,54 +3,40 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Castle Birthday Hall – 3D</title>
-  <!-- Fonts for 80s/medieval vibe -->
+  <title>Castle Birthday Hall – 3D+</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Cinzel:wght@400;700&family=VT323&display=swap" rel="stylesheet">
   <style>
-    :root{
-      --gold:#e7c76d; --ink:#1a140b; --hud:rgba(0,0,0,.5);
-    }
-    html,body{height:100%; margin:0; overflow:hidden; background:#0d0e12; color:#f6eeda;}
-    body{font-family:'Cinzel', serif}
-
-    /* UI overlay */
-    .banner{position:fixed; top:10px; left:50%; transform:translateX(-50%);
-      padding:.25rem 1rem; font-family:'UnifrakturMaguntia', cursive; font-size:clamp(26px,6vw,52px);
-      background:linear-gradient(180deg,#711c2f,#b82d54); border:3px solid var(--gold); border-radius:10px; z-index:5}
-
+    :root{ --gold:#e7c76d; --ink:#1a140b; --hud:rgba(0,0,0,.5);} 
+    html,body{height:100%; margin:0; overflow:hidden; background:#0b0c10; color:#f6eeda;}
+    body{font-family:'Cinzel',serif}
+    .banner{position:fixed; top:10px; left:50%; transform:translateX(-50%); padding:.25rem 1rem; font-family:'UnifrakturMaguntia',cursive; font-size:clamp(26px,6vw,52px); background:linear-gradient(180deg,#711c2f,#b82d54); border:3px solid var(--gold); border-radius:10px; z-index:5}
     #hud{position:fixed; left:0; right:0; bottom:10px; display:flex; justify-content:center; gap:10px; z-index:5}
-    #hud button{appearance:none; border:2px solid var(--gold); background:var(--hud); color:#fff3d0;
-      border-radius:999px; padding:.6rem .9rem; font-family:'VT323', monospace; font-size:20px}
-    #hint{position:fixed; bottom:70px; left:50%; transform:translateX(-50%); font:400 14px 'VT323', monospace; color:#f6eeda; opacity:.8; z-index:5}
-
-    /* Lightbox */
-    .lightbox{position:fixed; inset:0; background:rgba(0,0,0,.85); display:none; place-items:center; z-index:9}
+    #hud button{appearance:none; border:2px solid var(--gold); background:var(--hud); color:#fff3d0; border-radius:999px; padding:.6rem .9rem; font-family:'VT323',monospace; font-size:20px}
+    #hint{position:fixed; bottom:70px; left:50%; transform:translateX(-50%); font:400 14px 'VT323',monospace; color:#f6eeda; opacity:.85; z-index:5}
+    .lightbox{position:fixed; inset:0; background:rgba(0,0,0,.86); display:none; place-items:center; z-index:9}
     .lightbox.on{display:grid}
     .lightbox figure{max-width:min(92vw,900px); max-height:86vh; margin:0; background:#0f0f10; border:6px solid var(--gold); border-radius:12px; box-shadow:0 30px 60px rgba(0,0,0,.6)}
     .lightbox img{display:block; max-width:100%; max-height:72vh}
     .lightbox figcaption{padding:.6rem 1rem; color:#f1e8cf; font:400 16px 'Cinzel',serif; background:linear-gradient(#3a311f,#1f1a12)}
-    .navArrow{position:absolute; top:50%; transform:translateY(-50%); width:48px; height:48px; border-radius:50%; border:2px solid var(--gold); color:#f1e8cf; background:rgba(0,0,0,.3); display:grid; place-items:center; font:28px 'VT323', monospace}
+    .navArrow{position:absolute; top:50%; transform:translateY(-50%); width:48px; height:48px; border-radius:50%; border:2px solid var(--gold); color:#f1e8cf; background:rgba(0,0,0,.3); display:grid; place-items:center; font:28px 'VT323',monospace}
     .navArrow.left{left:14px} .navArrow.right{right:14px}
-    .closeX{position:absolute; top:12px; right:12px; width:44px; height:44px; border-radius:50%; border:2px solid var(--gold); color:#f1e8cf; background:rgba(0,0,0,.3); display:grid; place-items:center; font:22px 'VT323', monospace}
-
-    /* Loading badge */
-    #loading{position:fixed; inset:0; display:grid; place-items:center; color:#fff4d3; font:400 18px 'VT323', monospace; z-index:6; background:radial-gradient(circle at 50% 40%, rgba(255,227,152,.06), transparent 60%)}
+    .closeX{position:absolute; top:12px; right:12px; width:44px; height:44px; border-radius:50%; border:2px solid var(--gold); color:#f1e8cf; background:rgba(0,0,0,.3); display:grid; place-items:center; font:22px 'VT323',monospace}
+    #loading{position:fixed; inset:0; display:grid; place-items:center; color:#fff4d3; font:400 18px 'VT323',monospace; z-index:6; background:radial-gradient(circle at 50% 40%, rgba(255,227,152,.06), transparent 60%)}
     #loading.fade{animation:fadeout .8s forwards}
     @keyframes fadeout{to{opacity:0; visibility:hidden}}
   </style>
 </head>
 <body>
   <div class="banner">Happy Birthday!</div>
-  <div id="loading">Summoning the castle…</div>
-  <div id="hint" aria-hidden="true">Tap the doors to enter. Swipe to stroll the hall. Tap frames to view.</div>
+  <div id="loading">Enchanting the 3D castle…</div>
+  <div id="hint" aria-hidden="true">Tap the doors to enter • Swipe to stroll • Tap frames to open</div>
   <div id="hud" aria-label="Controls">
     <button id="btnBack">◀ Back</button>
     <button id="btnForward">Forward ▶</button>
   </div>
 
-  <!-- Lightbox overlay for viewing textures in 2D -->
   <div class="lightbox" id="lightbox" aria-modal="true" role="dialog">
     <button class="closeX" id="closeX" aria-label="Close">✕</button>
     <button class="navArrow left" id="navL" aria-label="Previous">❮</button>
@@ -63,12 +49,10 @@
 
   <canvas id="scene"></canvas>
 
-  <!-- Three.js from CDN -->
   <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
-  <script src="https://unpkg.com/three@0.160.0/examples/jsm/controls/OrbitControls.js" type="module"></script>
   <script>
   (()=>{
-    // Image list (update paths to your repo assets)
+    // ===== CONFIG: images in ROOT as requested =====
     const gallery = [
       {src:'birthday_center.png', caption:'Birthday Centerpiece'},
       {src:'bunny_room.jpg', caption:'Bunny & Coffee Nook'},
@@ -80,168 +64,164 @@
     const renderer = new THREE.WebGLRenderer({canvas, antialias:true});
     renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x0d0e12);
+    scene.background = new THREE.Color(0x0b0c10);
 
-    // Camera
-    const camera = new THREE.PerspectiveCamera(60, 2, 0.1, 100);
-    camera.position.set(0, 1.6, 8);
+    // Camera with a gentle 80s dolly/bob
+    const camera = new THREE.PerspectiveCamera(64, 2, 0.1, 200);
+    camera.position.set(0, 1.55, 8);
+
+    // Fog for depth
+    scene.fog = new THREE.Fog(0x0b0c10, 10, 62);
 
     // Lights
-    const amb = new THREE.AmbientLight(0x806040, .6); scene.add(amb);
-    const dir = new THREE.DirectionalLight(0xfff3cc, .8); dir.position.set(3,5,3); scene.add(dir);
+    scene.add(new THREE.AmbientLight(0x806040, .6));
+    const dir = new THREE.DirectionalLight(0xfff3cc, .85); dir.position.set(4,6,3); scene.add(dir);
 
-    // Floor & ceiling
-    const texLoader = new THREE.TextureLoader();
-    const stoneTex = texLoader.load('https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&w=800&q=60');
-    stoneTex.wrapS = stoneTex.wrapT = THREE.RepeatWrapping; stoneTex.repeat.set(4,12);
-    const floor = new THREE.Mesh(new THREE.PlaneGeometry(10, 60), new THREE.MeshStandardMaterial({map:stoneTex, roughness:.9, metalness:0}));
-    floor.rotation.x = -Math.PI/2; floor.position.z = -20; scene.add(floor);
-    const ceiling = floor.clone(); ceiling.rotation.x = Math.PI/2; ceiling.position.y = 3.2; scene.add(ceiling);
+    // Textures
+    const tl = new THREE.TextureLoader();
+    const stone = tl.load('https://images.unsplash.com/photo-1523419409543-8a8ffc0b1cfd?auto=format&fit=crop&w=1200&q=60');
+    stone.wrapS = stone.wrapT = THREE.RepeatWrapping; stone.repeat.set(6,24);
 
-    // Walls
-    const wallMat = new THREE.MeshStandardMaterial({color:0x2a2119, roughness:.95});
-    const leftWall = new THREE.Mesh(new THREE.PlaneGeometry(60, 3.2), wallMat);
-    leftWall.rotation.y = Math.PI/2; leftWall.position.set(-5, 1.6, -20); scene.add(leftWall);
-    const rightWall = leftWall.clone(); rightWall.position.x = 5; rightWall.rotation.y = -Math.PI/2; scene.add(rightWall);
+    // Floor rug (retro grid + medieval gold)
+    const rugCanvas = document.createElement('canvas'); rugCanvas.width = 512; rugCanvas.height = 512;
+    const rg = rugCanvas.getContext('2d'); rg.fillStyle = '#1b1522'; rg.fillRect(0,0,512,512);
+    rg.strokeStyle = '#e7c76d'; rg.globalAlpha=.35; for(let i=0;i<16;i++){ rg.beginPath(); rg.moveTo(0,i*32); rg.lineTo(512,i*32); rg.moveTo(i*32,0); rg.lineTo(i*32,512); rg.stroke(); }
+    const rugTex = new THREE.CanvasTexture(rugCanvas); rugTex.wrapS = rugTex.wrapT = THREE.RepeatWrapping; rugTex.repeat.set(1,12);
 
-    // 80s neon strip down the hall
-    const neonMat = new THREE.MeshBasicMaterial({color:0xe7c76d});
-    const neon = new THREE.Mesh(new THREE.PlaneGeometry(0.05, 60), neonMat); neon.position.set(0,0.1,-20); neon.rotation.x=-Math.PI/2; scene.add(neon);
+    // Geometry pieces
+    const floor = new THREE.Mesh(new THREE.PlaneGeometry(12, 80), new THREE.MeshStandardMaterial({map:stone, roughness:.95}));
+    floor.rotation.x = -Math.PI/2; floor.position.z = -24; scene.add(floor);
+    const rug = new THREE.Mesh(new THREE.PlaneGeometry(3.2, 72), new THREE.MeshStandardMaterial({map:rugTex, transparent:true, opacity:.9}));
+    rug.rotation.x = -Math.PI/2; rug.position.set(0,0.01,-20); scene.add(rug);
+    const ceiling = floor.clone(); ceiling.rotation.x = Math.PI/2; ceiling.position.y = 3.3; scene.add(ceiling);
 
-    // Castle door (two wooden leaves)
-    const doorGroup = new THREE.Group(); scene.add(doorGroup);
-    const wood = new THREE.MeshStandardMaterial({color:0x6b3f1f, roughness:.8, metalness:.2});
-    const leafGeo = new THREE.BoxGeometry(1.4, 2.6, 0.08);
-    const leftLeaf = new THREE.Mesh(leafGeo, wood); leftLeaf.position.set(-.72,1.3,3.2);
-    const rightLeaf = new THREE.Mesh(leafGeo, wood); rightLeaf.position.set(.72,1.3,3.2);
-    // hinges (empty groups to rotate around side)
-    const leftHinge = new THREE.Group(); leftHinge.position.set(-1.42,1.3,3.2); leftHinge.add(leftLeaf); leftLeaf.position.x = .7;
-    const rightHinge = new THREE.Group(); rightHinge.position.set(1.42,1.3,3.2); rightHinge.add(rightLeaf); rightLeaf.position.x = -.7;
-    doorGroup.add(leftHinge,rightHinge);
+    const wallMat = new THREE.MeshStandardMaterial({color:0x241d16, roughness:.98});
+    const leftWall = new THREE.Mesh(new THREE.PlaneGeometry(80, 3.3), wallMat); leftWall.rotation.y = Math.PI/2; leftWall.position.set(-6,1.65,-24); scene.add(leftWall);
+    const rightWall = leftWall.clone(); rightWall.position.x = 6; rightWall.rotation.y = -Math.PI/2; scene.add(rightWall);
 
-    // Door frame / arch
-    const frame = new THREE.Mesh(new THREE.BoxGeometry(3.2, 3.2, 0.2), new THREE.MeshStandardMaterial({color:0x9a8a71, roughness:.9}));
-    frame.position.set(0,1.6,3.1); scene.add(frame);
-
-    // Torches with emissive flames
-    function torch(x,z){
-      const stand = new THREE.Mesh(new THREE.CylinderGeometry(.06,.06,.6,12), new THREE.MeshStandardMaterial({color:0x3b2b17, roughness:1}));
-      const fire = new THREE.PointLight(0xffc46a, 1.2, 6); fire.position.set(0,.4,0);
-      const group = new THREE.Group(); group.add(stand, fire); group.position.set(x,1.2,z); scene.add(group); return fire;
+    // Repeating gothic arches for flair
+    const archMat = new THREE.MeshStandardMaterial({color:0x8f7f67, roughness:.95});
+    for(let i=0;i<10;i++){
+      const z = -4 - i*6;
+      const pillarL = new THREE.Mesh(new THREE.BoxGeometry(.25,3.3,.25), archMat); pillarL.position.set(-5.8,1.65,z); scene.add(pillarL);
+      const pillarR = pillarL.clone(); pillarR.position.x = 5.8; scene.add(pillarR);
+      const lintel = new THREE.Mesh(new THREE.BoxGeometry(11.8,.25,.25), archMat); lintel.position.set(0,3.2,z); scene.add(lintel);
+      // hanging banner
+      const flag = new THREE.Mesh(new THREE.PlaneGeometry(.9,1.4,6,12), new THREE.MeshStandardMaterial({color:0xb82d54, side:THREE.DoubleSide}));
+      flag.position.set((i%2?-5.3:5.3), 2.6, z-.1); flag.rotation.y = i%2? Math.PI/2 : -Math.PI/2; scene.add(flag);
     }
-    torch(-1.8,2.9); torch(1.8,2.9);
 
-    // Frames as textured planes down the hall
-    const frames = []; const captions = [];
-    const frameGeo = new THREE.PlaneGeometry(2.1, 2.8);
+    // Castle door (better scale/angles)
+    const wood = new THREE.MeshStandardMaterial({color:0x6b3f1f, roughness:.8, metalness:.15});
+    const leftHinge = new THREE.Group(); leftHinge.position.set(-1.6,1.5,3.2); scene.add(leftHinge);
+    const rightHinge = new THREE.Group(); rightHinge.position.set(1.6,1.5,3.2); scene.add(rightHinge);
+    const leafGeo = new THREE.BoxGeometry(1.6, 3, 0.1);
+    const leftLeaf = new THREE.Mesh(leafGeo, wood); leftLeaf.position.x = .8; leftHinge.add(leftLeaf);
+    const rightLeaf = new THREE.Mesh(leafGeo, wood); rightLeaf.position.x = -.8; rightHinge.add(rightLeaf);
+
+    // Door plaque
+    const plaque = new THREE.Mesh(new THREE.BoxGeometry(1.8,.4,.04), new THREE.MeshStandardMaterial({color:0xe7c76d, roughness:.6}));
+    plaque.position.set(0,3.4,3.1); scene.add(plaque);
+
+    // Torches near the door
+    function torch(x,z){ const stand = new THREE.Mesh(new THREE.CylinderGeometry(.06,.06,.6,12), new THREE.MeshStandardMaterial({color:0x3b2b17}));
+      const flame = new THREE.PointLight(0xffc46a, 1.3, 7); flame.position.set(0,.45,0); const g=new THREE.Group(); g.add(stand,flame); g.position.set(x,1.4,z); scene.add(g); return flame;}
+    torch(-2.2,2.9); torch(2.2,2.9);
+
+    // Sparkle particles (birthday magic)
+    const pGeo = new THREE.BufferGeometry();
+    const COUNT = 350; const pos = new Float32Array(COUNT*3);
+    for(let i=0;i<COUNT;i++){ pos[i*3] = (Math.random()*10-5); pos[i*3+1] = Math.random()*3.2; pos[i*3+2] = -Math.random()*60; }
+    pGeo.setAttribute('position', new THREE.BufferAttribute(pos,3));
+    const pMat = new THREE.PointsMaterial({color:0xffe9a9, size:.05, sizeAttenuation:true, transparent:true, opacity:.9, blending:THREE.AdditiveBlending});
+    const sparkles = new THREE.Points(pGeo, pMat); scene.add(sparkles);
+
+    // Frames with improved placement & angle towards center (more immersive)
+    const frames = []; const captions=[]; const frameGeo = new THREE.PlaneGeometry(2.2, 2.9);
     gallery.forEach((g,i)=>{
-      const tex = texLoader.load(g.src);
-      tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 8;
-      const mat = new THREE.MeshStandardMaterial({map:tex, roughness:.7, metalness:0});
-      const mesh = new THREE.Mesh(frameGeo, mat);
-      const side = i%2===0? -1 : 1; // Alternate sides
-      mesh.position.set( side*4.2, 1.6, -4 - i*6 );
-      mesh.rotation.y = side>0? -Math.PI/12 : Math.PI/12;
-      scene.add(mesh); frames.push(mesh); captions.push(g.caption);
+      const tex = tl.load(g.src); tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 8;
+      const frame = new THREE.Mesh(frameGeo, new THREE.MeshStandardMaterial({map:tex, roughness:.65}));
+      const z = -6 - i*6; // deeper spacing
+      const side = i%2? 1 : -1; // alternate
+      const x = side * 4.6; // pull closer to walls
+      frame.position.set(x, 1.6, z);
+      frame.rotation.y = side>0? -Math.PI/9 : Math.PI/9; // face the path
+      // subtle tilt for personality
+      frame.rotation.z = (Math.random()-.5)*0.04;
+      scene.add(frame); frames.push(frame); captions.push(g.caption);
+      // gold frame rim
+      const rim = new THREE.Mesh(new THREE.PlaneGeometry(2.42, 3.12), new THREE.MeshBasicMaterial({color:0xe6c568}));
+      rim.position.set(x,1.6,z-.01); scene.add(rim);
     });
 
-    // Raycaster for taps on frames
-    const raycaster = new THREE.Raycaster();
-    const mouse = new THREE.Vector2();
+    // Raycaster for taps
+    const raycaster = new THREE.Raycaster(); const mouse = new THREE.Vector2();
     function onTap(clientX, clientY){
       const rect = renderer.domElement.getBoundingClientRect();
-      mouse.x = ((clientX-rect.left)/rect.width)*2 - 1;
-      mouse.y = -((clientY-rect.top)/rect.height)*2 + 1;
+      mouse.x = ((clientX-rect.left)/rect.width)*2 - 1; mouse.y = -((clientY-rect.top)/rect.height)*2 + 1;
       raycaster.setFromCamera(mouse, camera);
       const hit = raycaster.intersectObjects(frames)[0];
       if(hit){ openLightbox(frames.indexOf(hit.object)); }
-      else if(camera.position.z>2.9){ // if still outside, treat as door tap
-        openDoor();
-      }
+      else if(camera.position.z>3){ openDoor(); }
     }
-
     canvas.addEventListener('pointerdown', e=> onTap(e.clientX, e.clientY));
 
-    // Lightbox handlers (uses DOM overlay)
+    // Lightbox overlay
     const lightbox = document.getElementById('lightbox');
     const lbImg = document.getElementById('lbImg');
     const lbCap = document.getElementById('lbCap');
-    let lbIndex = 0;
-    function openLightbox(i){ lbIndex = (i+gallery.length)%gallery.length; lbImg.src = gallery[lbIndex].src; lbCap.textContent = captions[lbIndex]; lightbox.classList.add('on'); }
+    let lbIndex=0; function openLightbox(i){ lbIndex=(i+gallery.length)%gallery.length; lbImg.src=gallery[lbIndex].src; lbCap.textContent=captions[lbIndex]; lightbox.classList.add('on'); }
     function closeLightbox(){ lightbox.classList.remove('on'); }
     document.getElementById('closeX').onclick = closeLightbox;
     document.getElementById('navL').onclick = ()=> openLightbox(lbIndex-1);
     document.getElementById('navR').onclick = ()=> openLightbox(lbIndex+1);
 
-    // Movement controls (forward/back along Z)
+    // Movement controls
     const btnF = document.getElementById('btnForward');
     const btnB = document.getElementById('btnBack');
-    btnF.onclick = ()=> moveTargetZ -= 4;
+    btnF.onclick = ()=>{ if(!doorOpened) openDoor(); moveTargetZ -= 4; };
     btnB.onclick = ()=> moveTargetZ += 4;
+    let moveTargetZ = camera.position.z;
 
-    let moveTargetZ = camera.position.z; // easing target
-
-    // Door animation then glide camera through
-    let doorOpened = false;
-    function openDoor(){
-      if(doorOpened) return; doorOpened = true;
-      let t=0; const dur=1200; const start=performance.now();
-      function step(now){
-        t = Math.min(1, (now-start)/dur);
-        const e = t*t*(3-2*t); // smoothstep
-        leftHinge.rotation.y = -e*1.5; rightHinge.rotation.y = e*1.5;
-        camera.position.z = 8 - e*4.5; // dolly toward door
-        if(t<1) requestAnimationFrame(step); else moveTargetZ = -6; // enter hall
-      }
-      requestAnimationFrame(step);
-      document.getElementById('loading').classList.add('fade');
-    }
-
-    // Auto-open door on first tap anywhere or press Forward
-    btnForward.addEventListener('click', ()=>{ if(!doorOpened) openDoor(); });
+    // Door animation with nicer easing & camera glide
+    let doorOpened=false; function openDoor(){ if(doorOpened) return; doorOpened=true; const start=performance.now(); const dur=1200;
+      function step(now){ const t=Math.min(1,(now-start)/dur); const e=t*t*(3-2*t); leftHinge.rotation.y = -e*1.6; rightHinge.rotation.y = e*1.6; camera.position.z = 8 - e*5.2; if(t<1) requestAnimationFrame(step); else moveTargetZ=-6;}
+      requestAnimationFrame(step); document.getElementById('loading').classList.add('fade');}
 
     // Swipe to walk
-    let sx=0, dragging=false;
-    canvas.addEventListener('touchstart',e=>{dragging=true; sx=e.touches[0].clientX;},{passive:true});
+    let sx=0, dragging=false; canvas.addEventListener('touchstart',e=>{dragging=true; sx=e.touches[0].clientX;},{passive:true});
     canvas.addEventListener('touchend',e=>{if(!dragging) return; const dx=e.changedTouches[0].clientX - sx; if(Math.abs(dx)>40){ moveTargetZ += (dx>0? 1:-1)*4; } dragging=false;},{passive:true});
 
     // Resize
-    function resize(){
-      const w = window.innerWidth, h = window.innerHeight;
-      renderer.setSize(w,h,false);
-      camera.aspect = w/h; camera.updateProjectionMatrix();
-    }
-    window.addEventListener('resize', resize); resize();
+    function resize(){ const w=innerWidth, h=innerHeight; renderer.setSize(w,h,false); camera.aspect=w/h; camera.updateProjectionMatrix(); }
+    addEventListener('resize', resize); resize();
 
-    // Animate loop
+    // Animate
     const clock = new THREE.Clock();
     function animate(){
-      const dt = Math.min(clock.getDelta(), .05);
-      // ease camera toward target Z
-      camera.position.z += (moveTargetZ - camera.position.z) * Math.min(1, dt*2.5);
-      renderer.render(scene, camera);
+      const t = clock.getElapsedTime();
+      // camera bob & slight sway for life
+      camera.position.y = 1.55 + Math.sin(t*0.8)*0.02;
+      camera.rotation.z = Math.sin(t*0.6)*0.005;
+      // sparkles float upward slowly and wrap
+      const arr = sparkles.geometry.attributes.position.array; for(let i=0;i<arr.length;i+=3){ arr[i+1]+=0.003; if(arr[i+1]>3.3) arr[i+1]=Math.random()*0.5; }
+      sparkles.geometry.attributes.position.needsUpdate = true;
+      // ease move
+      camera.position.z += (moveTargetZ - camera.position.z)*0.08;
+      renderer.render(scene,camera);
       requestAnimationFrame(animate);
     }
     animate();
 
-    // First render after textures start loading
-    texLoader.manager.onLoad = ()=>{ document.getElementById('loading').classList.add('fade'); };
-
+    // Loading fade when textures ready
+    tl.manager.onLoad = ()=>{ document.getElementById('loading').classList.add('fade'); };
   })();
   </script>
 
-  <!--
-  ===========================
-  HOW TO USE ON GITHUB PAGES
-  ===========================
-  1) Save this as index.html in your repo root.
-  2) Create /assets with:
-     - assets/birthday_center.png
-     - assets/bunny_room.jpg
-     - assets/cake_room.jpg
-     - assets/tea_room.jpg
-  3) Enable Pages (Settings → Pages → Deploy from branch).
-  4) Tap the wooden doors to enter. Swipe to walk. Tap any frame to open the lightbox.
+  <!-- Notes
+  - Images are expected in the repo ROOT (same level as index.html)
+  - Open the doors to enter, swipe to move, tap frames for lightbox
+  - Angles/spacing enhanced; arches, rug, banners, sparkles add creativity
   -->
 </body>
 </html>
