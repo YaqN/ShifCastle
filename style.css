@@ -78,3 +78,13 @@ kbd{background:#fff;padding:2px 6px;border-radius:6px;border:1px solid #0002;fon
 .filter-vintage img{filter:contrast(1.05) sepia(.25) saturate(1.1) hue-rotate(-10deg)}
 .filter-dreamy img{filter:brightness(1.1) blur(.2px) saturate(1.2)}
 .filter-bw img{filter:grayscale(.95) contrast(1.1)}
+
+/* Message area */
+.message-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+#loveNote{width:100%;padding:12px 14px;border-radius:12px;border:1px solid #e6caa0;background:#fffdf7;resize:vertical;min-height:150px}
+.message-preview .paper{background:linear-gradient(#fffdf7,#fff);border:1px solid #f0e2cf;border-radius:14px;padding:14px;box-shadow:var(--shadow);min-height:150px}
+.message-preview h4{margin:0 0 6px}
+.note{white-space:pre-wrap}
+
+/* Ensure cherries follow theme */
+.cherry{background:radial-gradient(circle at 30% 30%, rgba(255,255,255,.45), var(--cherry)) !important}

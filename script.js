@@ -97,3 +97,21 @@ gbForm.addEventListener('submit', e=>{ e.preventDefault(); guestbook.push({name:
 
 // Shortcut: C for confetti
 addEventListener('keydown', (e)=>{ if(e.key.toLowerCase()==='c') burst(); });
+
+
+// ===== Message Area =====
+const noteEl = document.getElementById('loveNote');
+const notePrev = document.getElementById('notePreview');
+const savedNote = localStorage.getItem('loveNote') || '';
+noteEl.value = savedNote;
+notePrev.textContent = savedNote;
+noteEl.addEventListener('input', ()=>{
+  localStorage.setItem('loveNote', noteEl.value);
+  notePrev.textContent = noteEl.value;
+});
+document.getElementById('copyNote').addEventListener('click', async ()=>{
+  try{ await navigator.clipboard.writeText(noteEl.value); burst(innerWidth*0.7, innerHeight*0.65, 60); }catch(e){}
+});
+document.getElementById('clearNote').addEventListener('click', ()=>{
+  noteEl.value=''; notePrev.textContent=''; localStorage.removeItem('loveNote');
+});

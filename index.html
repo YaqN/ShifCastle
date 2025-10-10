@@ -159,16 +159,24 @@
     <p class="muted tiny">Place <code>track.mp3</code> beside this page to enable music.</p>
   </section>
 
-  <section class="card guestbook">
-    <h3>Guestbook</h3>
-    <p class="muted">Notes are stored privately in your browser.</p>
-    <form id="gbForm">
-      <input id="gbName" placeholder="Your name" maxlength="24" required>
-      <input id="gbMsg" placeholder="Your message" maxlength="100" required>
-      <button class="btn small">Sign</button>
-    </form>
-    <ul id="gbList" class="gb-list"></ul>
+  <section class="card message">
+    <h3>Your Birthday Message</h3>
+    <p class="muted">Write something just for her. It saves privately in this browser.</p>
+    <div class="message-grid">
+      <textarea id="loveNote" rows="8" placeholder="Type your heartfelt message here…"></textarea>
+      <div class="message-preview">
+        <div class="paper">
+          <h4>Preview</h4>
+          <p id="notePreview" class="note"></p>
+        </div>
+        <div class="row">
+          <button id="copyNote" class="btn small">Copy to Clipboard</button>
+          <button id="clearNote" class="btn small outline">Clear</button>
+        </div>
+      </div>
+    </div>
   </section>
+
 
 </main>
 
