@@ -1,50 +1,66 @@
-/* Base */
+/* === Reset and Base === */
 *{box-sizing:border-box;margin:0;padding:0}
+
 body{
   font-family:"Orbitron",system-ui,Arial,sans-serif;
-  background: linear-gradient(180deg,#fff6f8 0%,#fdeff3 100%);
+  /* Soft cherry–cream gradient background */
+  background:
+    radial-gradient(1200px 800px at 15% 0%, #fff6fb 0%, transparent 55%),
+    radial-gradient(1000px 700px at 110% 10%, #ffe9ef 0%, transparent 60%),
+    linear-gradient(180deg, #fff7fa 0%, #fdeff3 45%, #ffeef5 100%);
   color:#333; min-height:100vh; line-height:1.5; overflow-x:hidden;
 }
+
 h1,h2,h3,h4{font-family:"Pacifico",cursive;color:#cc2035}
 a{color:#cc2035;text-decoration:none}
 .muted{color:#666;font-size:.95rem}
 
-/* Layout & Cards */
+/* === Layout === */
 .wrap{max-width:1080px;margin:0 auto;padding:1.5rem}
 .center{text-align:center}
-.card{background:#fff;border-radius:1rem;box-shadow:0 4px 14px rgba(0,0,0,.08);
-  padding:1.5rem;margin-bottom:1.5rem;transition:transform .2s, box-shadow .2s}
+
+.card{
+  background:#fff;border-radius:1rem;box-shadow:0 4px 14px rgba(0,0,0,.08);
+  padding:1.5rem;margin-bottom:1.5rem;transition:transform .2s, box-shadow .2s
+}
 .card:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.1)}
 .grid-two{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.5rem}
 .row{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem}
 
-/* Buttons */
-.btn{background:#cc2035;color:#fff;border:none;border-radius:10px;padding:.6em 1em;
-  cursor:pointer;font-weight:700;letter-spacing:.3px}
+/* === Buttons === */
+.btn{
+  background:#cc2035;color:#fff;border:none;border-radius:10px;padding:.6em 1em;
+  cursor:pointer;font-weight:700;letter-spacing:.3px
+}
 .btn:hover{background:#a9182a}
 .btn.outline{background:transparent;border:2px solid #cc2035;color:#cc2035}
 .btn.outline:hover{background:#cc2035;color:#fff}
 .btn.small{font-size:.9rem;padding:.45em .8em}
+.file{border:none}
 
-/* Header */
-header{background:radial-gradient(circle,#fff8f9 0%,#fde2e7 100%);padding:2rem 1rem 1.2rem;border-bottom:3px solid #cc2035}
+/* === Header === */
+header{
+  background:radial-gradient(circle,#fff8f9 0%,#fde2e7 100%);
+  padding:2rem 1rem 1.2rem;border-bottom:3px solid #cc2035
+}
 header .title h1{font-size:2.2rem}
 .tag{opacity:.85;margin-top:.2rem}
 
-/* Cherries */
+/* === Cherries === */
 .cherries{width:110px;height:70px}
 .cherries circle{fill:#cc2035}
 .cherries .stem{stroke:#6b8e23;stroke-width:5;fill:none;stroke-linecap:round}
 .cherries .leaf{fill:#6b8e23}
 
-/* Hero cake */
+/* === Hero cake === */
 .hero-centered{text-align:center}
 .hero-centered img{
-  width:min(420px,92%);border-radius:20px;box-shadow:0 10px 26px rgba(0,0,0,.12);margin-bottom:1rem;border:2px solid #f4d9c5
+  width:min(420px,92%);border-radius:20px;box-shadow:0 10px 26px rgba(0,0,0,.12);
+  margin-bottom:1rem;border:2px solid #f4d9c5
 }
 .hero-centered h2{font-size:clamp(28px,5vw,48px);margin:.3rem 0}
 
-/* Checklist */
+/* === Checklist === */
 .todo-list{list-style:none;margin-top:1rem}
 .todo-item{display:flex;align-items:center;justify-content:space-between;border-bottom:1px dashed #eee;padding:.35em 0}
 .todo-item.done span{text-decoration:line-through;opacity:.6}
@@ -53,12 +69,12 @@ input[type="text"],input[type="file"],textarea{
 }
 input:focus,textarea:focus{outline:none;border-color:#cc2035}
 
-/* Baking timers */
+/* === Baking timers === */
 .recipe-grid{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}
 .time{font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:700;color:#cc2035}
 .timer-ctrl{margin-top:.4rem}
 
-/* Photo Booth */
+/* === Photo Booth === */
 .gallery{text-align:center}
 .polaroids{position:relative;min-height:420px;margin-top:1rem}
 .polaroid{
@@ -70,29 +86,32 @@ input:focus,textarea:focus{outline:none;border-color:#cc2035}
 .polaroid.pinned{outline:2px dashed #cc2035;outline-offset:3px}
 .filter-row{display:flex;justify-content:center;gap:.8rem;margin-bottom:.5rem}
 
-/* Compliment Jar */
+/* === Compliment Jar === */
 .jar{text-align:center;margin-top:1rem}
-.fortune{margin-top:1rem;background:#fff0f3;border-left:4px solid #cc2035;padding:1rem;border-radius:8px;color:#444;min-height:60px}
+.fortune{
+  margin-top:1rem;background:#fff0f3;border-left:4px solid #cc2035;padding:1rem;border-radius:8px;color:#444;min-height:60px;
+  opacity:1; transition:opacity .25s ease;
+}
 
-/* Message */
+/* === Message === */
 .message-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
 .message-preview{background:#fff9fa;border:1px solid #f3cbd2;border-radius:10px;padding:1rem}
 .message-preview h4{margin-bottom:.5rem}
 .note{min-height:100px;font-family:"Pacifico",cursive;white-space:pre-wrap}
 
-/* Footer */
+/* === Footer === */
 .footer{text-align:center;padding:1rem 0;color:#555}
 
-/* Confetti canvas */
+/* === Confetti Canvas === */
 #confetti{position:fixed;inset:0;pointer-events:none;z-index:5}
 
-/* Photo filters */
+/* === Photo filters === */
 .filter-none img{filter:none}
 .filter-vintage img{filter:sepia(.35) contrast(1.08) saturate(1.25)}
 .filter-dreamy img{filter:brightness(1.08) blur(.2px) saturate(1.3)}
 .filter-bw img{filter:grayscale(100%) contrast(1.1)}
 
-/* Responsive */
+/* === Responsive === */
 @media (max-width:700px){
   header .title h1{font-size:1.9rem}
   .hero-centered img{width:min(320px,94%)}
