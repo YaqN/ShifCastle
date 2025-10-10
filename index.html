@@ -22,7 +22,7 @@
       <path d="M111 22 C102 20,96 28,104 32 C112 36,117 27,111 22 Z" class="leaf"></path>
     </svg>
     <h1>Happy Birthday 🎂</h1>
-    <p class="tag">A creamy, cherry-red cozy page made with care.</p>
+    <p class="tag">A simple, kind, and cheerful page to celebrate.</p>
     <button id="confettiBurst" class="btn outline">Throw Confetti</button>
   </div>
 </header>
@@ -54,18 +54,20 @@
       <h3>Baking Corner</h3>
       <p class="muted">Timers for your sweet treats — one tap to start!</p>
       <div class="recipe-grid">
-        <button class="recipe btn small" data-min="0" data-sec="90">🍪 Cookies 1:30</button>
-        <button class="recipe btn small" data-min="12" data-sec="0">🧁 Cupcakes 12:00</button>
-        <button class="recipe btn small" data-min="25" data-sec="0">🍰 Sponge 25:00</button>
+        <button class="recipe btn small" data-min="0" data-sec="90" type="button">🍪 Cookies 1:30</button>
+        <button class="recipe btn small" data-min="12" data-sec="0" type="button">🧁 Cupcakes 12:00</button>
+        <button class="recipe btn small" data-min="25" data-sec="0" type="button">🍰 Sponge 25:00</button>
         <span id="timeLeft" class="time">00:00</span>
-        <div class="timer-ctrl"><button id="stopTimer" class="btn small outline">Stop</button></div>
+        <div class="timer-ctrl">
+          <button id="stopTimer" class="btn small outline" type="button">Stop</button>
+        </div>
       </div>
     </article>
   </section>
 
   <section class="card gallery">
     <h3>Photo Booth</h3>
-    <p class="muted">Drag polaroids, double-click to pin, and change filters.</p>
+    <p class="muted">Drag polaroids, double-click to pin, and try filters.</p>
     <div class="filter-row">
       <label><input type="radio" name="f" value="none" checked> None</label>
       <label><input type="radio" name="f" value="vintage"> Vintage</label>
@@ -86,7 +88,7 @@
       <p id="fortuneText" class="fortune"></p>
     </div>
     <form id="addFortuneForm" class="row" autocomplete="off">
-      <input id="addFortune" placeholder="Add your own compliment…" maxlength="100" />
+      <input id="addFortune" placeholder="Add your own note…" maxlength="100" />
       <button class="btn small" type="submit">Add</button>
     </form>
   </section>
@@ -97,7 +99,7 @@
     <h3>Your Birthday Message</h3>
     <p class="muted">Write something just for her. It stays on this browser.</p>
     <div class="message-grid">
-      <textarea id="loveNote" rows="8" placeholder="Type your heartfelt message here…"></textarea>
+      <textarea id="loveNote" rows="8" placeholder="Type your message here…"></textarea>
       <div class="message-preview">
         <div class="paper"><h4>Preview</h4><p id="notePreview" class="note"></p></div>
         <div class="row">
@@ -111,9 +113,9 @@
 </main>
 
 <footer class="wrap footer">
-  <p>Made with care for you — press <kbd>C</kbd> for confetti!</p>
+  <p>Made with ❤️ for you — press <kbd>C</kbd> for confetti!</p>
 </footer>
 
-<script src="script.js?v=11"></script>
+<script src="script.js?v=15"></script>
 </body>
 </html>
