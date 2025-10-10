@@ -190,7 +190,7 @@ if (confettiCanvas) {
   });
 })();
 
-/******* Compliment Jar *******/
+/******* Compliment Jar — auto-generate 100+ compliments *******/
 (()=>{
   const drawBtn = document.getElementById('drawFortune');
   const addForm = document.getElementById('addFortuneForm');
@@ -198,24 +198,113 @@ if (confettiCanvas) {
   const out = document.getElementById('fortuneText');
   if(!drawBtn || !addForm || !addInput || !out) return;
 
-  const defaults = [
+  // Seed a few handcrafted lines (nice variety to start)
+  const seeds = [
     'You make every moment brighter.',
     'Your smile could light up the 80s disco floor!',
     'You’re the cherry on top of life’s sundae.',
     'Your kindness is sweeter than frosting.',
     'Your vibes? Totally radical 💿🎧',
-    'You make nostalgia feel brand new.'
+    'You make nostalgia feel brand new.',
+    'You’re the cozy glow after the credits roll.',
+    'You make ordinary days feel cinematic.',
+    'Your laugh sounds like confetti feels.',
+    'You’re the perfect plot twist.'
   ];
-  let fortunes = JSON.parse(localStorage.getItem('fortunes')||'null') || defaults.slice();
-  const save = ()=> localStorage.setItem('fortunes', JSON.stringify(fortunes));
 
-  drawBtn.addEventListener('click', ()=>{
-    if(!fortunes.length) fortunes = defaults.slice();
-    const idx = Math.floor(Math.random()*fortunes.length);
-    out.textContent = fortunes.splice(idx,1)[0];
+  // Random helper
+  const r = (arr) => arr[Math.floor(Math.random() * arr.length)];
+  const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+
+  // Template parts for auto-generation
+  const openers = [
+    'you have', 'you radiate', 'you bring', 'you spark', 'you embody',
+    'you shine with', 'you overflow with', 'you glow with'
+  ];
+  const adjectives = [
+    'radiant', 'brilliant', 'magnetic', 'effortless', 'genuine', 'fearless',
+    'gentle', 'wholesome', 'stellar', 'legendary', 'sparkling', 'golden',
+    'iconic', 'charming', 'remarkable', 'quietly powerful', 'unshakable',
+    'playful', 'graceful', 'serene', 'invincible', 'electric', 'glowing'
+  ];
+  const traits = [
+    'kindness', 'confidence', 'curiosity', 'creativity', 'warmth', 'patience',
+    'grit', 'clarity', 'style', 'humor', 'focus', 'honesty', 'vision',
+    'empathy', 'energy', 'calm', 'heart', 'brilliance'
+  ];
+  const effects = [
+    'brighter', 'easier', 'softer', 'happier', 'warmer', 'calmer',
+    'more magical', 'more hopeful', 'more fun', 'like home'
+  ];
+  const closers = [
+    'and it shows.', 'and it’s unforgettable.', 'and it lifts everyone.',
+    'and the world notices.', 'and it changes the room.',
+    'and it makes a difference.', 'every single day.'
+  ];
+  const metaphors = [
+    'a neon skyline at midnight', 'a perfect chorus', 'sunlight on fresh snow',
+    'the first sip of morning coffee', 'a vinyl crackle before the hit drops',
+    'the last page of a great book', 'a warm bakery at dawn',
+    'a lucky song on repeat', 'a cozy cinema on a rainy day',
+    'cherries on a cake', 'a sunset that lingers'
+  ];
+
+  function generateCompliments(target = 100) {
+    const set = new Set(seeds);
+
+    // a couple formats so lines feel different
+    const formatters = [
+      () => `${cap(r(openers))} ${r(adjectives)} ${r(traits)} — ${r(closers)}`,
+      () => `You make everything feel ${r(effects)}.`,
+      () => `You’re ${r(adjectives)} and ${r(adjectives)} — like ${r(metaphors)}.`,
+      () => `Your ${r(traits)} is downright ${r(adjectives)}.`,
+      () => `People feel ${r(effects)} around you.`
+    ];
+
+    // try to produce unique lines
+    let guard = 0;
+    while (set.size < seeds.length + target && guard < 5000) {
+      guard++;
+      const line = formatters[Math.floor(Math.random() * formatters.length)]()
+        .replace(/\s+/g, ' ')
+        .trim()
+        .replace(/^you /i, 'You ');
+      set.add(line);
+    }
+    return Array.from(set);
+  }
+
+  // Build 100+ and persist
+  let fortunes = JSON.parse(localStorage.getItem('fortunes') || 'null');
+  if (!fortunes || fortunes.length < 20) {
+    fortunes = generateCompliments(120); // generate a little extra
+    localStorage.setItem('fortunes', JSON.stringify(fortunes));
+  }
+
+  const save = () => localStorage.setItem('fortunes', JSON.stringify(fortunes));
+
+  // Draw a random compliment (without replacement until pool resets)
+  drawBtn.addEventListener('click', () => {
+    if (!fortunes.length) {
+      fortunes = generateCompliments(120);
+    }
+    const idx = Math.floor(Math.random() * fortunes.length);
+    out.textContent = fortunes.splice(idx, 1)[0];
     save();
-    window._burst?.(innerWidth*0.6, innerHeight*0.65, Math.round(maxConfetti*0.6)||60);
+    window._burst?.(innerWidth * 0.6, innerHeight * 0.65, Math.round((window.maxConfetti || 120) * 0.6));
   });
+
+  // Allow adding custom compliments
+  addForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const v = addInput.value.trim();
+    if (!v) return;
+    fortunes.push(v);
+    save();
+    addForm.reset();
+  });
+})();
+
 
   addForm.addEventListener('submit', (e)=>{
     e.preventDefault();
