@@ -3,54 +3,16 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Happy Birthday — Retro Cherry!</title>
+<title>Happy Birthday — Cherry & Cream</title>
 <meta name="theme-color" content="#cc2035" />
 <link rel="stylesheet" href="style.css" />
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Pacifico&display=swap" rel="stylesheet">
-<style>
-  body {
-    font-family: 'Orbitron', sans-serif;
-    background: radial-gradient(800px 500px at 50% -10%, #fff3e3, transparent), var(--cream);
-    color: var(--ink);
-  }
-  h1, h2, h3 {
-    font-family: 'Pacifico', cursive;
-  }
-  .hero-centered {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    margin: 40px 0;
-  }
-  .hero-centered img {
-    width: min(360px, 80%);
-    border-radius: 18px;
-    border: 2px solid #f0d9b7;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-  }
-  .hero-centered h2 {
-    margin-top: 20px;
-    font-size: clamp(28px, 5vw, 48px);
-    color: var(--cherry);
-    text-shadow: 0 2px 4px rgba(0,0,0,0.15);
-  }
-  /* Fix for Compliment Jar */
-  #fortuneText {
-    margin-top: 10px;
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: var(--cherry);
-    text-align: center;
-  }
-</style>
 </head>
 <body>
 <canvas id="confetti" aria-hidden="true"></canvas>
 
-<header class="wrap">
-  <div class="title" style="text-align:center;">
+<header class="wrap center">
+  <div class="title">
     <svg viewBox="0 0 120 80" class="cherries" aria-hidden="true">
       <circle cx="40" cy="50" r="16"></circle>
       <circle cx="78" cy="50" r="16"></circle>
@@ -59,71 +21,70 @@
       <path d="M9 22 C18 20,24 28,16 32 C8 36,3 27,9 22 Z" class="leaf"></path>
       <path d="M111 22 C102 20,96 28,104 32 C112 36,117 27,111 22 Z" class="leaf"></path>
     </svg>
-    <h1 style="margin-top:10px;">Happy Birthday 🎂</h1>
+    <h1>Happy Birthday 🎂</h1>
+    <p class="tag">A creamy, cherry-red cozy page made with love.</p>
     <button id="confettiBurst" class="btn outline">Throw Confetti</button>
   </div>
 </header>
 
 <main class="wrap">
 
-  <!-- 🎂 Centered Cake -->
+  <!-- Center Cake -->
   <section class="card hero-centered">
     <img src="birthday_center.png" alt="Birthday cake" />
     <h2>Happy Birthday!</h2>
-    <p>Wishing you a day filled with love, laughter, and the sweetest memories 🍒✨</p>
+    <p class="muted">Wishing you a day filled with love, laughter, and the sweetest memories 🍒✨</p>
   </section>
 
-  <!-- Organizer + Baking -->
+  <!-- Checklist + Baking -->
   <section class="grid-two">
     <article class="card">
       <h3>Party Checklist</h3>
-      <div class="todo">
-        <form id="todoForm" autocomplete="off">
-          <input id="todoInput" placeholder="Add a task…" maxlength="60" />
-          <button class="btn small" type="submit">Add</button>
-        </form>
-        <ul id="todoList" class="todo-list"></ul>
-        <div class="row">
-          <button id="clearDone" class="btn small outline" type="button">Clear Completed</button>
-          <button id="exportList" class="btn small outline" type="button">Export</button>
-          <input id="importList" type="file" accept="application/json" class="file" />
-        </div>
+      <form id="todoForm" autocomplete="off">
+        <input id="todoInput" placeholder="Add a task…" maxlength="60" />
+        <button class="btn small" type="submit">Add</button>
+      </form>
+      <ul id="todoList" class="todo-list"></ul>
+      <div class="row">
+        <button id="clearDone" class="btn small outline" type="button">Clear Done</button>
+        <button id="exportList" class="btn small outline" type="button">Export</button>
+        <input id="importList" type="file" accept="application/json" class="file" />
       </div>
     </article>
 
     <article class="card">
       <h3>Baking Corner</h3>
-      <p class="muted">Quick timers for your treats. One tap to start!</p>
+      <p class="muted">Timers for your sweet treats — one tap to start!</p>
       <div class="recipe-grid">
-        <button class="recipe btn small" data-min="0" data-sec="90">🍪 Cookies 1:30</button>
-        <button class="recipe btn small" data-min="12" data-sec="0">🧁 Cupcakes 12:00</button>
-        <button class="recipe btn small" data-min="25" data-sec="0">🍰 Sponge 25:00</button>
+        <button class="recipe btn small" data-min="0" data-sec="90" type="button">🍪 Cookies 1:30</button>
+        <button class="recipe btn small" data-min="12" data-sec="0" type="button">🧁 Cupcakes 12:00</button>
+        <button class="recipe btn small" data-min="25" data-sec="0" type="button">🍰 Sponge 25:00</button>
         <span id="timeLeft" class="time">00:00</span>
         <div class="timer-ctrl">
-          <button id="stopTimer" class="btn small outline">Stop</button>
+          <button id="stopTimer" class="btn small outline" type="button">Stop</button>
         </div>
       </div>
     </article>
   </section>
 
-  <!-- 📸 Wide Photo Booth -->
-  <section class="card gallery" style="max-width:100%">
+  <!-- Photo Booth -->
+  <section class="card gallery">
     <h3>Photo Booth</h3>
-    <p class="muted">Drag the polaroids, double-click/tap to pin, and try filters.</p>
+    <p class="muted">Drag polaroids, double-click to pin, and change filters.</p>
     <div class="filter-row">
-      <label><input type="radio" name="f" value="none" checked /> None</label>
-      <label><input type="radio" name="f" value="vintage" /> Vintage</label>
-      <label><input type="radio" name="f" value="dreamy" /> Dreamy</label>
-      <label><input type="radio" name="f" value="bw" /> B&amp;W</label>
+      <label><input type="radio" name="f" value="none" checked> None</label>
+      <label><input type="radio" name="f" value="vintage"> Vintage</label>
+      <label><input type="radio" name="f" value="dreamy"> Dreamy</label>
+      <label><input type="radio" name="f" value="bw"> B&amp;W</label>
     </div>
-    <div class="polaroids" id="polaroids" style="min-height:420px">
-      <figure class="polaroid" draggable="true"><img src="bunny_room.jpg" alt="Soft bunny plush" /><figcaption>Bunny mornings</figcaption></figure>
-      <figure class="polaroid" draggable="true"><img src="cake_room.jpg" alt="Floral cake" /><figcaption>Floral cake love</figcaption></figure>
-      <figure class="polaroid" draggable="true"><img src="tea_room.jpg" alt="Tea time" /><figcaption>Tea & croissant</figcaption></figure>
+    <div id="polaroids" class="polaroids">
+      <figure class="polaroid"><img src="bunny_room.jpg" alt="Soft bunny"><figcaption>Bunny mornings</figcaption></figure>
+      <figure class="polaroid"><img src="cake_room.jpg" alt="Cake"><figcaption>Floral cake love</figcaption></figure>
+      <figure class="polaroid"><img src="tea_room.jpg" alt="Tea"><figcaption>Tea & croissant</figcaption></figure>
     </div>
   </section>
 
-  <!-- 💌 Compliment Jar -->
+  <!-- Compliment Jar -->
   <section class="card fortunes">
     <h3>Compliment Jar</h3>
     <div class="jar">
@@ -136,13 +97,12 @@
     </form>
   </section>
 
-  <!-- 🎵 Background Music -->
-  <audio id="player" src="./track.mp3" autoplay loop preload="auto"></audio>
+  <audio id="player" src="track.mp3" autoplay loop preload="auto"></audio>
 
-  <!-- 📝 Message -->
+  <!-- Message -->
   <section class="card message">
     <h3>Your Birthday Message</h3>
-    <p class="muted">Write something just for her. It saves privately in this browser.</p>
+    <p class="muted">Write something just for her. It stays on this browser.</p>
     <div class="message-grid">
       <textarea id="loveNote" rows="8" placeholder="Type your heartfelt message here…"></textarea>
       <div class="message-preview">
@@ -161,46 +121,9 @@
 </main>
 
 <footer class="wrap footer">
-  <p>Made with ♥ for you. Shortcut: <kbd>C</kbd> for confetti.</p>
+  <p>Made with ❤️ for you — press <kbd>C</kbd> for confetti!</p>
 </footer>
 
-<script src="script.js"></script>
-<script>
-  // 🎵 Ensure background music auto-plays after tap (mobile-safe)
-  const audio = document.getElementById('player');
-  document.addEventListener('click', () => {
-    if (audio.paused) audio.play().catch(()=>{});
-  }, { once: true });
-
-  // 💬 Fix Compliment Jar function (works now)
-  const fortunesDefault = [
-    'You make every moment brighter.',
-    'Your smile could light up the 80s disco floor!',
-    'You’re the cherry on top of life’s sundae.',
-    'Your kindness is sweeter than frosting.',
-    'Your vibes? Totally radical 💿🎧',
-    'You make nostalgia feel brand new.'
-  ];
-  let fortunes = JSON.parse(localStorage.getItem('fortunes') || 'null') || fortunesDefault.slice();
-
-  function saveFortunes(){ localStorage.setItem('fortunes', JSON.stringify(fortunes)); }
-
-  document.getElementById('drawFortune').addEventListener('click', ()=>{
-    if(!fortunes.length) fortunes = fortunesDefault.slice();
-    const idx = Math.floor(Math.random() * fortunes.length);
-    const msg = fortunes.splice(idx, 1)[0];
-    document.getElementById('fortuneText').textContent = msg;
-    saveFortunes();
-  });
-
-  document.getElementById('addFortuneForm').addEventListener('submit', (e)=>{
-    e.preventDefault();
-    const v = document.getElementById('addFortune').value.trim();
-    if(!v) return;
-    fortunes.push(v);
-    saveFortunes();
-    e.target.reset();
-  });
-</script>
+<script src="script.js?v=10"></script>
 </body>
 </html>
