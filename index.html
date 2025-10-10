@@ -1,128 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Happy Birthday — Cherry & Cream</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Happy Birthday — Cherry & Cream</title>
+  <meta name="theme-color" content="#cc2035" />
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Pacifico&display=swap" rel="stylesheet">
 </head>
 <body>
-<canvas id="confetti"></canvas>
+  <canvas id="confetti" aria-hidden="true"></canvas>
 
-<header class="wrap center">
-  <div class="title">
-    <svg viewBox="0 0 120 80" class="cherries" aria-hidden="true">
-      <circle cx="40" cy="50" r="16"></circle>
-      <circle cx="78" cy="50" r="16"></circle>
-      <path d="M58 18 C40 2, 20 6, 12 22" class="stem"></path>
-      <path d="M62 18 C80 2, 100 6, 108 22" class="stem"></path>
-      <path d="M9 22 C18 20,24 28,16 32 C8 36,3 27,9 22 Z" class="leaf"></path>
-      <path d="M111 22 C102 20,96 28,104 32 C112 36,117 27,111 22 Z" class="leaf"></path>
-    </svg>
-    <h1>Happy Birthday 🎂</h1>
-    <p class="tag">A creamy, cherry-red cozy page made with love.</p>
-    <button id="confettiBurst" class="btn outline">Throw Confetti</button>
-  </div>
-</header>
-
-<main class="wrap">
-
-  <!-- Hero Cake Center -->
-  <section class="card hero-centered">
-    <img src="birthday_center.png" alt="Birthday Cake" class="cake-center">
-    <h2>Happy Birthday!</h2>
-    <p class="muted">Wishing you a day full of joy, warmth, and lovely memories 🍒✨</p>
-  </section>
-
-  <!-- Checklist + Baking -->
-  <section class="grid-two">
-    <article class="card">
-      <h3>Party Checklist</h3>
-      <form id="todoForm">
-        <input id="todoInput" placeholder="Add a task…" maxlength="60">
-        <button class="btn small">Add</button>
-      </form>
-      <ul id="todoList" class="todo-list"></ul>
-      <div class="row">
-        <button id="clearDone" class="btn small outline">Clear Done</button>
-        <button id="exportList" class="btn small outline">Export</button>
-        <input id="importList" type="file" accept="application/json" class="file">
-      </div>
-    </article>
-
-    <article class="card">
-      <h3>Baking Corner</h3>
-      <p class="muted">Timers for your sweet treats — one tap to start!</p>
-      <div class="recipe-grid">
-        <button class="recipe btn small" data-min="0" data-sec="90">🍪 Cookies 1:30</button>
-        <button class="recipe btn small" data-min="12" data-sec="0">🧁 Cupcakes 12:00</button>
-        <button class="recipe btn small" data-min="25" data-sec="0">🍰 Sponge 25:00</button>
-        <span id="timeLeft" class="time">00:00</span>
-        <div class="timer-ctrl">
-          <button id="stopTimer" class="btn small outline">Stop</button>
-        </div>
-      </div>
-    </article>
-  </section>
-
-  <!-- Photo Booth -->
-  <section class="card gallery">
-    <h3>Photo Booth</h3>
-    <p class="muted">Drag polaroids, double-click to pin, and change filters.</p>
-    <div class="filter-row">
-      <label><input type="radio" name="f" value="none" checked> None</label>
-      <label><input type="radio" name="f" value="vintage"> Vintage</label>
-      <label><input type="radio" name="f" value="dreamy"> Dreamy</label>
-      <label><input type="radio" name="f" value="bw"> B&amp;W</label>
+  <header class="wrap center">
+    <div class="title">
+      <svg viewBox="0 0 120 80" class="cherries" aria-hidden="true">
+        <circle cx="40" cy="50" r="16"></circle>
+        <circle cx="78" cy="50" r="16"></circle>
+        <path d="M58 18 C40 2, 20 6, 12 22" class="stem"></path>
+        <path d="M62 18 C80 2, 100 6, 108 22" class="stem"></path>
+        <path d="M9 22 C18 20,24 28,16 32 C8 36,3 27,9 22 Z" class="leaf"></path>
+        <path d="M111 22 C102 20,96 28,104 32 C112 36,117 27,111 22 Z" class="leaf"></path>
+      </svg>
+      <h1>Happy Birthday 🎂</h1>
+      <p class="tag">A cherry-red cozy page made with care.</p>
+      <button id="confettiBurst" class="btn outline">Throw Confetti</button>
     </div>
-    <div id="polaroids" class="polaroids">
-      <figure class="polaroid"><img src="bunny_room.jpg" alt="Soft bunny"><figcaption>Bunny mornings</figcaption></figure>
-      <figure class="polaroid"><img src="cake_room.jpg" alt="Cake"><figcaption>Floral cake love</figcaption></figure>
-      <figure class="polaroid"><img src="tea_room.jpg" alt="Tea"><figcaption>Tea & croissant</figcaption></figure>
-    </div>
-  </section>
+  </header>
 
-  <!-- Compliment Jar -->
-  <section class="card fortunes">
-    <h3>Compliment Jar</h3>
-    <div class="jar">
-      <button id="drawFortune" class="btn">Pick a Note</button>
-      <p id="fortuneText" class="fortune"></p>
-    </div>
-    <form id="addFortuneForm" class="row">
-      <input id="addFortune" placeholder="Add your own compliment…" maxlength="100">
-      <button class="btn small">Add</button>
-    </form>
-  </section>
+  <main class="wrap">
 
-  <!-- Auto-playing Background Music -->
-  <audio id="player" src="track.mp3" autoplay loop preload="auto"></audio>
+    <!-- 🎂 Centered Cake -->
+    <section class="card hero-centered">
+      <img src="birthday_center.png" alt="Birthday cake" />
+      <h2>Happy Birthday!</h2>
+      <p class="muted">Wishing you a day filled with warmth, laughter, and sweet memories 🍒✨</p>
+    </section>
 
-  <!-- Message -->
-  <section class="card message">
-    <h3>Your Birthday Message</h3>
-    <p class="muted">Write something from the heart. It stays only here.</p>
-    <div class="message-grid">
-      <textarea id="loveNote" rows="8" placeholder="Type your message here…"></textarea>
-      <div class="message-preview">
-        <div class="paper">
-          <h4>Preview</h4>
-          <p id="notePreview" class="note"></p>
-        </div>
+    <!-- ✅ Checklist + Baking -->
+    <section class="grid-two">
+      <article class="card">
+        <h3>Party Checklist</h3>
+        <form id="todoForm" autocomplete="off">
+          <input id="todoInput" placeholder="Add a task…" maxlength="60" />
+          <button class="btn small" type="submit">Add</button>
+        </form>
+        <ul id="todoList" class="todo-list"></ul>
         <div class="row">
-          <button id="copyNote" class="btn small">Copy</button>
-          <button id="clearNote" class="btn small outline">Clear</button>
+          <button id="clearDone" class="btn small outline" type="button">Clear Done</button>
+          <button id="exportList" class="btn small outline" type="button">Export</button>
+          <input id="importList" type="file" accept="application/json" class="file" />
+        </div>
+      </article>
+
+      <article class="card">
+        <h3>Baking Corner</h3>
+        <p class="muted">Timers for your sweet treats — one tap to start!</p>
+        <div class="recipe-grid">
+          <button class="recipe btn small" data-min="0" data-sec="90" type="button">🍪 Cookies 1:30</button>
+          <button class="recipe btn small" data-min="12" data-sec="0" type="button">🧁 Cupcakes 12:00</button>
+          <button class="recipe btn small" data-min="25" data-sec="0" type="button">🍰 Sponge 25:00</button>
+          <span id="timeLeft" class="time" aria-live="polite">00:00</span>
+          <div class="timer-ctrl"><button id="stopTimer" class="btn small outline" type="button">Stop</button></div>
+        </div>
+      </article>
+    </section>
+
+    <!-- 📸 Photo Booth -->
+    <section class="card gallery">
+      <h3>Photo Booth</h3>
+      <p class="muted">Drag polaroids, double-click/tap to pin, and try filters.</p>
+      <div class="filter-row" role="radiogroup" aria-label="Photo filter">
+        <label><input type="radio" name="f" value="none" checked> None</label>
+        <label><input type="radio" name="f" value="vintage"> Vintage</label>
+        <label><input type="radio" name="f" value="dreamy"> Dreamy</label>
+        <label><input type="radio" name="f" value="bw"> B&amp;W</label>
+      </div>
+      <div class="polaroids" id="polaroids">
+        <figure class="polaroid"><img src="bunny_room.jpg" alt="Soft bunny"><figcaption>Bunny mornings</figcaption></figure>
+        <figure class="polaroid"><img src="cake_room.jpg" alt="Cake"><figcaption>Floral cake love</figcaption></figure>
+        <figure class="polaroid"><img src="tea_room.jpg" alt="Tea"><figcaption>Tea & croissant</figcaption></figure>
+      </div>
+    </section>
+
+    <!-- 💬 Compliment Jar -->
+    <section class="card fortunes">
+      <h3>Compliment Jar</h3>
+      <div class="jar">
+        <button id="drawFortune" class="btn" type="button">Pick a Note</button>
+        <p id="fortuneText" class="fortune"></p>
+      </div>
+      <form id="addFortuneForm" class="row" autocomplete="off">
+        <input id="addFortune" placeholder="Add your own compliment…" maxlength="100" />
+        <button class="btn small" type="submit">Add</button>
+      </form>
+    </section>
+
+    <!-- 🎵 Autoplaying, looping background music -->
+    <audio id="player" src="./track.mp3" autoplay loop preload="auto"></audio>
+
+    <!-- 📝 Message -->
+    <section class="card message">
+      <h3>Your Birthday Message</h3>
+      <p class="muted">Write something just for her. It stays on this device.</p>
+      <div class="message-grid">
+        <textarea id="loveNote" rows="8" placeholder="Type your heartfelt message here…"></textarea>
+        <div class="message-preview">
+          <div class="paper"><h4>Preview</h4><p id="notePreview" class="note"></p></div>
+          <div class="row">
+            <button id="copyNote" class="btn small" type="button">Copy</button>
+            <button id="clearNote" class="btn small outline" type="button">Clear</button>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-</main>
+  </main>
 
-<footer class="wrap footer">
-  <p>Made with care — press <kbd>C</kbd> for confetti!</p>
-</footer>
+  <footer class="wrap footer">
+    <p>Made with ❤️ — press <kbd>C</kbd> for confetti!</p>
+  </footer>
 
-<script src="script.js"></script>
+  <script src="script.js?v=100"></script>
 </body>
 </html>
