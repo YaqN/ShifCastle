@@ -1,0 +1,118 @@
+/* Color system: creamy base + cherry red accents */
+:root{
+  --cream:#fff9f0;
+  --cream-2:#fff3e3;
+  --cherry:#cc2035;
+  --cherry-2:#e94a5a;
+  --ink:#3b2f2f;
+  --gold:#c9ad63;
+  --shadow: 0 10px 30px rgba(60,30,30,.12);
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font:16px/1.5 ui-serif, Georgia, 'Times New Roman', Times, serif;
+  color:var(--ink);
+  background: radial-gradient(1200px 800px at 20% -10%, var(--cream-2), transparent),
+              radial-gradient(1200px 800px at 120% 10%, #fff, transparent),
+              var(--cream);
+  overflow-x:hidden;
+}
+
+.wrap{max-width:1000px;margin:0 auto;padding:24px}
+
+header .title{display:grid;place-items:center;text-align:center;padding:40px 0 10px}
+header .title h1{font-size:clamp(28px,4.5vw,56px);margin:8px 0 6px;letter-spacing:.5px}
+header .tag{opacity:.8;margin:0 0 16px}
+.cherry-logo{width:110px;height:70px}
+.cherries circle{fill:var(--cherry)}
+.cherries .stem{stroke:#6b8e23;stroke-width:5;fill:none;stroke-linecap:round}
+.cherries .leaf{fill:#6b8e23}
+
+.kbd, kbd{background:#fff;padding:2px 6px;border-radius:6px;border:1px solid #0002;font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace}
+
+.btn{
+  background:linear-gradient(#fff, #ffe7d1);
+  border:1.5px solid var(--gold);
+  padding:10px 16px;border-radius:999px;cursor:pointer;
+  box-shadow:var(--shadow);
+  font-weight:600;
+}
+.btn:hover{transform:translateY(-1px)}
+.btn:active{transform:translateY(0)}
+.btn.outline{background:transparent}
+.btn.small{padding:6px 10px;font-size:14px}
+
+.card{
+  background:rgba(255,255,255,.7);
+  backdrop-filter: blur(6px);
+  border:1px solid #f0e2cf;
+  border-radius:24px;
+  padding:20px;
+  box-shadow:var(--shadow);
+  margin:18px 0;
+}
+
+.grid-two{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+
+.hero{display:grid;gap:18px;grid-template-columns:300px 1fr;align-items:center}
+.cake{position:relative}
+.cake img{width:100%;border-radius:16px;border:2px solid #f0d9b7;box-shadow:0 10px 20px #0001}
+.candles{position:absolute;top:10%;left:10%;right:10%;display:flex;justify-content:space-around;pointer-events:none}
+.flame{width:22px;height:32px;border-radius:14px 14px 14px 14px;background:radial-gradient(circle at 50% 30%, #ffd, #ffa500 60%, #e94a5a 100%);
+  box-shadow:0 0 12px #ffb700, 0 0 28px #ffa200; border:none; pointer-events:auto; cursor:pointer}
+.flame.off{opacity:.25;box-shadow:none;filter:grayscale(1)}
+
+.hero-text h2{margin:.2rem 0}
+.wish-box{display:flex;gap:8px;margin-top:8px}
+.wish-box input{flex:1;padding:10px;border-radius:12px;border:1px solid #e6caa0; background:#fffdf7}
+
+.muted{opacity:.8}
+.tiny{font-size:12px}
+
+.todo form{display:flex;gap:8px;margin:.5rem 0}
+.todo input{flex:1;padding:10px;border-radius:10px;border:1px solid #e6caa0;background:#fffdf7}
+.todo-list{list-style:none;padding:0;margin:.5rem 0;display:grid;gap:6px}
+.todo-item{display:flex;gap:10px;align-items:center;background:#fff;border:1px solid #efd9b7;padding:8px 10px;border-radius:12px}
+.todo-item.done{opacity:.6;text-decoration:line-through}
+
+.timer label{display:inline-flex;align-items:center;gap:8px;margin-right:10px}
+.timer input{width:72px;padding:6px;border:1px solid #e6caa0;border-radius:8px;background:#fffdf7}
+.timer-row{display:flex;align-items:center;gap:10px;margin-top:8px}
+.time{font-weight:700;letter-spacing:1px}
+
+.gallery .polaroids{position:relative;min-height:280px}
+.polaroid{
+  position:relative;
+  width:210px;
+  padding:12px 12px 34px;
+  background:#fff; border:1px solid #eee; border-radius:10px; box-shadow:0 20px 30px #0002;
+  transform: rotate(-2deg);
+  transition:.2s transform;
+  user-select:none;
+  margin:12px;
+  display:inline-block;
+}
+.polaroid:nth-child(2){transform:rotate(2deg)}
+.polaroid:nth-child(3){transform:rotate(-1deg)}
+.polaroid img{width:100%;border-radius:6px;display:block}
+.polaroid figcaption{font-size:13px;text-align:center;margin-top:8px;color:#5b4b4b}
+.polaroid.pinned{outline:2px dashed var(--cherry);outline-offset:3px}
+
+.cassette{display:grid;place-items:center;text-align:center}
+.cassette-ui{
+  --w: 420px;
+  width:var(--w); height:200px; background:linear-gradient(#faf6ea,#fff);
+  border:2px solid #d9c8a6;border-radius:16px;position:relative; box-shadow:var(--shadow);
+}
+.cassette-ui .label{position:absolute;bottom:16px;left:0;right:0;text-align:center;font-weight:700;color:#6a5555}
+.reels{position:absolute;top:44px;left:0;right:0;display:flex;justify-content:space-around;align-items:center}
+.spool{width:70px;height:70px;border:6px solid #e6cf9b;border-radius:50%;box-shadow:inset 0 0 0 4px #f6ead3, inset 0 0 0 12px #e6cf9b, inset 0 0 0 18px #f6ead3}
+.controls{position:absolute;bottom:52px;left:0;right:0;display:flex;gap:8px;justify-content:center}
+
+.footer{text-align:center;opacity:.85;padding-bottom:40px}
+
+/* Confetti canvas */
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:50}
