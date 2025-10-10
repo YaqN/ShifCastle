@@ -1,368 +1,320 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fleur • Castle Princess Gallery</title>
-  <meta name="description" content="A castle‑princess, angelic 80s fantasy site with animated clouds and a glowing Instagram gallery." />
-
-  <!-- Regal + angelic fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=IM+Fell+English:ital@0;1&family=Great+Vibes&display=swap" rel="stylesheet">
-
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>🎂 Castle Door 3D Birthday Gallery</title>
+  <meta name="description" content="Open the castle doors and walk into a 3D hallway of framed photos for a birthday gift."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
   <style>
     :root{
-      --blush:#f5d7ea;
-      --rose:#e7a6c9;
-      --gold:#f4d489;
-      --ivory:#fff9f1;
-      --ink:#281532;
-      --violet:#3a1c4a;
-      --halo: 0 0 30px rgba(255, 220, 240, .55), 0 0 60px rgba(255, 215, 235, .35);
+      --bg:#201226; --ink:#f9eef9; --gold:#f2d38b; --rose:#e7a6c9; --violet:#3a1c4a;
     }
-
-    html, body{height:100%;}
-    body{
-      margin:0; color:#2a1533; background: linear-gradient(180deg,#2b1838 0%, #3a1e4b 40%, #4b285f 100%);
-      font-family: 'IM Fell English', serif;
-      overflow-x: hidden;
-    }
-
-    /* Sky + clouds + parallax castle */
-    .sky{ position: fixed; inset: 0; z-index:-3; pointer-events:none; }
-    .stars::before, .stars::after{
-      content:""; position: fixed; inset:0; z-index:-2; pointer-events:none; opacity:.35;
-      background-image: radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,.9), transparent),
-                        radial-gradient(1px 1px at 40% 70%, rgba(255,255,255,.7), transparent),
-                        radial-gradient(1px 1px at 70% 25%, rgba(255,255,255,.8), transparent),
-                        radial-gradient(1px 1px at 85% 60%, rgba(255,255,255,.8), transparent);
-      animation: twinkle 8s linear infinite;
-    }
-    @keyframes twinkle{ 0%,100%{opacity:.35} 50%{opacity:.15} }
-
-    .cloud{ position: fixed; top:10vh; width:50vw; height:20vh; background: radial-gradient(ellipse at 30% 50%, #ffffffaa, transparent 60%), radial-gradient(ellipse at 60% 60%, #ffffffaa, transparent 55%), radial-gradient(ellipse at 80% 40%, #ffffffaa, transparent 55%); filter: blur(8px) saturate(1.1); opacity:.35; z-index:-1; animation: drift 120s linear infinite;}
-    .cloud.c2{ top:25vh; left:-20vw; animation-duration: 150s; opacity:.28; }
-    .cloud.c3{ top:5vh; left:-40vw; animation-duration: 180s; opacity:.2; }
-    @keyframes drift{ from{ transform: translateX(-60vw);} to{ transform: translateX(140vw);} }
-
-    .castle{ position: fixed; bottom:-2px; left:0; right:0; height:28vh; z-index:-1; opacity:.8; }
-    .castle svg{ width:100%; height:100%; display:block; filter: drop-shadow(0 20px 40px rgba(0,0,0,.5)); }
-
-    header{
-      position: sticky; top:0; z-index: 10; backdrop-filter: blur(8px);
-      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
-      border-bottom: 1px solid rgba(255,255,255,.08);
-    }
-    .wrap{ max-width: 1140px; margin: 0 auto; padding: 0 18px; }
-    .brand{ display:flex; align-items:center; gap:14px; padding:12px 0; color:var(--gold); text-shadow:0 2px 0 rgba(0,0,0,.3); filter: drop-shadow(0 0 12px rgba(244,212,137,.35)); }
-    .crest{ width:46px; height:46px; border-radius:50%; display:grid; place-items:center; background: radial-gradient(circle at 30% 30%, var(--gold), #b99038); box-shadow: inset 0 0 12px rgba(0,0,0,.25), 0 4px 22px rgba(245,217,143,.25); color:#5a275a; font-size:24px; }
-
-    nav a{ color:#fdefff; text-decoration:none; margin-right:16px; font-size:14px; border-bottom: 1px dotted transparent; transition:.2s; }
-    nav a:hover{ color:var(--blush); border-bottom-color: var(--blush); }
-
-    .hero{ position: relative; z-index:1; padding: 56px 0 24px; text-align:center; color:#ffeef7; }
-    .hero h1{ margin:0; font-family:'Cinzel Decorative', serif; font-weight:900; font-size: clamp(38px, 6.5vw, 70px); letter-spacing:.02em; color: var(--gold); text-shadow: var(--halo); }
-    .hero p{ max-width:760px; margin: 12px auto 0; line-height:1.55; opacity:.95; }
-    .ribbon{ display:inline-block; margin-top:18px; padding:8px 14px; color:#36163a; background: linear-gradient(180deg, var(--blush), var(--rose)); box-shadow: 0 8px 24px rgba(231,166,201,.35); border:1px solid rgba(255,255,255,.6); border-radius: 999px; font-weight:700; letter-spacing:.04em; }
-
-    /* Carousel */
-    .carousel{ position:relative; margin: 18px auto 6px; max-width: 1140px; height: clamp(220px, 46vw, 540px); border-radius: 20px; overflow:hidden; border: 1px solid #ead6b9; box-shadow: 0 10px 40px rgba(0,0,0,.35); background: #fff8ef; }
-    .slide{ position:absolute; inset:0; opacity:0; transition: opacity .9s ease; }
-    .slide img{ width:100%; height:100%; object-fit:cover; display:block; filter: saturate(1.06) contrast(1.03); }
-    .slide.active{ opacity:1; }
-    .halo{ position:absolute; inset:auto 0 12px 0; display:flex; justify-content:center; pointer-events:none; }
-    .halo::after{ content:""; width:60%; height:40px; border-radius:50%; background: radial-gradient(closest-side, rgba(255, 240, 250,.65), transparent 70%); filter: blur(10px); }
-
-    /* Content cards */
-    .panel{ position: relative; z-index:1; margin: 26px auto; }
-    .card{ background: linear-gradient(180deg, var(--ivory), #fff3e3); border: 2px solid #e9d6b2; border-radius: 22px; box-shadow: 0 6px 0 #d3b785, 0 20px 40px rgba(0,0,0,.25); padding: 18px; }
-    .card h2{ font-family:'Great Vibes', cursive; font-size:36px; margin:6px 0 12px; color:#522956; }
-
-    /* Animated angel feathers */
-    .feather{ position:fixed; top:-10vh; left:50%; width:18px; height:18px; background: radial-gradient(circle at 30% 30%, #fff, #ffe9f8 60%, transparent 61%); border-radius: 50% 50% 50% 10%; transform: rotate(20deg); opacity:.6; z-index:-1; animation: fall linear forwards; filter: drop-shadow(0 2px 8px rgba(255,255,255,.5)); }
-    @keyframes fall{ to{ transform: translate(calc(-50vw + (var(--x)*1vw)), 105vh) rotate(380deg);} }
-
-    /* Gallery */
-    .gallery{ display:grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap:14px; }
-    .tile{ position: relative; overflow:hidden; border-radius: 18px; border:1px solid #e3d5c0; background: #f9f1e6; transform: translateY(0); transition: transform .3s ease, box-shadow .3s ease; }
-    .tile img{ width:100%; height:240px; object-fit:cover; display:block; filter: saturate(1.05) contrast(1.02); }
-    .tile:hover{ transform: translateY(-6px); box-shadow: 0 14px 30px rgba(0,0,0,.25); }
-    /* Angel wings accent on hover */
-    .tile::before, .tile::after{ content:""; position:absolute; top:12px; width:26px; height:26px; background: radial-gradient(circle, #fff, #ffeef8 60%, transparent 61%); opacity:0; transition:.25s; filter: drop-shadow(0 4px 10px rgba(255,255,255,.7)); }
-    .tile::before{ left:12px; border-radius: 50% 50% 50% 8%; transform: rotate(-22deg); }
-    .tile::after{ right:12px; border-radius: 50% 50% 8% 50%; transform: rotate(22deg); }
-    .tile:hover::before, .tile:hover::after{ opacity:1; }
-    .badge{ position:absolute; left:8px; top:8px; font-size:12px; padding:4px 8px; border-radius:999px; background: rgba(255,255,255,.9); border:1px solid #dec7a3; color:#5a2a5e; display:flex; align-items:center; gap:6px; }
-
-    /* Scroll reveal */
-    .reveal{ opacity:0; transform: translateY(12px); transition: .6s ease; }
-    .reveal.in{ opacity:1; transform:none; }
-
+    html,body{height:100%;}
+    body{margin:0; background: radial-gradient(1200px 800px at 50% -10%, #3c2150 0%, #261431 40%, #18101f 80%, #100a15 100%); color:var(--ink); font-family: 'IM Fell English', serif; overflow:hidden;}
+    #ui{ position:fixed; inset: 0 auto auto 0; z-index:10; padding:12px 14px; display:flex; gap:10px; align-items:center; }
+    .brand{display:flex; align-items:center; gap:10px; background: rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); border-radius:12px; padding:8px 12px; backdrop-filter: blur(8px);}
+    .brand b{font-family:'Cinzel Decorative', serif; letter-spacing:.02em; color:var(--gold)}
+    .hint{position:fixed; left:50%; transform: translateX(-50%); bottom:18px; background: rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); border-radius:999px; padding:8px 14px; font-size:14px; opacity:.9}
+    .btn{cursor:pointer; border-radius:999px; padding:8px 12px; border:1px solid rgba(255,255,255,.18); background:linear-gradient(180deg, rgba(255,255,255,.2), rgba(255,255,255,.06)); color:#fff; font-weight:700; letter-spacing:.02em;}
+    .btn:hover{filter:brightness(1.1)}
+    #loading{ position:fixed; inset:0; display:grid; place-items:center; background: radial-gradient(circle at 50% 40%, #1f132a 0%, #100913 70%); z-index:50;}
+    .spinner{ width:64px; height:64px; border-radius:50%; border:4px solid rgba(255,255,255,.15); border-top-color: var(--gold); animation: spin 1s linear infinite;}
+    @keyframes spin{ to{ transform: rotate(360deg)} }
     /* Lightbox */
-    .lightbox{ position:fixed; inset:0; background: rgba(10, 5, 15, .85); display:none; align-items:center; justify-content:center; padding:18px; z-index: 50;}
-    .lightbox.open{ display:flex; }
-    .lb-card{ max-width:min(1080px, 96vw); width:100%; background: #fff9f0; border-radius:18px; overflow:hidden; border:1px solid #e3d6c0; box-shadow: 0 30px 80px rgba(0,0,0,.5); animation: pop .25s ease; }
-    @keyframes pop{ from{ transform: scale(.98); opacity:.4 } to{ transform: scale(1); opacity:1 } }
-    .lb-img{ width:100%; height:min(72vh, 760px); object-fit:contain; background:#f7efe4; display:block; }
-    .lb-meta{ padding:12px 14px; display:flex; align-items:center; justify-content:space-between; gap:10px; }
-    .lb-meta a{ color:#6c2c72; text-decoration:none; border-bottom:1px dotted currentColor; }
-    .lb-close{ background: none; border:none; font-size:28px; cursor:pointer; color:#6b3b70; }
-
-    footer{ text-align:center; color:#f6dff0; padding:42px 0 70px; opacity:.9; }
-    footer a{ color:#ffd9f2; text-decoration:none; border-bottom:1px dotted #ffd9f2; }
-
-    @media (max-width: 520px){ .tile img{ height: 180px; } .lb-img{ height: 60vh; } }
+    #lightbox{ position:fixed; inset:0; background: rgba(5,3,8,.9); display:none; align-items:center; justify-content:center; z-index:40;}
+    #lightbox.open{ display:flex; }
+    .lb-card{ max-width:min(1100px, 96vw); width:100%; background:#0f0a12; border:1px solid #3b2a4a; border-radius:14px; overflow:hidden; box-shadow: 0 30px 80px rgba(0,0,0,.7);}
+    .lb-img{ display:block; width:100%; max-height:78vh; object-fit:contain; background:#0b0710;}
+    .lb-meta{ display:flex; align-items:center; justify-content:space-between; padding:10px 12px; color:#cbb8cf; }
+    .lb-close{ all:unset; cursor:pointer; padding:6px 10px; border-radius:8px; border:1px solid #5a3a6a; }
   </style>
 </head>
 <body>
-  <div class="stars" aria-hidden="true"></div>
-  <div class="cloud c1" style="left:-60vw"></div>
-  <div class="cloud c2"></div>
-  <div class="cloud c3"></div>
-
-  <div class="castle" aria-hidden="true">
-    <!-- Silhouette castle -->
-    <svg viewBox="0 0 1200 300" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="castleGrad" x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0%" stop-color="#2e153c"/>
-          <stop offset="100%" stop-color="#3c1e4f"/>
-        </linearGradient>
-      </defs>
-      <rect x="0" y="220" width="1200" height="80" fill="#26132f"/>
-      <g fill="url(#castleGrad)">
-        <rect x="80" y="130" width="90" height="90"/>
-        <rect x="100" y="90" width="50" height="40"/>
-        <rect x="260" y="110" width="120" height="110"/>
-        <rect x="290" y="70" width="60" height="40"/>
-        <rect x="470" y="100" width="140" height="120"/>
-        <rect x="510" y="60" width="60" height="40"/>
-        <rect x="700" y="120" width="110" height="100"/>
-        <rect x="720" y="80" width="70" height="40"/>
-        <rect x="880" y="130" width="90" height="90"/>
-        <rect x="900" y="90" width="50" height="40"/>
-      </g>
-      <g stroke="#e8d7b4" stroke-width="3" fill="none">
-        <path d="M125 90 h50"/>
-        <path d="M315 70 h60"/>
-        <path d="M540 60 h60"/>
-        <path d="M755 80 h60"/>
-        <path d="M925 90 h50"/>
-      </g>
-    </svg>
+  <div id="loading"><div class="spinner" aria-label="Loading"></div></div>
+  <div id="ui" aria-hidden="true">
+    <div class="brand">👑 <b>Castle Birthday Gallery</b></div>
+    <button id="btnReset" class="btn" title="Reset">Reset</button>
   </div>
+  <div class="hint" id="hint">Click the golden doors ✨</div>
 
-  <header>
-    <div class="wrap" style="display:flex; align-items:center; justify-content:space-between;">
-      <div class="brand">
-        <div class="crest" aria-hidden="true">👑</div>
-        <div>
-          <div style="font-size:22px; line-height:1; font-family:'Cinzel Decorative',serif;">Fleur Sangl</div>
-          <div style="font-size:12px; opacity:.85; letter-spacing:.06em;">Castle Princess • Angelic Gallery</div>
-        </div>
-      </div>
-      <nav aria-label="main">
-        <a href="#gallery">Gallery</a>
-        <a href="#about">About</a>
-        <a href="#contact">Contact</a>
-      </nav>
-    </div>
-  </header>
-
-  <main class="wrap">
-    <section class="hero">
-      <h1>Angelic Castle Visions</h1>
-      <p>A shimmering, princess‑core realm with drifting clouds, a twilight castle, and a glowing gallery sourced from <em>@fleursangl</em>. Tap an image to open the lightbox—halo and all.</p>
-      <span class="ribbon">✨ Princess • Castle • Angelic ✨</span>
-    </section>
-
-    <!-- Royal Carousel (auto‑rotates through latest images) -->
-    <section class="panel reveal">
-      <div class="carousel" id="carousel">
-        <div class="slide"><img alt="carousel"/></div>
-        <div class="slide"><img alt="carousel"/></div>
-        <div class="slide"><img alt="carousel"/></div>
-        <div class="slide"><img alt="carousel"/></div>
-        <div class="slide"><img alt="carousel"/></div>
-        <div class="halo" aria-hidden="true"></div>
-      </div>
-    </section>
-
-    <section id="gallery" class="panel reveal">
-      <div class="card">
-        <h2>Royal Gallery</h2>
-        <div id="notice" style="display:none; background:#fff2f7; border:1px solid #f4cde2; padding:10px 12px; border-radius:12px; margin: 6px 0 14px; color:#6d2f71;">
-          <strong>Heads‑up:</strong> Showing the <em>manual</em> gallery. Add your Instagram credentials in the code (see <code>CONFIG</code>) to auto‑pull from @fleursangl.
-        </div>
-        <div class="gallery" id="galleryGrid" aria-live="polite"></div>
-      </div>
-    </section>
-
-    <section id="about" class="panel reveal">
-      <div class="card">
-        <h2>About the Princess</h2>
-        <p>
-          Built for GitHub Pages in one file. The look combines cathedral silhouettes, soft clouds, and gold halos—like an 80s fantasy poster met a medieval illuminated page.
-        </p>
-      </div>
-    </section>
-
-    <section id="contact" class="panel reveal">
-      <div class="card">
-        <h2>Keep in Touch</h2>
-        <p>Follow on Instagram: <a href="https://www.instagram.com/fleursangl/" target="_blank" rel="noopener">@fleursangl</a></p>
-      </div>
-    </section>
-  </main>
-
-  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+  <!-- Lightbox for viewing a frame image -->
+  <div id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer" aria-hidden="true">
     <div class="lb-card">
-      <img id="lbImg" class="lb-img" alt="Large view" />
+      <img id="lbImg" class="lb-img" alt="Large photo" />
       <div class="lb-meta">
-        <div id="lbCaption" style="font-size:14px; color:#47234b; max-width:80%; line-height:1.4;"></div>
-        <div style="display:flex; align-items:center; gap:10px;">
-          <a id="lbLink" target="_blank" rel="noopener">View on Instagram ↗</a>
-          <button class="lb-close" id="lbClose" aria-label="Close">✕</button>
-        </div>
+        <div id="lbCaption">Happy Birthday! 🎂</div>
+        <button id="lbClose" class="lb-close">Close ✕</button>
       </div>
     </div>
   </div>
 
-  <footer>
-    <div class="wrap">© <span id="year"></span> Fleur Sangl • Castle Princess Gallery</div>
-  </footer>
+  <canvas id="scene"></canvas>
+
+  <!-- Three.js -->
+  <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+  <script src="https://unpkg.com/three@0.160.0/examples/js/controls/OrbitControls.js"></script>
 
   <script>
-  // =============================
-  // ✨ Configuration
-  // =============================
-  const CONFIG = {
-    accessToken: "", // ← Instagram Basic Display token (optional)
-    userId: "",      // ← Instagram user id (optional)
-    maxPhotos: 24,
-    carouselCount: 6,
-    manualImages: [
-      // Replace with your own images + permalinks (can be Instagram CDN links you copy from posts)
-      { src: "https://images.unsplash.com/photo-1549880338-65ddcdfd017b?q=80&w=1200&auto=format&fit=crop", alt: "Rose and lace tiara", link: "https://www.instagram.com/fleursangl/", caption: "Rose & lace tiara." },
-      { src: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop", alt: "Forest glade", link: "https://www.instagram.com/fleursangl/", caption: "Forest glade." },
-      { src: "https://images.unsplash.com/photo-1525824236856-8b9b2e52c4f5?q=80&w=1200&auto=format&fit=crop", alt: "Gilded mirror", link: "https://www.instagram.com/fleursangl/", caption: "Gilded mirror dream." },
-      { src: "https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1200&auto=format&fit=crop", alt: "Clouds over castle", link: "https://www.instagram.com/fleursangl/", caption: "Clouds over castle." },
-      { src: "https://images.unsplash.com/photo-1519681393390-74fecb025023?q=80&w=1200&auto=format&fit=crop", alt: "Angel statue", link: "https://www.instagram.com/fleursangl/", caption: "Angel statue." },
-      { src: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1200&auto=format&fit=crop", alt: "Sunlit garden", link: "https://www.instagram.com/fleursangl/", caption: "Sunlit garden." }
-    ]
-  };
+  // =========================
+  // CONFIG: put your photos here
+  // =========================
+  const PHOTOS = [
+    // Replace these with your birthday photos (direct image URLs)
+  { src: "birthday_center.png", caption: "2005’s Angel — Heart cake" },
+  { src: "bunny_room.jpg", caption: "Soft bunny and tea" },
+  { src: "cake_room.jpg", caption: "Floral cake and tea moment" },
+  { src: "tea_room.jpg", caption: "Morning tea & croissant" }
+];
 
-  const gallery = document.getElementById('galleryGrid');
-  const notice = document.getElementById('notice');
 
-  function tileTemplate({src, alt, link, caption}){
-    const el = document.createElement('a');
-    el.href = '#';
-    el.className = 'tile';
-    el.setAttribute('data-src', src);
-    el.setAttribute('data-alt', alt || '');
-    el.setAttribute('data-link', link || '#');
-    el.setAttribute('data-caption', caption || '');
+  // Basic three.js setup
+  const canvas = document.getElementById('scene');
+  const renderer = new THREE.WebGLRenderer({canvas, antialias:true});
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.setSize(innerWidth, innerHeight);
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
 
-    const badge = document.createElement('div');
-    badge.className = 'badge';
-    badge.innerHTML = '<span>📸</span><span>Instagram</span>';
+  const scene = new THREE.Scene();
+  scene.fog = new THREE.Fog(0x120a1a, 18, 120);
 
-    const img = document.createElement('img');
-    img.loading = 'lazy';
-    img.src = src; img.alt = alt || '';
+  const camera = new THREE.PerspectiveCamera(60, innerWidth/innerHeight, 0.1, 500);
+  camera.position.set(0, 2, 14);
+  scene.add(camera);
 
-    el.appendChild(img);
-    el.appendChild(badge);
+  const controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.enablePan = false;
+  controls.enabled = false; // will enable after door opens
 
-    el.addEventListener('click', (e)=>{
-      e.preventDefault();
-      openLightbox({src, alt, link, caption});
-    });
+  // Lights
+  const hemi = new THREE.HemisphereLight(0xffe1ff, 0x150b13, 0.8);
+  scene.add(hemi);
+  const keyLight = new THREE.SpotLight(0xf2d38b, 2, 60, Math.PI/6, 0.4, 1.2);
+  keyLight.position.set(0, 6, 10);
+  keyLight.target.position.set(0, 3, 0);
+  scene.add(keyLight, keyLight.target);
 
-    return el;
+  // Floor and corridor materials
+  const floorMat = new THREE.MeshStandardMaterial({ color: 0x3b2a4a, roughness: 0.95, metalness: 0.05 });
+  const wallMat = new THREE.MeshStandardMaterial({ color: 0x2a1936, roughness: 0.9 });
+  const trimMat = new THREE.MeshStandardMaterial({ color: 0x8a6b2f, metalness: 0.8, roughness: 0.2 });
+
+  // Castle façade with double doors
+  const facade = new THREE.Group();
+  const facadeWall = new THREE.Mesh(new THREE.BoxGeometry(14, 8, 1), wallMat);
+  facadeWall.position.set(0, 4, 0);
+  facade.add(facadeWall);
+
+  // Arch
+  const archGeom = new THREE.RingGeometry(0, 3.2, 32, 1, Math.PI, Math.PI);
+  const arch = new THREE.Mesh(archGeom, trimMat);
+  arch.position.set(0, 6.4, 0.51);
+  arch.rotation.x = Math.PI; // face forward
+  facade.add(arch);
+
+  // Doors (left & right)
+  const doorMat = new THREE.MeshStandardMaterial({ color: 0xb78b33, metalness: 0.6, roughness: 0.35 });
+  const doorGeom = new THREE.BoxGeometry(1.6, 3.6, 0.08);
+  const doorLeft = new THREE.Mesh(doorGeom, doorMat);
+  const doorRight = new THREE.Mesh(doorGeom, doorMat);
+  doorLeft.position.set(-0.8, 2.2, 0.55);
+  doorRight.position.set(0.8, 2.2, 0.55);
+  // Set hinges by grouping
+  const hingeL = new THREE.Group(); hingeL.position.set(-1.6, 2.2, 0.55); // hinge on left outer edge
+  const hingeR = new THREE.Group(); hingeR.position.set(1.6, 2.2, 0.55);
+  doorLeft.position.x = 0.8; doorRight.position.x = -0.8; // offset inside hinge group
+  hingeL.add(doorLeft); hingeR.add(doorRight);
+  facade.add(hingeL, hingeR);
+
+  // Simple doorknobs
+  const knobGeom = new THREE.SphereGeometry(0.08, 16, 16);
+  const knobMat = new THREE.MeshStandardMaterial({ color: 0xf2d38b, metalness: 1, roughness: 0.15 });
+  const knobL = new THREE.Mesh(knobGeom, knobMat); knobL.position.set(0.05, 0, 0.06); doorLeft.add(knobL);
+  const knobR = new THREE.Mesh(knobGeom, knobMat); knobR.position.set(-0.05, 0, 0.06); doorRight.add(knobR);
+
+  facade.position.set(0, 0, 0);
+  scene.add(facade);
+
+  // Corridor: long hallway behind doors
+  const corridor = new THREE.Group();
+  const length = 80; const width = 6; const height = 4.5;
+  const floor = new THREE.Mesh(new THREE.BoxGeometry(width, 0.2, length), floorMat); floor.position.set(0, 0, -length/2);
+  const ceil = new THREE.Mesh(new THREE.BoxGeometry(width, 0.2, length), wallMat); ceil.position.set(0, height, -length/2);
+  const wallL = new THREE.Mesh(new THREE.BoxGeometry(0.2, height, length), wallMat); wallL.position.set(-width/2, height/2, -length/2);
+  const wallR = new THREE.Mesh(new THREE.BoxGeometry(0.2, height, length), wallMat); wallR.position.set(width/2, height/2, -length/2);
+  corridor.add(floor, ceil, wallL, wallR);
+  corridor.position.set(0, 0, -0.4); // just behind doors
+  scene.add(corridor);
+
+  // Decorative trims near door
+  const threshold = new THREE.Mesh(new THREE.BoxGeometry(width, 0.1, 0.4), trimMat); threshold.position.set(0, 0.1, -0.2);
+  scene.add(threshold);
+
+  // Frames along corridor walls
+  const frameGroup = new THREE.Group();
+  const loader = new THREE.TextureLoader();
+  const framesPerSide = Math.ceil(PHOTOS.length/2);
+  const spacing = 6; // distance between frames
+  const frameW = 2.2, frameH = 1.5, frameDepth = 0.1;
+
+  function makeFrame(tex, caption){
+    const group = new THREE.Group();
+    // wood frame
+    const outer = new THREE.Mesh(new THREE.BoxGeometry(frameW, frameH, frameDepth), trimMat);
+    // inner picture plane, slightly inset
+    const picGeom = new THREE.PlaneGeometry(frameW*0.86, frameH*0.86);
+    const picMat = new THREE.MeshBasicMaterial({ map: tex, toneMapped: false });
+    const pic = new THREE.Mesh(picGeom, picMat);
+    pic.position.z = frameDepth/2 + 0.002;
+
+    // small plaque below
+    const plaque = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.12, 0.05), trimMat);
+    plaque.position.set(0, -frameH/2 - 0.18, frameDepth/2);
+
+    group.userData = { caption, img: tex.image?.src || '' };
+    group.add(outer, pic, plaque);
+    return group;
   }
 
-  // Lightbox controls
+  // Load all textures then build frames
+  const loading = document.getElementById('loading');
+  const mngr = new THREE.LoadingManager(() => {
+    loading.style.display = 'none';
+    renderer.setAnimationLoop(animate);
+  });
+  const tLoader = new THREE.TextureLoader(mngr);
+
+  const texArr = PHOTOS.map(p => new Promise(res => {
+    tLoader.load(p.src + (p.src.includes('?')?'&':'?')+'auto=format&fit=crop', tex => { tex.colorSpace = THREE.SRGBColorSpace; res({tex, caption:p.caption}); });
+  }));
+
+  Promise.all(texArr).then(items => {
+    items.forEach((it, i) => {
+      const f = makeFrame(it.tex, it.caption);
+      const idx = Math.floor(i/2);
+      const side = (i % 2 === 0) ? -1 : 1; // left/right
+      const z = -4 - idx*spacing; // push down corridor
+      f.position.set(side*(width/2 - 0.4), 2.4, z);
+      f.rotation.y = side>0 ? -Math.PI/2 : Math.PI/2;
+      frameGroup.add(f);
+    });
+    corridor.add(frameGroup);
+  });
+
+  // Subtle floating dust particles
+  const dustGeo = new THREE.BufferGeometry();
+  const dustCount = 400;
+  const pos = new Float32Array(dustCount*3);
+  for(let i=0;i<dustCount;i++){
+    pos[i*3+0] = (Math.random()-0.5)*width*0.9;
+    pos[i*3+1] = Math.random()*height*0.95 + 0.2;
+    pos[i*3+2] = -Math.random()*length;
+  }
+  dustGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  const dustMat = new THREE.PointsMaterial({ size: 0.03, color: 0xffeecc, transparent:true, opacity:0.7 });
+  const dust = new THREE.Points(dustGeo, dustMat);
+  corridor.add(dust);
+
+  // Raycaster for interactions
+  const ray = new THREE.Raycaster(); const mouse = new THREE.Vector2();
+  let doorsOpened = false; let opening = false; let journey = 0; // 0..1 camera move
+
+  function onPointer(e){
+    const x = (e.clientX || e.touches?.[0]?.clientX || 0);
+    const y = (e.clientY || e.touches?.[0]?.clientY || 0);
+    mouse.x = (x / innerWidth) * 2 - 1;
+    mouse.y = -(y / innerHeight) * 2 + 1;
+
+    ray.setFromCamera(mouse, camera);
+    const intersects = ray.intersectObjects([doorLeft, doorRight, ...frameGroup.children], true);
+    if(!intersects.length) return;
+
+    const first = intersects[0].object;
+    // If door clicked and not opened -> open
+    if(!doorsOpened && (first === doorLeft || first === doorRight || first.parent === doorLeft || first.parent === doorRight)){
+      startOpenSequence();
+      return;
+    }
+
+    // If a frame (or its child) clicked -> open lightbox with its image
+    let node = first;
+    while(node && !node.userData?.img){ node = node.parent; }
+    if(node && node.userData?.img){ openLightbox(node.userData.img, node.userData.caption); }
+  }
+  window.addEventListener('click', onPointer);
+  window.addEventListener('touchend', onPointer, {passive:true});
+
+  // Open sequence: swing doors & move camera forward into corridor
+  function startOpenSequence(){
+    if(opening) return; opening = true; document.getElementById('hint').style.display='none';
+    // animate over ~4.5s
+    const t0 = performance.now();
+    const dur = 4500;
+    const startCam = camera.position.clone();
+    const endCam = new THREE.Vector3(0, 2.2, -16);
+
+    function easeOutCubic(t){ return 1 - Math.pow(1-t, 3); }
+
+    function step(now){
+      const t = Math.min(1, (now - t0)/dur);
+      const e = easeOutCubic(t);
+      // doors rotate ~90 degrees
+      hingeL.rotation.y = THREE.MathUtils.lerp(0, Math.PI/2, e);
+      hingeR.rotation.y = THREE.MathUtils.lerp(0, -Math.PI/2, e);
+      // camera move
+      camera.position.lerpVectors(startCam, endCam, e);
+      camera.lookAt(0, 2.2, -24);
+
+      // warm corridor light grows
+      keyLight.intensity = 1.2 + e*1.6;
+
+      if(t < 1){ requestAnimationFrame(step); }
+      else { doorsOpened = true; controls.enabled = true; opening = false; }
+    }
+    requestAnimationFrame(step);
+  }
+
+  // Reset button
+  document.getElementById('btnReset').addEventListener('click', () => {
+    doorsOpened = false; opening = false; hingeL.rotation.y = 0; hingeR.rotation.y = 0;
+    camera.position.set(0, 2, 14); camera.lookAt(0, 2, 0);
+    controls.enabled = false; keyLight.intensity = 2;
+    document.getElementById('hint').style.display='block';
+  });
+
+  // Lightbox logic
   const lb = document.getElementById('lightbox');
   const lbImg = document.getElementById('lbImg');
   const lbCap = document.getElementById('lbCaption');
-  const lbLink = document.getElementById('lbLink');
   const lbClose = document.getElementById('lbClose');
+  function openLightbox(src, cap){ lbImg.src = src; lbCap.textContent = cap || 'Happy Birthday!'; lb.classList.add('open'); lb.setAttribute('aria-hidden','false'); }
+  function closeLightbox(){ lb.classList.remove('open'); lb.setAttribute('aria-hidden','true'); }
+  lbClose.addEventListener('click', closeLightbox);
+  lb.addEventListener('click', (e)=>{ if(e.target === lb) closeLightbox(); });
+  document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeLightbox(); });
 
-  function openLightbox({src, alt, link, caption}){
-    lbImg.src = src; lbImg.alt = alt || '';
-    lbCap.textContent = caption || '';
-    if(link){ lbLink.href = link; lbLink.style.display = 'inline'; }
-    else { lbLink.style.display = 'none'; }
-    lb.classList.add('open');
+  // Resize
+  window.addEventListener('resize', ()=>{
+    camera.aspect = innerWidth/innerHeight; camera.updateProjectionMatrix();
+    renderer.setSize(innerWidth, innerHeight);
+  });
+
+  // Animation loop
+  function animate(){
+    controls.update();
+    // gentle dust float
+    const arr = dust.geometry.attributes.position.array;
+    for(let i=0;i<dustCount;i++){
+      const j = i*3+1; // y
+      arr[j] += Math.sin((performance.now()*0.001 + i)*0.3) * 0.0006;
+    }
+    dust.geometry.attributes.position.needsUpdate = true;
+
+    renderer.render(scene, camera);
   }
-  lbClose.addEventListener('click', ()=> lb.classList.remove('open'));
-  lb.addEventListener('click', (e)=>{ if(e.target === lb) lb.classList.remove('open'); });
-  document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') lb.classList.remove('open'); });
-
-  // Scroll reveal
-  const io = new IntersectionObserver(entries => {
-    entries.forEach(e=>{
-      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
-    })
-  }, { threshold: .12 });
-  document.querySelectorAll('.reveal').forEach(el=> io.observe(el));
-
-  // Feather particles
-  for(let i=0;i<22;i++){
-    const f = document.createElement('div');
-    f.className = 'feather';
-    f.style.setProperty('--x', (Math.random()*200-100).toFixed(2));
-    f.style.left = (5 + Math.random()*90) + 'vw';
-    f.style.animationDuration = (18 + Math.random()*20) + 's';
-    f.style.animationDelay = (Math.random()*12) + 's';
-    document.body.appendChild(f);
-  }
-
-  // Carousel logic
-  const carousel = document.getElementById('carousel');
-  const slides = Array.from(carousel.querySelectorAll('.slide'));
-  let carouselData = [];
-  let current = 0; let timer;
-  function setSlide(idx){
-    slides.forEach((s,i)=> s.classList.toggle('active', i === idx));
-    const img = slides[idx].querySelector('img');
-    if(carouselData[idx]){ img.src = carouselData[idx].src; img.alt = carouselData[idx].alt || 'carousel'; }
-  }
-  function nextSlide(){ current = (current + 1) % slides.length; setSlide(current); }
-  function startCarousel(){ clearInterval(timer); timer = setInterval(nextSlide, 4200); }
-
-  async function fillFromInstagram(){
-    const url = `https://graph.instagram.com/${CONFIG.userId}/media?fields=id,caption,media_url,permalink,thumbnail_url,media_type&limit=${CONFIG.maxPhotos}&access_token=${CONFIG.accessToken}`;
-    const res = await fetch(url);
-    if(!res.ok) throw new Error('Instagram fetch failed');
-    const data = await res.json();
-    const items = (data.data || []).filter(m => m.media_type === 'IMAGE' || m.media_type === 'CAROUSEL_ALBUM');
-
-    // Fill gallery
-    items.forEach(m=>{
-      const src = m.media_url || m.thumbnail_url; const alt = (m.caption || '').slice(0,120);
-      const link = m.permalink; const caption = m.caption || '';
-      gallery.appendChild(tileTemplate({src, alt, link, caption}));
-    });
-
-    // Prepare carousel
-    carouselData = items.slice(0, CONFIG.carouselCount).map(m=>({ src: m.media_url || m.thumbnail_url, alt: (m.caption||'').slice(0,120) }));
-    while(carouselData.length < slides.length) carouselData.push(carouselData[carouselData.length-1]||CONFIG.manualImages[0]);
-    setSlide(0); startCarousel();
-  }
-
-  function fillFromManual(){
-    notice.style.display = 'block';
-    (CONFIG.manualImages || []).slice(0, CONFIG.maxPhotos).forEach(img => gallery.appendChild(tileTemplate(img)));
-    carouselData = (CONFIG.manualImages || []).slice(0, CONFIG.carouselCount);
-    while(carouselData.length < slides.length) carouselData.push(CONFIG.manualImages[0]);
-    setSlide(0); startCarousel();
-  }
-
-  // Init
-  document.getElementById('year').textContent = new Date().getFullYear();
-  (CONFIG.accessToken && CONFIG.userId) ? fillFromInstagram().catch(fillFromManual) : fillFromManual();
   </script>
 </body>
 </html>
