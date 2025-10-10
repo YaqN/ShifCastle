@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Happy Birthday — Cherry & Cream</title>
-<meta name="description" content="A private, interactive birthday world filled with everything you love: baking, organizing, photos, and 80s vibes." />
+<meta name="description" content="A private, interactive birthday world filled with everything you love: baking, organizing, photos, and cozy vibes." />
 <meta name="theme-color" content="#cc2035" />
 <link rel="preload" href="birthday_center.png" as="image" />
 <link rel="stylesheet" href="style.css" />
@@ -24,20 +24,17 @@
     </svg>
     <h1>Happy Birthday, Angel 🍒</h1>
     <p class="tag">A creamy, cherry-red cozy page — just for you.</p>
-    <div class="cta-row">
-      <button id="playMusic" class="btn">Play Cassette</button>
-      <button id="confettiBurst" class="btn outline">Throw Confetti</button>
-    </div>
+    <button id="confettiBurst" class="btn outline">Throw Confetti</button>
   </div>
 </header>
 
 <main class="wrap">
 
-  <!-- Hero -->
-  <section class="card hero" aria-label="Birthday cake and candles">
+  <!-- Hero with candles -->
+  <section class="card hero">
     <div class="cake">
       <img src="birthday_center.png" alt="Creamy heart cake with cherries and candles" />
-      <div class="candles" role="group" aria-label="Candles">
+      <div class="candles">
         <button class="flame on" aria-label="Candle 1"></button>
         <button class="flame on" aria-label="Candle 2"></button>
         <button class="flame on" aria-label="Candle 3"></button>
@@ -86,79 +83,40 @@
     </article>
   </section>
 
-  <!-- Photo Booth -->
-  <section class="grid-two">
-    <article class="card gallery">
-      <h3>Photo Booth</h3>
-      <p class="muted">Drag polaroids, double-click/tap to pin, and try filters.</p>
-      <div class="filter-row">
-        <label><input type="radio" name="f" value="none" checked /> None</label>
-        <label><input type="radio" name="f" value="vintage" /> Vintage</label>
-        <label><input type="radio" name="f" value="dreamy" /> Dreamy</label>
-        <label><input type="radio" name="f" value="bw" /> B&amp;W</label>
-      </div>
-      <div class="polaroids" id="polaroids">
-        <figure class="polaroid" draggable="true"><img src="bunny_room.jpg" alt="Soft bunny plush" /><figcaption>Bunny mornings</figcaption></figure>
-        <figure class="polaroid" draggable="true"><img src="cake_room.jpg" alt="Floral cake" /><figcaption>Floral cake love</figcaption></figure>
-        <figure class="polaroid" draggable="true"><img src="tea_room.jpg" alt="Tea time" /><figcaption>Tea & croissant</figcaption></figure>
-      </div>
-    </article>
-
-    <!-- Moodboard -->
-    <article class="card">
-      <h3>Moodboard</h3>
-      <div class="mood">
-        <label>Accent <input id="accentPicker" type="color" value="#cc2035" /></label>
-        <label>Cream <input id="creamPicker" type="color" value="#fff3e3" /></label>
-        <button id="saveTheme" class="btn small" type="button">Save Theme</button>
-        <button id="resetTheme" class="btn small outline" type="button">Reset</button>
-      </div>
-      <canvas id="eq" class="eq" height="120" aria-hidden="true"></canvas>
-      <p class="tiny muted">80s equalizer vibes while your mixtape plays.</p>
-    </article>
-  </section>
-
-  <!-- Mini-game + Compliments -->
-  <section class="grid-two">
-    <article class="card game">
-      <h3>Cherry Clicker</h3>
-      <div id="gameArea" class="game-area"></div>
-      <div class="row">
-        <button id="startGame" class="btn">Start</button>
-        <span id="score" class="time">Score: 0</span>
-      </div>
-    </article>
-
-    <article class="card fortunes">
-      <h3>Compliment Jar</h3>
-      <div class="jar">
-        <button id="drawFortune" class="btn" type="button">Pick a Note</button>
-        <p id="fortuneText" class="fortune"></p>
-      </div>
-      <form id="addFortuneForm" class="row" autocomplete="off">
-        <input id="addFortune" placeholder="Add your own compliment…" maxlength="100" />
-        <button class="btn small" type="submit">Add</button>
-      </form>
-    </article>
-  </section>
-
-  <!-- Cassette + Message -->
-  <section class="card cassette">
-    <div class="cassette-ui">
-      <div class="reels"><div class="spool"></div><div class="spool"></div></div>
-      <div class="label">Mixtape: Cherry Dreams (80s)</div>
-      <div class="controls">
-        <button id="btnPlay" class="btn small">▶︎ Play</button>
-        <button id="btnPause" class="btn small outline">⏸ Pause</button>
-        <button id="btnRew" class="btn small outline">⏪ Rewind</button>
-      </div>
+  <!-- 📸 Photo Booth (now full width) -->
+  <section class="card gallery" style="max-width:100%">
+    <h3>Photo Booth</h3>
+    <p class="muted">Drag polaroids, double-click/tap to pin, and try filters.</p>
+    <div class="filter-row">
+      <label><input type="radio" name="f" value="none" checked /> None</label>
+      <label><input type="radio" name="f" value="vintage" /> Vintage</label>
+      <label><input type="radio" name="f" value="dreamy" /> Dreamy</label>
+      <label><input type="radio" name="f" value="bw" /> B&amp;W</label>
     </div>
-
-    <!-- 🎵 Updated reliable audio for GitHub Pages -->
-    <audio id="player" preload="metadata" src="./track.mp3"></audio>
-    <p class="muted tiny">Tap <strong>Play Cassette</strong> to start the music 🎵</p>
+    <div class="polaroids" id="polaroids" style="min-height:420px">
+      <figure class="polaroid" draggable="true"><img src="bunny_room.jpg" alt="Soft bunny plush" /><figcaption>Bunny mornings</figcaption></figure>
+      <figure class="polaroid" draggable="true"><img src="cake_room.jpg" alt="Floral cake" /><figcaption>Floral cake love</figcaption></figure>
+      <figure class="polaroid" draggable="true"><img src="tea_room.jpg" alt="Tea time" /><figcaption>Tea & croissant</figcaption></figure>
+    </div>
   </section>
 
+  <!-- Compliment Jar -->
+  <section class="card fortunes">
+    <h3>Compliment Jar</h3>
+    <div class="jar">
+      <button id="drawFortune" class="btn" type="button">Pick a Note</button>
+      <p id="fortuneText" class="fortune"></p>
+    </div>
+    <form id="addFortuneForm" class="row" autocomplete="off">
+      <input id="addFortune" placeholder="Add your own compliment…" maxlength="100" />
+      <button class="btn small" type="submit">Add</button>
+    </form>
+  </section>
+
+  <!-- Background Music (auto loop) -->
+  <audio id="player" src="./track.mp3" autoplay loop preload="auto"></audio>
+
+  <!-- Message -->
   <section class="card message">
     <h3>Your Birthday Message</h3>
     <p class="muted">Write something just for her. It saves privately in this browser.</p>
@@ -184,5 +142,12 @@
 </footer>
 
 <script src="script.js"></script>
+<script>
+  // 🎵 Ensure autoplay works after first tap (mobile friendly)
+  const audio = document.getElementById('player');
+  document.addEventListener('click', () => {
+    if (audio.paused) audio.play().catch(()=>{});
+  }, { once: true });
+</script>
 </body>
 </html>
