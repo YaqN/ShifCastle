@@ -24,20 +24,17 @@
     </svg>
     <h1>Happy Birthday, Angel 🍒</h1>
     <p class="tag">A creamy, cherry-red cozy page — just for you.</p>
-    <div class="cta-row">
-      <button id="playMusic" class="btn">Play Cassette</button>
-      <button id="confettiBurst" class="btn outline">Throw Confetti</button>
-    </div>
+    <button id="confettiBurst" class="btn outline">Throw Confetti</button>
   </div>
 </header>
 
 <main class="wrap">
 
-  <!-- Hero -->
-  <section class="card hero" aria-label="Birthday cake and candles">
+  <!-- Hero with candles -->
+  <section class="card hero">
     <div class="cake">
       <img src="birthday_center.png" alt="Creamy heart cake with cherries and candles" />
-      <div class="candles" role="group" aria-label="Candles">
+      <div class="candles">
         <button class="flame on" aria-label="Candle 1"></button>
         <button class="flame on" aria-label="Candle 2"></button>
         <button class="flame on" aria-label="Candle 3"></button>
@@ -64,8 +61,8 @@
         </form>
         <ul id="todoList" class="todo-list"></ul>
         <div class="row">
-          <button id="clearDone" class="btn small outline" type="button">Clear Completed</button>
-          <button id="exportList" class="btn small outline" type="button">Export</button>
+          <button id="clearDone" class="btn small outline">Clear Completed</button>
+          <button id="exportList" class="btn small outline">Export</button>
           <input id="importList" type="file" accept="application/json" class="file" />
         </div>
       </div>
@@ -86,7 +83,7 @@
     </article>
   </section>
 
-  <!-- Photo Booth -->
+  <!-- Photo Booth & Moodboard -->
   <section class="grid-two">
     <article class="card gallery">
       <h3>Photo Booth</h3>
@@ -104,7 +101,6 @@
       </div>
     </article>
 
-    <!-- Moodboard -->
     <article class="card">
       <h3>Moodboard</h3>
       <div class="mood">
@@ -118,7 +114,7 @@
     </article>
   </section>
 
-  <!-- Mini-game + Compliments -->
+  <!-- Game + Compliments -->
   <section class="grid-two">
     <article class="card game">
       <h3>Cherry Clicker</h3>
@@ -142,22 +138,8 @@
     </article>
   </section>
 
-  <!-- Cassette + Message -->
-  <section class="card cassette">
-    <div class="cassette-ui">
-      <div class="reels"><div class="spool"></div><div class="spool"></div></div>
-      <div class="label">Mixtape: Cherry Dreams (80s)</div>
-      <div class="controls">
-        <button id="btnPlay" class="btn small">▶︎ Play</button>
-        <button id="btnPause" class="btn small outline">⏸ Pause</button>
-        <button id="btnRew" class="btn small outline">⏪ Rewind</button>
-      </div>
-    </div>
-
-    <!-- 🎵 Updated reliable audio for GitHub Pages -->
-    <audio id="player" preload="metadata" src="./track.mp3"></audio>
-    <p class="muted tiny">Tap <strong>Play Cassette</strong> to start the music 🎵</p>
-  </section>
+  <!-- Auto-playing looped music -->
+  <audio id="player" src="./track.mp3" autoplay loop preload="auto"></audio>
 
   <section class="card message">
     <h3>Your Birthday Message</h3>
@@ -176,7 +158,6 @@
       </div>
     </div>
   </section>
-
 </main>
 
 <footer class="wrap footer">
@@ -184,5 +165,12 @@
 </footer>
 
 <script src="script.js"></script>
+<script>
+  // 🔁 Ensure background music autoplays (after gesture if needed)
+  const audio = document.getElementById('player');
+  document.addEventListener('click', () => {
+    if (audio.paused) audio.play().catch(()=>{});
+  }, { once: true });
+</script>
 </body>
 </html>
