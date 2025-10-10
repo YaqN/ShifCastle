@@ -1,6 +1,6 @@
 "use strict";
 
-/* Helper to isolate errors so one section can't break others */
+/* Helper so one error can’t break everything */
 const safe = (label, fn) => { try { fn(); } catch (e) { console.error(label, e); } };
 
 /* ========== Confetti ========== */
@@ -118,13 +118,12 @@ safe('timers', () => {
   stopBtn.addEventListener('click', () => { if (tInt) clearInterval(tInt); tInt = null; });
 });
 
-/* ========== Photo Booth (pointer events) ========== */
+/* ========== Photo Booth (pointer events drag) ========== */
 safe('photobooth', () => {
   const area = document.getElementById('polaroids');
   if (!area) return;
   const cards = [...area.querySelectorAll('.polaroid')];
 
-  // Initial placement responsive to container width
   const place = () => {
     const pad = 16, w = area.clientWidth || 900;
     const step = Math.min(240, Math.max(150, (w - pad*2) / Math.max(3, cards.length)));
@@ -137,17 +136,14 @@ safe('photobooth', () => {
   (window.ResizeObserver ? new ResizeObserver(place) : window).addEventListener?.('resize', place);
   if (document.readyState === 'complete') place(); else addEventListener('load', place);
 
-  // Prevent native image drag
   cards.forEach(p => p.addEventListener('dragstart', e => e.preventDefault()));
 
-  // Pointer-based drag
   let z = 1;
   const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
 
   cards.forEach(p => {
     p.style.touchAction = 'none';
     p.addEventListener('dblclick', () => p.classList.toggle('pinned'));
-    // double-tap on touch
     let tapTimer = null;
     p.addEventListener('touchend', () => {
       if (tapTimer) { clearTimeout(tapTimer); tapTimer = null; p.classList.toggle('pinned'); }
@@ -180,7 +176,6 @@ safe('photobooth', () => {
     });
   });
 
-  // Filters
   document.querySelector('.filter-row')?.addEventListener('change', (e) => {
     const v = e.target?.value; if (!v) return;
     area.classList.remove('filter-none','filter-vintage','filter-dreamy','filter-bw');
@@ -188,86 +183,93 @@ safe('photobooth', () => {
   });
 });
 
-/* ========== Compliment Jar (supportive, non-flirty) ========== */
+/* ========== Compliment Jar — warm, appreciative, not flirty ========== */
 safe('compliments', () => {
   const drawBtn = document.getElementById('drawFortune');
   const addForm = document.getElementById('addFortuneForm');
   const addInput = document.getElementById('addFortune');
   const out = document.getElementById('fortuneText');
-  if (!drawBtn || !addForm || !addInput || !out) return;
+  if(!drawBtn || !addForm || !addInput || !out) return;
 
   const qualities = [
-    'kindness','patience','clarity','calm','empathy','integrity','focus','reliability',
-    'thoughtfulness','fairness','dedication','discipline','humility','consistency',
-    'respectfulness','balance','care for others','responsibility','positivity'
+    'kindness','thoughtfulness','patience','reliability','optimism','honesty','steadiness',
+    'encouragement','perspective','curiosity','creativity','clarity','care for others',
+    'attention to detail','follow-through','calm presence','integrity','fairness','openness'
   ];
   const strengths = [
-    'make challenges manageable','bring steadiness to busy days','notice details that matter',
-    'find solutions with care','help people feel heard','build trust quietly',
-    'stay calm under pressure','keep goals realistic','follow through on promises',
-    'lead by example','approach problems thoughtfully','make teamwork smoother'
+    'make tough moments feel manageable','bring out the best in people',
+    'help everyone feel welcome','find practical next steps',
+    'listen in a way that people feel understood','turn ideas into action',
+    'keep things moving without rushing','ask questions that open doors',
+    'stay grounded when plans change','notice the small wins that matter',
+    'add calm to busy days','help conversations stay kind and useful'
   ];
   const closers = [
-    'That really matters.','It makes a difference.','It helps everyone.',
-    'It stands out.','That brings calm to others.','It’s something to be proud of.',
-    'People notice and appreciate it.','It has real impact.'
+    'I appreciate that a lot.',
+    'That really helps more than you know.',
+    'It genuinely makes a difference.',
+    'People notice and it matters.',
+    'That’s something to be proud of.',
+    'It lifts the whole day.',
+    'It sets such a good example.'
   ];
   const starters = [
     'You have a way of','You consistently','You’re great at','You naturally',
-    'You always','You bring','You show','You remind others to'
+    'You always seem to','You bring','You model','You remind others to',
+    'You make it easier to','You help us'
+  ];
+  const softPraises = [
+    'You make ordinary moments feel special.',
+    'You add warmth wherever you are.',
+    'You make spaces feel safer and kinder.',
+    'You show up with care, every single time.',
+    'You balance thoughtfulness with getting things done.',
+    'You make people feel at ease.'
   ];
   const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
 
-  function generate(n = 160){
-    const set = new Set();
-    const base = [
-      'You treat people with respect and patience.',
-      'You make the environment calmer and more focused.',
-      'You approach problems with quiet confidence.',
-      'You care about doing things properly.',
-      'You bring out the best in others.',
-      'You help keep things on track.',
-      'You stay kind, even on hard days.',
-      'You follow through without needing reminders.',
-      'You give thoughtful feedback.',
-      'You make teamwork smoother.'
-    ];
-    base.forEach(b => set.add(b));
+  function generateWarm(n = 160){
+    const set = new Set(softPraises);
     let guard = 0;
     while (set.size < n && guard < 5000){
       guard++;
-      const type = Math.floor(Math.random()*3);
+      const type = Math.floor(Math.random() * 3);
       let line = '';
       if (type === 0){
         line = `${starters[Math.floor(Math.random()*starters.length)]} ${strengths[Math.floor(Math.random()*strengths.length)]}. ${closers[Math.floor(Math.random()*closers.length)]}`;
       } else if (type === 1){
-        line = `Your ${qualities[Math.floor(Math.random()*qualities.length)]} really shows. ${closers[Math.floor(Math.random()*closers.length)]}`;
+        line = `Your ${qualities[Math.floor(Math.random()*qualities.length)]} really stands out. ${closers[Math.floor(Math.random()*closers.length)]}`;
       } else {
         line = `It’s clear you ${strengths[Math.floor(Math.random()*strengths.length)]}. ${closers[Math.floor(Math.random()*closers.length)]}`;
       }
-      set.add(cap(line.trim()));
+      set.add(cap(line.replace(/\s+/g,' ').trim()));
     }
     return Array.from(set);
   }
 
   let fortunes = JSON.parse(localStorage.getItem('fortunes') || 'null');
-  if (!fortunes || fortunes.length < 30){
-    fortunes = generate(160);
+  if(!fortunes || fortunes.length < 30){
+    fortunes = generateWarm(160);
     localStorage.setItem('fortunes', JSON.stringify(fortunes));
   }
   const save = () => localStorage.setItem('fortunes', JSON.stringify(fortunes));
 
-  drawBtn.addEventListener('click', () => {
-    if (!fortunes.length) fortunes = generate(160);
+  drawBtn.addEventListener('click', ()=>{
+    if(!fortunes.length) fortunes = generateWarm(160);
     const idx = Math.floor(Math.random()*fortunes.length);
-    out.textContent = fortunes.splice(idx,1)[0];
-    save();
-    window._burst?.(innerWidth*0.6, innerHeight*0.65, 60);
+    out.style.opacity = 0;
+    setTimeout(() => {
+      out.textContent = fortunes.splice(idx, 1)[0];
+      out.style.opacity = 1;
+      save();
+      window._burst?.(innerWidth*0.6, innerHeight*0.65, 60);
+    }, 120);
   });
 
-  addForm.addEventListener('submit', (e) => {
+  addForm.addEventListener('submit', (e)=>{
     e.preventDefault();
-    const v = addInput.value.trim(); if (!v) return;
+    const v = addInput.value.trim();
+    if(!v) return;
     fortunes.push(v); save(); addForm.reset();
   });
 });
@@ -288,16 +290,14 @@ safe('message', () => {
   });
 });
 
-/* ========== Music: autoplay & loop (with mobile fallback) ========== */
+/* ========== Music: autoplay + loop (mobile-safe) ========== */
 safe('music', () => {
   const audio = document.getElementById('player');
   if (!audio) return;
   const tryPlay = () => audio.play().catch(() => {});
-  // Try on load (desktop)
   addEventListener('load', () => { audio.volume = 0.9; tryPlay(); });
-  // Guaranteed on first user interaction (mobile policy)
-  const nudge = () => { tryPlay(); removeEventListener('pointerdown', nudge, {capture:true}); };
-  addEventListener('pointerdown', nudge, { capture: true, once: true });
+  const nudge = () => { tryPlay(); };
+  addEventListener('pointerdown', nudge, { once: true, capture: true });
 });
 
 /* ========== Shortcut ========== */
