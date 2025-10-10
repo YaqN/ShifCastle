@@ -1,146 +1,180 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Happy Birthday — Retro Cherry</title>
-<meta name="description" content="An interactive retro‑cherry birthday page made with love."/>
-<link rel="preload" href="assets/birthday_center.png" as="image">
-<link rel="stylesheet" href="style.css" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Happy Birthday — Cherry & Cream</title>
+<meta name="description" content="A private, interactive birthday world filled with everything you love: baking, organizing, photos, and 80s vibes.">
+<link rel="preload" href="birthday_center.png" as="image">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <canvas id="confetti"></canvas>
+<canvas id="confetti"></canvas>
 
-  <header class="wrap">
-    <div class="title">
-      <div class="cherry-logo" aria-hidden="true">
-        <svg viewBox="0 0 120 80" class="cherries">
-          <circle cx="40" cy="50" r="16"></circle>
-          <circle cx="75" cy="50" r="16"></circle>
-          <path d="M58 18 C40 2, 20 6, 12 22" class="stem"></path>
-          <path d="M62 18 C80 2, 100 6, 108 22" class="stem"></path>
-          <path d="M9 22 C18 20,24 28,16 32 C8 36,3 27,9 22 Z" class="leaf"></path>
-          <path d="M111 22 C102 20,96 28,104 32 C112 36,117 27,111 22 Z" class="leaf"></path>
-        </svg>
-      </div>
-      <h1>Happy Birthday, Angel! ✨</h1>
-      <p class="tag">A creamy &amp; cherry‑red celebration with 80s vibes.</p>
-      <div class="cta-row">
-        <button id="playMusic" class="btn">Play Cassette</button>
-        <button id="confettiBurst" class="btn outline">Throw Confetti</button>
+<header class="wrap">
+  <div class="title">
+    <svg viewBox="0 0 120 80" class="cherries" aria-hidden="true">
+      <circle cx="40" cy="50" r="16"></circle>
+      <circle cx="78" cy="50" r="16"></circle>
+      <path d="M58 18 C40 2, 20 6, 12 22" class="stem"></path>
+      <path d="M62 18 C80 2, 100 6, 108 22" class="stem"></path>
+      <path d="M9 22 C18 20,24 28,16 32 C8 36,3 27,9 22 Z" class="leaf"></path>
+      <path d="M111 22 C102 20,96 28,104 32 C112 36,117 27,111 22 Z" class="leaf"></path>
+    </svg>
+    <h1>Happy Birthday, Angel 🍒</h1>
+    <p class="tag">A creamy, cherry-red cozy page — just for you.</p>
+    <div class="cta-row">
+      <button id="playMusic" class="btn">Play Cassette</button>
+      <button id="confettiBurst" class="btn outline">Throw Confetti</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- Hero with candles -->
+  <section class="card hero">
+    <div class="cake">
+      <img src="birthday_center.png" alt="Creamy heart cake with cherries and candles">
+      <div class="candles">
+        <button class="flame on" aria-label="Candle 1"></button>
+        <button class="flame on" aria-label="Candle 2"></button>
+        <button class="flame on" aria-label="Candle 3"></button>
       </div>
     </div>
-  </header>
-
-  <main class="wrap">
-    <!-- Hero with interactive candles -->
-    <section class="card hero">
-      <div class="cake">
-        <img src="assets/birthday_center.png" alt="Creamy heart cake with cherries and candles"/>
-        <div class="candles">
-          <button class="flame on" aria-label="Candle 1"></button>
-          <button class="flame on" aria-label="Candle 2"></button>
-          <button class="flame on" aria-label="Candle 3"></button>
-        </div>
+    <div class="hero-text">
+      <h2>Make a wish</h2>
+      <p>Press <kbd>B</kbd> to blow out all candles. Tap a flame to toggle it. Wishes create confetti.</p>
+      <div class="wish-box">
+        <input id="wishInput" placeholder="Type your wish…" maxlength="80">
+        <button id="wishBtn" class="btn small">Send ✨</button>
       </div>
-      <div class="hero-text">
-        <h2>Make a wish</h2>
-        <p>Press <kbd>B</kbd> to “blow” the candles, or tap them individually. Every wish triggers a tiny confetti burst.</p>
-        <div class="wish-box">
-          <input id="wishInput" placeholder="Type your birthday wish…" maxlength="80" />
-          <button id="wishBtn" class="btn small">Send ✨</button>
-        </div>
-      </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Organizer & baking timer -->
-    <section class="grid-two">
-      <article class="card">
-        <h3>Party Checklist</h3>
-        <p class="muted">A tidy little organizer (because you love organizing!).</p>
-        <div class="todo">
-          <form id="todoForm">
-            <input id="todoInput" placeholder="Add a task…" maxlength="60" />
-            <button class="btn small" type="submit">Add</button>
-          </form>
-          <ul id="todoList" class="todo-list"></ul>
+  <!-- Personal Organizer + Baking -->
+  <section class="grid-two">
+    <article class="card">
+      <h3>Party Checklist</h3>
+      <p class="muted">Because you love organizing.</p>
+      <div class="todo">
+        <form id="todoForm">
+          <input id="todoInput" placeholder="Add a task…" maxlength="60">
+          <button class="btn small">Add</button>
+        </form>
+        <ul id="todoList" class="todo-list"></ul>
+        <div class="row">
           <button id="clearDone" class="btn small outline">Clear Completed</button>
+          <button id="exportList" class="btn small outline">Export</button>
+          <input id="importList" type="file" accept="application/json" class="file">
         </div>
-      </article>
+      </div>
+    </article>
 
-      <article class="card">
-        <h3>Baking Timer</h3>
-        <p class="muted">Set a quick timer for cookies or cupcakes.</p>
-        <div class="timer">
-          <label>Minutes <input id="min" type="number" value="0" min="0" max="120"></label>
-          <label>Seconds <input id="sec" type="number" value="30" min="0" max="59"></label>
-          <div class="timer-row">
-            <button id="startTimer" class="btn">Start</button>
-            <button id="stopTimer" class="btn outline">Stop</button>
-            <span id="timeLeft" class="time">00:30</span>
-          </div>
-          <p id="timerNote" class="muted tiny">The page will chime when time’s up.</p>
+    <article class="card">
+      <h3>Baking Corner</h3>
+      <p class="muted">Quick timers for your treats. One tap to start!</p>
+      <div class="recipe-grid">
+        <button class="recipe btn small" data-min="0" data-sec="90">🍪 Cookies 1:30</button>
+        <button class="recipe btn small" data-min="12" data-sec="0">🧁 Cupcakes 12:00</button>
+        <button class="recipe btn small" data-min="25" data-sec="0">🍰 Sponge 25:00</button>
+        <span id="timeLeft" class="time">00:00</span>
+        <div class="timer-ctrl">
+          <button id="stopTimer" class="btn small outline">Stop</button>
         </div>
-      </article>
-    </section>
+      </div>
+      <p id="timerNote" class="tiny muted">The page will chime and celebrate when time’s up.</p>
+    </article>
+  </section>
 
-    <!-- Polaroid gallery - draggable -->
-    <section class="card gallery">
-      <h3>Favorite Moments</h3>
-      <p class="muted">Drag the polaroids around. Double‑click to pin/unpin.</p>
+  <!-- Photo Booth & Moodboard -->
+  <section class="grid-two">
+    <article class="card gallery">
+      <h3>Photo Booth</h3>
+      <p class="muted">Drag polaroids, double‑click to pin, and try filters.</p>
+      <div class="filter-row">
+        <label><input type="radio" name="f" value="none" checked> None</label>
+        <label><input type="radio" name="f" value="vintage"> Vintage</label>
+        <label><input type="radio" name="f" value="dreamy"> Dreamy</label>
+        <label><input type="radio" name="f" value="bw"> B&amp;W</label>
+      </div>
       <div class="polaroids" id="polaroids">
-        <figure class="polaroid" draggable="true">
-          <img src="assets/bunny_room.jpg" alt="Soft bunny plush with coffee on a ruffled bed" />
-          <figcaption>Bunny mornings</figcaption>
-        </figure>
-        <figure class="polaroid" draggable="true">
-          <img src="assets/cake_room.jpg" alt="Vintage floral plate with mini cake" />
-          <figcaption>Floral cake love</figcaption>
-        </figure>
-        <figure class="polaroid" draggable="true">
-          <img src="assets/tea_room.jpg" alt="Tea time with croissant in soft light" />
-          <figcaption>Tea & croissant</figcaption>
-        </figure>
+        <figure class="polaroid" draggable="true"><img src="bunny_room.jpg" alt="Soft bunny plush"><figcaption>Bunny mornings</figcaption></figure>
+        <figure class="polaroid" draggable="true"><img src="cake_room.jpg" alt="Floral cake"><figcaption>Floral cake love</figcaption></figure>
+        <figure class="polaroid" draggable="true"><img src="tea_room.jpg" alt="Tea time"><figcaption>Tea & croissant</figcaption></figure>
       </div>
-    </section>
+    </article>
 
-    <!-- Retro cassette player (local UI only) -->
-    <section class="card cassette">
-      <div class="cassette-ui">
-        <div class="reels">
-          <div class="spool left"></div>
-          <div class="spool right"></div>
-        </div>
-        <div class="label">Mixtape: Cherry Dreams (80s)</div>
-        <div class="controls">
-          <button id="btnPlay" class="btn small">▶︎ Play</button>
-          <button id="btnPause" class="btn small outline">⏸ Pause</button>
-          <button id="btnRew" class="btn small outline">⏪ Rewind</button>
-        </div>
+    <article class="card">
+      <h3>Moodboard</h3>
+      <p class="muted">Tint the page to your favorite creamy &amp; cherry shades.</p>
+      <div class="mood">
+        <label>Accent <input id="accentPicker" type="color" value="#cc2035"></label>
+        <label>Cream <input id="creamPicker" type="color" value="#fff3e3"></label>
+        <button id="saveTheme" class="btn small">Save Theme</button>
+        <button id="resetTheme" class="btn small outline">Reset</button>
       </div>
-      <audio id="player">
-        <source src="" type="audio/mpeg">
-      </audio>
-      <p class="muted tiny">Add an MP3 named <code>track.mp3</code> to the <code>assets</code> folder to play your own 80s jam.</p>
-    </section>
+      <canvas id="eq" width="420" height="120" class="eq"></canvas>
+      <p class="tiny muted">80s equalizer vibes while your mixtape plays.</p>
+    </article>
+  </section>
 
-    <!-- Guestbook -->
-    <section class="card guestbook">
-      <h3>Guestbook</h3>
-      <p class="muted">Leave notes for the birthday star — stored in your browser so it works on GitHub Pages.</p>
-      <form id="gbForm">
-        <input id="gbName" placeholder="Your name" maxlength="24" required/>
-        <input id="gbMsg" placeholder="Your message" maxlength="100" required/>
-        <button class="btn small">Sign</button>
+  <!-- Mini‑game + Compliments -->
+  <section class="grid-two">
+    <article class="card game">
+      <h3>Cherry Clicker</h3>
+      <p class="muted">Click cherries to score before they fade. Tiny arcade break!</p>
+      <div id="gameArea" class="game-area"></div>
+      <div class="row">
+        <button id="startGame" class="btn">Start</button>
+        <span id="score" class="time">Score: 0</span>
+      </div>
+    </article>
+
+    <article class="card fortunes">
+      <h3>Compliment Jar</h3>
+      <p class="muted">Pull a sweet note anytime you need a smile.</p>
+      <div class="jar">
+        <button id="drawFortune" class="btn">Pick a Note</button>
+        <p id="fortuneText" class="fortune"></p>
+      </div>
+      <form id="addFortuneForm" class="row">
+        <input id="addFortune" placeholder="Add your own compliment…" maxlength="100">
+        <button class="btn small">Add</button>
       </form>
-      <ul id="gbList" class="gb-list"></ul>
-    </section>
+    </article>
+  </section>
 
-  </main>
+  <!-- Cassette Player + Guestbook -->
+  <section class="card cassette">
+    <div class="cassette-ui">
+      <div class="reels"><div class="spool"></div><div class="spool"></div></div>
+      <div class="label">Mixtape: Cherry Dreams (80s)</div>
+      <div class="controls">
+        <button id="btnPlay" class="btn small">▶︎ Play</button>
+        <button id="btnPause" class="btn small outline">⏸ Pause</button>
+        <button id="btnRew" class="btn small outline">⏪ Rewind</button>
+      </div>
+    </div>
+    <audio id="player"><source src="track.mp3" type="audio/mpeg"></audio>
+    <p class="muted tiny">Place <code>track.mp3</code> beside this page to enable music.</p>
+  </section>
 
-  <footer class="wrap footer">
-    <p>Made with ♥ in cream &amp; cherry red. Press <kbd>B</kbd> to blow candles, <kbd>C</kbd> for confetti.</p>
-  </footer>
+  <section class="card guestbook">
+    <h3>Guestbook</h3>
+    <p class="muted">Notes are stored privately in your browser.</p>
+    <form id="gbForm">
+      <input id="gbName" placeholder="Your name" maxlength="24" required>
+      <input id="gbMsg" placeholder="Your message" maxlength="100" required>
+      <button class="btn small">Sign</button>
+    </form>
+    <ul id="gbList" class="gb-list"></ul>
+  </section>
+
+</main>
+
+<footer class="wrap footer">
+  <p>Made with ♥ for you. Shortcuts: <kbd>B</kbd> blow candles, <kbd>C</kbd> confetti.</p>
+</footer>
 
 <script src="script.js"></script>
 </body>
