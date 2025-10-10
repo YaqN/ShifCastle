@@ -1,156 +1,103 @@
-// ===== Confetti =====
-const confettiCanvas=document.getElementById('confetti');
-const ctx=confettiCanvas.getContext('2d');
-function resizeCanvas(){confettiCanvas.width=innerWidth;confettiCanvas.height=innerHeight;}
-addEventListener('resize',resizeCanvas);resizeCanvas();
-let confettiPieces=[];
-function burst(x=innerWidth/2,y=innerHeight/3,count=120){
-  for(let i=0;i<count;i++){
-    confettiPieces.push({x,y,vx:(Math.random()*2-1)*4,vy:Math.random()*-6-4,g:.12+Math.random()*.08,rot:Math.random()*Math.PI,vr:(Math.random()*2-1)*.1,size:6+Math.random()*6,color:Math.random()<.5?'#cc2035':(Math.random()<.7?'#e94a5a':'#c9ad63')});
-  }
+/* Base */
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:"Orbitron",system-ui,Arial,sans-serif;
+  background: linear-gradient(180deg,#fff6f8 0%,#fdeff3 100%);
+  color:#333; min-height:100vh; line-height:1.5; overflow-x:hidden;
 }
-function tick(){
-  ctx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);
-  confettiPieces=confettiPieces.filter(p=>p.y<confettiCanvas.height+20);
-  confettiPieces.forEach(p=>{
-    p.vy+=p.g;p.x+=p.vx;p.y+=p.vy;p.rot+=p.vr;
-    ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot);
-    ctx.fillStyle=p.color;ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size);ctx.restore();
-  });
-  requestAnimationFrame(tick);
+h1,h2,h3,h4{font-family:"Pacifico",cursive;color:#cc2035}
+a{color:#cc2035;text-decoration:none}
+.muted{color:#666;font-size:.95rem}
+
+/* Layout & Cards */
+.wrap{max-width:1080px;margin:0 auto;padding:1.5rem}
+.center{text-align:center}
+.card{background:#fff;border-radius:1rem;box-shadow:0 4px 14px rgba(0,0,0,.08);
+  padding:1.5rem;margin-bottom:1.5rem;transition:transform .2s, box-shadow .2s}
+.card:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.1)}
+.grid-two{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.5rem}
+.row{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem}
+
+/* Buttons */
+.btn{background:#cc2035;color:#fff;border:none;border-radius:10px;padding:.6em 1em;
+  cursor:pointer;font-weight:700;letter-spacing:.3px}
+.btn:hover{background:#a9182a}
+.btn.outline{background:transparent;border:2px solid #cc2035;color:#cc2035}
+.btn.outline:hover{background:#cc2035;color:#fff}
+.btn.small{font-size:.9rem;padding:.45em .8em}
+
+/* Header */
+header{background:radial-gradient(circle,#fff8f9 0%,#fde2e7 100%);padding:2rem 1rem 1.2rem;border-bottom:3px solid #cc2035}
+header .title h1{font-size:2.2rem}
+.tag{opacity:.85;margin-top:.2rem}
+
+/* Cherries */
+.cherries{width:110px;height:70px}
+.cherries circle{fill:#cc2035}
+.cherries .stem{stroke:#6b8e23;stroke-width:5;fill:none;stroke-linecap:round}
+.cherries .leaf{fill:#6b8e23}
+
+/* Hero cake */
+.hero-centered{text-align:center}
+.hero-centered img{
+  width:min(420px,92%);border-radius:20px;box-shadow:0 10px 26px rgba(0,0,0,.12);margin-bottom:1rem;border:2px solid #f4d9c5
 }
-tick();
-document.getElementById('confettiBurst').addEventListener('click',()=>burst());
+.hero-centered h2{font-size:clamp(28px,5vw,48px);margin:.3rem 0}
 
-// ===== Checklist =====
-const todoList=document.getElementById('todoList');
-const todoForm=document.getElementById('todoForm');
-const todoInput=document.getElementById('todoInput');
-let todos=JSON.parse(localStorage.getItem('todos')||'[]');
-function renderTodos(){
-  todoList.innerHTML='';
-  todos.forEach((t,i)=>{
-    const li=document.createElement('li');
-    li.className='todo-item'+(t.done?' done':'');
-    const cb=document.createElement('input');
-    cb.type='checkbox';cb.checked=t.done;
-    const span=document.createElement('span');span.textContent=t.text;
-    const del=document.createElement('button');
-    del.textContent='✖';del.className='btn small outline';
-    cb.addEventListener('change',()=>{t.done=cb.checked;save();});
-    del.addEventListener('click',()=>{todos.splice(i,1);save();});
-    li.append(cb,span,del);todoList.appendChild(li);
-  });
+/* Checklist */
+.todo-list{list-style:none;margin-top:1rem}
+.todo-item{display:flex;align-items:center;justify-content:space-between;border-bottom:1px dashed #eee;padding:.35em 0}
+.todo-item.done span{text-decoration:line-through;opacity:.6}
+input[type="text"],input[type="file"],textarea{
+  width:100%;border:2px solid #eee;border-radius:10px;padding:.6rem;font-size:1rem;transition:border-color .2s
 }
-function save(){localStorage.setItem('todos',JSON.stringify(todos));renderTodos();}
-todoForm.addEventListener('submit',e=>{
-  e.preventDefault();
-  const v=todoInput.value.trim();
-  if(!v)return;
-  todos.push({text:v,done:false});
-  todoInput.value='';save();
-});
-document.getElementById('clearDone').addEventListener('click',()=>{
-  todos=todos.filter(t=>!t.done);save();
-});
-renderTodos();
-document.getElementById('exportList').addEventListener('click',()=>{
-  const blob=new Blob([JSON.stringify(todos)],{type:'application/json'});
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);a.download='checklist.json';a.click();
-});
-document.getElementById('importList').addEventListener('change',e=>{
-  const f=e.target.files[0];if(!f)return;
-  const r=new FileReader();
-  r.onload=()=>{try{todos=JSON.parse(r.result);save();}catch{}};
-  r.readAsText(f);
-});
+input:focus,textarea:focus{outline:none;border-color:#cc2035}
 
-// ===== Baking Timers =====
-let tInt=null,remaining=0;
-const timeLeft=document.getElementById('timeLeft');
-function fmt(n){return String(n).padStart(2,'0');}
-function show(){timeLeft.textContent=fmt(Math.floor(remaining/60))+':'+fmt(remaining%60);}
-function chime(){new Audio('data:audio/wav;base64,UklGRmQAAABXQVZFZm10IBAAAAABAAEAESsAACJWAAACABYAAAChAAAAAAA=').play().catch(()=>{});}
-document.querySelectorAll('.recipe').forEach(btn=>btn.addEventListener('click',()=>{
-  remaining=parseInt(btn.dataset.min)*60+parseInt(btn.dataset.sec);
-  if(tInt)clearInterval(tInt);show();
-  tInt=setInterval(()=>{
-    remaining--;show();
-    if(remaining<=0){clearInterval(tInt);tInt=null;chime();burst(innerWidth/2,innerHeight*0.2,160);}
-  },1000);
-}));
-document.getElementById('stopTimer').addEventListener('click',()=>{if(tInt)clearInterval(tInt);tInt=null;});
+/* Baking timers */
+.recipe-grid{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}
+.time{font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:700;color:#cc2035}
+.timer-ctrl{margin-top:.4rem}
 
-// ===== Photo Booth =====
-const area=document.getElementById('polaroids');
-const polaroids=[...document.querySelectorAll('.polaroid')];
-polaroids.forEach((p,i)=>{
-  p.style.left=20+i*220+'px';p.style.top=20+(i%2)*30+'px';
-  p.addEventListener('dblclick',()=>p.classList.toggle('pinned'));
-  p.addEventListener('mousedown',e=>{
-    if(p.classList.contains('pinned'))return;
-    const sx=e.clientX,sy=e.clientY,rect=p.getBoundingClientRect(),
-    ox=sx-rect.left,oy=sy-rect.top;
-    function move(ev){p.style.left=(ev.clientX-ox-area.getBoundingClientRect().left)+'px';
-      p.style.top=(ev.clientY-oy-area.getBoundingClientRect().top)+'px';}
-    function up(){removeEventListener('mousemove',move);removeEventListener('mouseup',up);}
-    addEventListener('mousemove',move);addEventListener('mouseup',up);
-  });
-});
-document.querySelector('.filter-row').addEventListener('change',e=>{
-  const v=e.target.value;
-  area.classList.remove('filter-none','filter-vintage','filter-dreamy','filter-bw');
-  area.classList.add('filter-'+v);
-});
+/* Photo Booth */
+.gallery{text-align:center}
+.polaroids{position:relative;min-height:420px;margin-top:1rem}
+.polaroid{
+  position:absolute;width:210px;padding:12px 12px 34px;background:#fff;border-radius:10px;
+  box-shadow:0 20px 30px rgba(0,0,0,.08);user-select:none;touch-action:none;border:1px solid #f0f0f0
+}
+.polaroid img{width:100%;border-radius:6px;display:block}
+.polaroid figcaption{font-family:"Pacifico",cursive;font-size:.95rem;color:#cc2035;margin-top:.35rem}
+.polaroid.pinned{outline:2px dashed #cc2035;outline-offset:3px}
+.filter-row{display:flex;justify-content:center;gap:.8rem;margin-bottom:.5rem}
 
-// ===== Compliment Jar =====
-const fortunesDefault=[
-  'You bring calm to every situation.',
-  'Your kindness always shines through.',
-  'You have a steady way of making things better.',
-  'People can count on you — and that matters.',
-  'You show patience and care in everything you do.',
-  'You make the day a little easier for everyone.'
-];
-let fortunes=JSON.parse(localStorage.getItem('fortunes')||'null')||fortunesDefault.slice();
-function saveFortunes(){localStorage.setItem('fortunes',JSON.stringify(fortunes));}
-document.getElementById('drawFortune').addEventListener('click',()=>{
-  if(!fortunes.length)fortunes=fortunesDefault.slice();
-  const idx=Math.floor(Math.random()*fortunes.length);
-  const msg=fortunes.splice(idx,1)[0];
-  document.getElementById('fortuneText').textContent=msg;
-  saveFortunes();burst(innerWidth*0.6,innerHeight*0.65,80);
-});
-document.getElementById('addFortuneForm').addEventListener('submit',e=>{
-  e.preventDefault();
-  const v=document.getElementById('addFortune').value.trim();
-  if(!v)return;
-  fortunes.push(v);saveFortunes();e.target.reset();
-});
+/* Compliment Jar */
+.jar{text-align:center;margin-top:1rem}
+.fortune{margin-top:1rem;background:#fff0f3;border-left:4px solid #cc2035;padding:1rem;border-radius:8px;color:#444;min-height:60px}
 
-// ===== Message =====
-const noteEl=document.getElementById('loveNote');
-const notePrev=document.getElementById('notePreview');
-const savedNote=localStorage.getItem('loveNote')||'';
-noteEl.value=savedNote;notePrev.textContent=savedNote;
-noteEl.addEventListener('input',()=>{
-  localStorage.setItem('loveNote',noteEl.value);
-  notePrev.textContent=noteEl.value;
-});
-document.getElementById('copyNote').addEventListener('click',async()=>{
-  try{await navigator.clipboard.writeText(noteEl.value);burst(innerWidth*0.7,innerHeight*0.65,60);}catch(e){}
-});
-document.getElementById('clearNote').addEventListener('click',()=>{
-  noteEl.value='';notePrev.textContent='';localStorage.removeItem('loveNote');
-});
+/* Message */
+.message-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.message-preview{background:#fff9fa;border:1px solid #f3cbd2;border-radius:10px;padding:1rem}
+.message-preview h4{margin-bottom:.5rem}
+.note{min-height:100px;font-family:"Pacifico",cursive;white-space:pre-wrap}
 
-// ===== Background Music =====
-const audio=document.getElementById('player');
-window.addEventListener('load',()=>{
-  audio.volume=0.8;
-  audio.play().catch(()=>{});
-});
+/* Footer */
+.footer{text-align:center;padding:1rem 0;color:#555}
 
-// Shortcut key
-addEventListener('keydown',e=>{if(e.key.toLowerCase()==='c')burst();});
+/* Confetti canvas */
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:5}
+
+/* Photo filters */
+.filter-none img{filter:none}
+.filter-vintage img{filter:sepia(.35) contrast(1.08) saturate(1.25)}
+.filter-dreamy img{filter:brightness(1.08) blur(.2px) saturate(1.3)}
+.filter-bw img{filter:grayscale(100%) contrast(1.1)}
+
+/* Responsive */
+@media (max-width:700px){
+  header .title h1{font-size:1.9rem}
+  .hero-centered img{width:min(320px,94%)}
+  .message-grid{grid-template-columns:1fr}
+  .polaroid{width:160px;padding:10px 10px 28px}
+  .wrap{padding:1rem}
+  .btn{font-size:.95rem}
+}
