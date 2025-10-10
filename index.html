@@ -2,319 +2,246 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>🎂 Castle Door 3D Birthday Gallery</title>
-  <meta name="description" content="Open the castle doors and walk into a 3D hallway of framed photos for a birthday gift."/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Castle Birthday Hall – 3D</title>
+  <!-- Fonts for 80s/medieval vibe -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Cinzel:wght@400;700&family=VT323&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#201226; --ink:#f9eef9; --gold:#f2d38b; --rose:#e7a6c9; --violet:#3a1c4a;
+      --gold:#e7c76d; --ink:#1a140b; --hud:rgba(0,0,0,.5);
     }
-    html,body{height:100%;}
-    body{margin:0; background: radial-gradient(1200px 800px at 50% -10%, #3c2150 0%, #261431 40%, #18101f 80%, #100a15 100%); color:var(--ink); font-family: 'IM Fell English', serif; overflow:hidden;}
-    #ui{ position:fixed; inset: 0 auto auto 0; z-index:10; padding:12px 14px; display:flex; gap:10px; align-items:center; }
-    .brand{display:flex; align-items:center; gap:10px; background: rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); border-radius:12px; padding:8px 12px; backdrop-filter: blur(8px);}
-    .brand b{font-family:'Cinzel Decorative', serif; letter-spacing:.02em; color:var(--gold)}
-    .hint{position:fixed; left:50%; transform: translateX(-50%); bottom:18px; background: rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); border-radius:999px; padding:8px 14px; font-size:14px; opacity:.9}
-    .btn{cursor:pointer; border-radius:999px; padding:8px 12px; border:1px solid rgba(255,255,255,.18); background:linear-gradient(180deg, rgba(255,255,255,.2), rgba(255,255,255,.06)); color:#fff; font-weight:700; letter-spacing:.02em;}
-    .btn:hover{filter:brightness(1.1)}
-    #loading{ position:fixed; inset:0; display:grid; place-items:center; background: radial-gradient(circle at 50% 40%, #1f132a 0%, #100913 70%); z-index:50;}
-    .spinner{ width:64px; height:64px; border-radius:50%; border:4px solid rgba(255,255,255,.15); border-top-color: var(--gold); animation: spin 1s linear infinite;}
-    @keyframes spin{ to{ transform: rotate(360deg)} }
+    html,body{height:100%; margin:0; overflow:hidden; background:#0d0e12; color:#f6eeda;}
+    body{font-family:'Cinzel', serif}
+
+    /* UI overlay */
+    .banner{position:fixed; top:10px; left:50%; transform:translateX(-50%);
+      padding:.25rem 1rem; font-family:'UnifrakturMaguntia', cursive; font-size:clamp(26px,6vw,52px);
+      background:linear-gradient(180deg,#711c2f,#b82d54); border:3px solid var(--gold); border-radius:10px; z-index:5}
+
+    #hud{position:fixed; left:0; right:0; bottom:10px; display:flex; justify-content:center; gap:10px; z-index:5}
+    #hud button{appearance:none; border:2px solid var(--gold); background:var(--hud); color:#fff3d0;
+      border-radius:999px; padding:.6rem .9rem; font-family:'VT323', monospace; font-size:20px}
+    #hint{position:fixed; bottom:70px; left:50%; transform:translateX(-50%); font:400 14px 'VT323', monospace; color:#f6eeda; opacity:.8; z-index:5}
+
     /* Lightbox */
-    #lightbox{ position:fixed; inset:0; background: rgba(5,3,8,.9); display:none; align-items:center; justify-content:center; z-index:40;}
-    #lightbox.open{ display:flex; }
-    .lb-card{ max-width:min(1100px, 96vw); width:100%; background:#0f0a12; border:1px solid #3b2a4a; border-radius:14px; overflow:hidden; box-shadow: 0 30px 80px rgba(0,0,0,.7);}
-    .lb-img{ display:block; width:100%; max-height:78vh; object-fit:contain; background:#0b0710;}
-    .lb-meta{ display:flex; align-items:center; justify-content:space-between; padding:10px 12px; color:#cbb8cf; }
-    .lb-close{ all:unset; cursor:pointer; padding:6px 10px; border-radius:8px; border:1px solid #5a3a6a; }
+    .lightbox{position:fixed; inset:0; background:rgba(0,0,0,.85); display:none; place-items:center; z-index:9}
+    .lightbox.on{display:grid}
+    .lightbox figure{max-width:min(92vw,900px); max-height:86vh; margin:0; background:#0f0f10; border:6px solid var(--gold); border-radius:12px; box-shadow:0 30px 60px rgba(0,0,0,.6)}
+    .lightbox img{display:block; max-width:100%; max-height:72vh}
+    .lightbox figcaption{padding:.6rem 1rem; color:#f1e8cf; font:400 16px 'Cinzel',serif; background:linear-gradient(#3a311f,#1f1a12)}
+    .navArrow{position:absolute; top:50%; transform:translateY(-50%); width:48px; height:48px; border-radius:50%; border:2px solid var(--gold); color:#f1e8cf; background:rgba(0,0,0,.3); display:grid; place-items:center; font:28px 'VT323', monospace}
+    .navArrow.left{left:14px} .navArrow.right{right:14px}
+    .closeX{position:absolute; top:12px; right:12px; width:44px; height:44px; border-radius:50%; border:2px solid var(--gold); color:#f1e8cf; background:rgba(0,0,0,.3); display:grid; place-items:center; font:22px 'VT323', monospace}
+
+    /* Loading badge */
+    #loading{position:fixed; inset:0; display:grid; place-items:center; color:#fff4d3; font:400 18px 'VT323', monospace; z-index:6; background:radial-gradient(circle at 50% 40%, rgba(255,227,152,.06), transparent 60%)}
+    #loading.fade{animation:fadeout .8s forwards}
+    @keyframes fadeout{to{opacity:0; visibility:hidden}}
   </style>
 </head>
 <body>
-  <div id="loading"><div class="spinner" aria-label="Loading"></div></div>
-  <div id="ui" aria-hidden="true">
-    <div class="brand">👑 <b>Castle Birthday Gallery</b></div>
-    <button id="btnReset" class="btn" title="Reset">Reset</button>
+  <div class="banner">Happy Birthday!</div>
+  <div id="loading">Summoning the castle…</div>
+  <div id="hint" aria-hidden="true">Tap the doors to enter. Swipe to stroll the hall. Tap frames to view.</div>
+  <div id="hud" aria-label="Controls">
+    <button id="btnBack">◀ Back</button>
+    <button id="btnForward">Forward ▶</button>
   </div>
-  <div class="hint" id="hint">Click the golden doors ✨</div>
 
-  <!-- Lightbox for viewing a frame image -->
-  <div id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer" aria-hidden="true">
-    <div class="lb-card">
-      <img id="lbImg" class="lb-img" alt="Large photo" />
-      <div class="lb-meta">
-        <div id="lbCaption">Happy Birthday! 🎂</div>
-        <button id="lbClose" class="lb-close">Close ✕</button>
-      </div>
-    </div>
+  <!-- Lightbox overlay for viewing textures in 2D -->
+  <div class="lightbox" id="lightbox" aria-modal="true" role="dialog">
+    <button class="closeX" id="closeX" aria-label="Close">✕</button>
+    <button class="navArrow left" id="navL" aria-label="Previous">❮</button>
+    <figure>
+      <img id="lbImg" alt="Expanded gallery image" />
+      <figcaption id="lbCap">&nbsp;</figcaption>
+    </figure>
+    <button class="navArrow right" id="navR" aria-label="Next">❯</button>
   </div>
 
   <canvas id="scene"></canvas>
 
-  <!-- Three.js -->
+  <!-- Three.js from CDN -->
   <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
-  <script src="https://unpkg.com/three@0.160.0/examples/js/controls/OrbitControls.js"></script>
-
+  <script src="https://unpkg.com/three@0.160.0/examples/jsm/controls/OrbitControls.js" type="module"></script>
   <script>
-  // =========================
-  // CONFIG: put your photos here
-  // =========================
-  const PHOTOS = [
-    // Replace these with your birthday photos (direct image URLs)
-  { src: "birthday_center.png", caption: "2005’s Angel — Heart cake" },
-  { src: "bunny_room.jpg", caption: "Soft bunny and tea" },
-  { src: "cake_room.jpg", caption: "Floral cake and tea moment" },
-  { src: "tea_room.jpg", caption: "Morning tea & croissant" }
-];
+  (()=>{
+    // Image list (update paths to your repo assets)
+    const gallery = [
+      {src:'assets/birthday_center.png', caption:'Birthday Centerpiece'},
+      {src:'assets/bunny_room.jpg', caption:'Bunny & Coffee Nook'},
+      {src:'assets/cake_room.jpg', caption:'Floral Cake Slice'},
+      {src:'assets/tea_room.jpg', caption:'Tea & Croissant'}
+    ];
 
+    const canvas = document.getElementById('scene');
+    const renderer = new THREE.WebGLRenderer({canvas, antialias:true});
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x0d0e12);
 
-  // Basic three.js setup
-  const canvas = document.getElementById('scene');
-  const renderer = new THREE.WebGLRenderer({canvas, antialias:true});
-  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-  renderer.setSize(innerWidth, innerHeight);
-  renderer.outputColorSpace = THREE.SRGBColorSpace;
+    // Camera
+    const camera = new THREE.PerspectiveCamera(60, 2, 0.1, 100);
+    camera.position.set(0, 1.6, 8);
 
-  const scene = new THREE.Scene();
-  scene.fog = new THREE.Fog(0x120a1a, 18, 120);
+    // Lights
+    const amb = new THREE.AmbientLight(0x806040, .6); scene.add(amb);
+    const dir = new THREE.DirectionalLight(0xfff3cc, .8); dir.position.set(3,5,3); scene.add(dir);
 
-  const camera = new THREE.PerspectiveCamera(60, innerWidth/innerHeight, 0.1, 500);
-  camera.position.set(0, 2, 14);
-  scene.add(camera);
+    // Floor & ceiling
+    const texLoader = new THREE.TextureLoader();
+    const stoneTex = texLoader.load('https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&w=800&q=60');
+    stoneTex.wrapS = stoneTex.wrapT = THREE.RepeatWrapping; stoneTex.repeat.set(4,12);
+    const floor = new THREE.Mesh(new THREE.PlaneGeometry(10, 60), new THREE.MeshStandardMaterial({map:stoneTex, roughness:.9, metalness:0}));
+    floor.rotation.x = -Math.PI/2; floor.position.z = -20; scene.add(floor);
+    const ceiling = floor.clone(); ceiling.rotation.x = Math.PI/2; ceiling.position.y = 3.2; scene.add(ceiling);
 
-  const controls = new THREE.OrbitControls(camera, renderer.domElement);
-  controls.enableDamping = true;
-  controls.enablePan = false;
-  controls.enabled = false; // will enable after door opens
+    // Walls
+    const wallMat = new THREE.MeshStandardMaterial({color:0x2a2119, roughness:.95});
+    const leftWall = new THREE.Mesh(new THREE.PlaneGeometry(60, 3.2), wallMat);
+    leftWall.rotation.y = Math.PI/2; leftWall.position.set(-5, 1.6, -20); scene.add(leftWall);
+    const rightWall = leftWall.clone(); rightWall.position.x = 5; rightWall.rotation.y = -Math.PI/2; scene.add(rightWall);
 
-  // Lights
-  const hemi = new THREE.HemisphereLight(0xffe1ff, 0x150b13, 0.8);
-  scene.add(hemi);
-  const keyLight = new THREE.SpotLight(0xf2d38b, 2, 60, Math.PI/6, 0.4, 1.2);
-  keyLight.position.set(0, 6, 10);
-  keyLight.target.position.set(0, 3, 0);
-  scene.add(keyLight, keyLight.target);
+    // 80s neon strip down the hall
+    const neonMat = new THREE.MeshBasicMaterial({color:0xe7c76d});
+    const neon = new THREE.Mesh(new THREE.PlaneGeometry(0.05, 60), neonMat); neon.position.set(0,0.1,-20); neon.rotation.x=-Math.PI/2; scene.add(neon);
 
-  // Floor and corridor materials
-  const floorMat = new THREE.MeshStandardMaterial({ color: 0x3b2a4a, roughness: 0.95, metalness: 0.05 });
-  const wallMat = new THREE.MeshStandardMaterial({ color: 0x2a1936, roughness: 0.9 });
-  const trimMat = new THREE.MeshStandardMaterial({ color: 0x8a6b2f, metalness: 0.8, roughness: 0.2 });
+    // Castle door (two wooden leaves)
+    const doorGroup = new THREE.Group(); scene.add(doorGroup);
+    const wood = new THREE.MeshStandardMaterial({color:0x6b3f1f, roughness:.8, metalness:.2});
+    const leafGeo = new THREE.BoxGeometry(1.4, 2.6, 0.08);
+    const leftLeaf = new THREE.Mesh(leafGeo, wood); leftLeaf.position.set(-.72,1.3,3.2);
+    const rightLeaf = new THREE.Mesh(leafGeo, wood); rightLeaf.position.set(.72,1.3,3.2);
+    // hinges (empty groups to rotate around side)
+    const leftHinge = new THREE.Group(); leftHinge.position.set(-1.42,1.3,3.2); leftHinge.add(leftLeaf); leftLeaf.position.x = .7;
+    const rightHinge = new THREE.Group(); rightHinge.position.set(1.42,1.3,3.2); rightHinge.add(rightLeaf); rightLeaf.position.x = -.7;
+    doorGroup.add(leftHinge,rightHinge);
 
-  // Castle façade with double doors
-  const facade = new THREE.Group();
-  const facadeWall = new THREE.Mesh(new THREE.BoxGeometry(14, 8, 1), wallMat);
-  facadeWall.position.set(0, 4, 0);
-  facade.add(facadeWall);
+    // Door frame / arch
+    const frame = new THREE.Mesh(new THREE.BoxGeometry(3.2, 3.2, 0.2), new THREE.MeshStandardMaterial({color:0x9a8a71, roughness:.9}));
+    frame.position.set(0,1.6,3.1); scene.add(frame);
 
-  // Arch
-  const archGeom = new THREE.RingGeometry(0, 3.2, 32, 1, Math.PI, Math.PI);
-  const arch = new THREE.Mesh(archGeom, trimMat);
-  arch.position.set(0, 6.4, 0.51);
-  arch.rotation.x = Math.PI; // face forward
-  facade.add(arch);
+    // Torches with emissive flames
+    function torch(x,z){
+      const stand = new THREE.Mesh(new THREE.CylinderGeometry(.06,.06,.6,12), new THREE.MeshStandardMaterial({color:0x3b2b17, roughness:1}));
+      const fire = new THREE.PointLight(0xffc46a, 1.2, 6); fire.position.set(0,.4,0);
+      const group = new THREE.Group(); group.add(stand, fire); group.position.set(x,1.2,z); scene.add(group); return fire;
+    }
+    torch(-1.8,2.9); torch(1.8,2.9);
 
-  // Doors (left & right)
-  const doorMat = new THREE.MeshStandardMaterial({ color: 0xb78b33, metalness: 0.6, roughness: 0.35 });
-  const doorGeom = new THREE.BoxGeometry(1.6, 3.6, 0.08);
-  const doorLeft = new THREE.Mesh(doorGeom, doorMat);
-  const doorRight = new THREE.Mesh(doorGeom, doorMat);
-  doorLeft.position.set(-0.8, 2.2, 0.55);
-  doorRight.position.set(0.8, 2.2, 0.55);
-  // Set hinges by grouping
-  const hingeL = new THREE.Group(); hingeL.position.set(-1.6, 2.2, 0.55); // hinge on left outer edge
-  const hingeR = new THREE.Group(); hingeR.position.set(1.6, 2.2, 0.55);
-  doorLeft.position.x = 0.8; doorRight.position.x = -0.8; // offset inside hinge group
-  hingeL.add(doorLeft); hingeR.add(doorRight);
-  facade.add(hingeL, hingeR);
-
-  // Simple doorknobs
-  const knobGeom = new THREE.SphereGeometry(0.08, 16, 16);
-  const knobMat = new THREE.MeshStandardMaterial({ color: 0xf2d38b, metalness: 1, roughness: 0.15 });
-  const knobL = new THREE.Mesh(knobGeom, knobMat); knobL.position.set(0.05, 0, 0.06); doorLeft.add(knobL);
-  const knobR = new THREE.Mesh(knobGeom, knobMat); knobR.position.set(-0.05, 0, 0.06); doorRight.add(knobR);
-
-  facade.position.set(0, 0, 0);
-  scene.add(facade);
-
-  // Corridor: long hallway behind doors
-  const corridor = new THREE.Group();
-  const length = 80; const width = 6; const height = 4.5;
-  const floor = new THREE.Mesh(new THREE.BoxGeometry(width, 0.2, length), floorMat); floor.position.set(0, 0, -length/2);
-  const ceil = new THREE.Mesh(new THREE.BoxGeometry(width, 0.2, length), wallMat); ceil.position.set(0, height, -length/2);
-  const wallL = new THREE.Mesh(new THREE.BoxGeometry(0.2, height, length), wallMat); wallL.position.set(-width/2, height/2, -length/2);
-  const wallR = new THREE.Mesh(new THREE.BoxGeometry(0.2, height, length), wallMat); wallR.position.set(width/2, height/2, -length/2);
-  corridor.add(floor, ceil, wallL, wallR);
-  corridor.position.set(0, 0, -0.4); // just behind doors
-  scene.add(corridor);
-
-  // Decorative trims near door
-  const threshold = new THREE.Mesh(new THREE.BoxGeometry(width, 0.1, 0.4), trimMat); threshold.position.set(0, 0.1, -0.2);
-  scene.add(threshold);
-
-  // Frames along corridor walls
-  const frameGroup = new THREE.Group();
-  const loader = new THREE.TextureLoader();
-  const framesPerSide = Math.ceil(PHOTOS.length/2);
-  const spacing = 6; // distance between frames
-  const frameW = 2.2, frameH = 1.5, frameDepth = 0.1;
-
-  function makeFrame(tex, caption){
-    const group = new THREE.Group();
-    // wood frame
-    const outer = new THREE.Mesh(new THREE.BoxGeometry(frameW, frameH, frameDepth), trimMat);
-    // inner picture plane, slightly inset
-    const picGeom = new THREE.PlaneGeometry(frameW*0.86, frameH*0.86);
-    const picMat = new THREE.MeshBasicMaterial({ map: tex, toneMapped: false });
-    const pic = new THREE.Mesh(picGeom, picMat);
-    pic.position.z = frameDepth/2 + 0.002;
-
-    // small plaque below
-    const plaque = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.12, 0.05), trimMat);
-    plaque.position.set(0, -frameH/2 - 0.18, frameDepth/2);
-
-    group.userData = { caption, img: tex.image?.src || '' };
-    group.add(outer, pic, plaque);
-    return group;
-  }
-
-  // Load all textures then build frames
-  const loading = document.getElementById('loading');
-  const mngr = new THREE.LoadingManager(() => {
-    loading.style.display = 'none';
-    renderer.setAnimationLoop(animate);
-  });
-  const tLoader = new THREE.TextureLoader(mngr);
-
-  const texArr = PHOTOS.map(p => new Promise(res => {
-    tLoader.load(p.src + (p.src.includes('?')?'&':'?')+'auto=format&fit=crop', tex => { tex.colorSpace = THREE.SRGBColorSpace; res({tex, caption:p.caption}); });
-  }));
-
-  Promise.all(texArr).then(items => {
-    items.forEach((it, i) => {
-      const f = makeFrame(it.tex, it.caption);
-      const idx = Math.floor(i/2);
-      const side = (i % 2 === 0) ? -1 : 1; // left/right
-      const z = -4 - idx*spacing; // push down corridor
-      f.position.set(side*(width/2 - 0.4), 2.4, z);
-      f.rotation.y = side>0 ? -Math.PI/2 : Math.PI/2;
-      frameGroup.add(f);
+    // Frames as textured planes down the hall
+    const frames = []; const captions = [];
+    const frameGeo = new THREE.PlaneGeometry(2.1, 2.8);
+    gallery.forEach((g,i)=>{
+      const tex = texLoader.load(g.src);
+      tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 8;
+      const mat = new THREE.MeshStandardMaterial({map:tex, roughness:.7, metalness:0});
+      const mesh = new THREE.Mesh(frameGeo, mat);
+      const side = i%2===0? -1 : 1; // Alternate sides
+      mesh.position.set( side*4.2, 1.6, -4 - i*6 );
+      mesh.rotation.y = side>0? -Math.PI/12 : Math.PI/12;
+      scene.add(mesh); frames.push(mesh); captions.push(g.caption);
     });
-    corridor.add(frameGroup);
-  });
 
-  // Subtle floating dust particles
-  const dustGeo = new THREE.BufferGeometry();
-  const dustCount = 400;
-  const pos = new Float32Array(dustCount*3);
-  for(let i=0;i<dustCount;i++){
-    pos[i*3+0] = (Math.random()-0.5)*width*0.9;
-    pos[i*3+1] = Math.random()*height*0.95 + 0.2;
-    pos[i*3+2] = -Math.random()*length;
-  }
-  dustGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-  const dustMat = new THREE.PointsMaterial({ size: 0.03, color: 0xffeecc, transparent:true, opacity:0.7 });
-  const dust = new THREE.Points(dustGeo, dustMat);
-  corridor.add(dust);
-
-  // Raycaster for interactions
-  const ray = new THREE.Raycaster(); const mouse = new THREE.Vector2();
-  let doorsOpened = false; let opening = false; let journey = 0; // 0..1 camera move
-
-  function onPointer(e){
-    const x = (e.clientX || e.touches?.[0]?.clientX || 0);
-    const y = (e.clientY || e.touches?.[0]?.clientY || 0);
-    mouse.x = (x / innerWidth) * 2 - 1;
-    mouse.y = -(y / innerHeight) * 2 + 1;
-
-    ray.setFromCamera(mouse, camera);
-    const intersects = ray.intersectObjects([doorLeft, doorRight, ...frameGroup.children], true);
-    if(!intersects.length) return;
-
-    const first = intersects[0].object;
-    // If door clicked and not opened -> open
-    if(!doorsOpened && (first === doorLeft || first === doorRight || first.parent === doorLeft || first.parent === doorRight)){
-      startOpenSequence();
-      return;
+    // Raycaster for taps on frames
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+    function onTap(clientX, clientY){
+      const rect = renderer.domElement.getBoundingClientRect();
+      mouse.x = ((clientX-rect.left)/rect.width)*2 - 1;
+      mouse.y = -((clientY-rect.top)/rect.height)*2 + 1;
+      raycaster.setFromCamera(mouse, camera);
+      const hit = raycaster.intersectObjects(frames)[0];
+      if(hit){ openLightbox(frames.indexOf(hit.object)); }
+      else if(camera.position.z>2.9){ // if still outside, treat as door tap
+        openDoor();
+      }
     }
 
-    // If a frame (or its child) clicked -> open lightbox with its image
-    let node = first;
-    while(node && !node.userData?.img){ node = node.parent; }
-    if(node && node.userData?.img){ openLightbox(node.userData.img, node.userData.caption); }
-  }
-  window.addEventListener('click', onPointer);
-  window.addEventListener('touchend', onPointer, {passive:true});
+    canvas.addEventListener('pointerdown', e=> onTap(e.clientX, e.clientY));
 
-  // Open sequence: swing doors & move camera forward into corridor
-  function startOpenSequence(){
-    if(opening) return; opening = true; document.getElementById('hint').style.display='none';
-    // animate over ~4.5s
-    const t0 = performance.now();
-    const dur = 4500;
-    const startCam = camera.position.clone();
-    const endCam = new THREE.Vector3(0, 2.2, -16);
+    // Lightbox handlers (uses DOM overlay)
+    const lightbox = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lbImg');
+    const lbCap = document.getElementById('lbCap');
+    let lbIndex = 0;
+    function openLightbox(i){ lbIndex = (i+gallery.length)%gallery.length; lbImg.src = gallery[lbIndex].src; lbCap.textContent = captions[lbIndex]; lightbox.classList.add('on'); }
+    function closeLightbox(){ lightbox.classList.remove('on'); }
+    document.getElementById('closeX').onclick = closeLightbox;
+    document.getElementById('navL').onclick = ()=> openLightbox(lbIndex-1);
+    document.getElementById('navR').onclick = ()=> openLightbox(lbIndex+1);
 
-    function easeOutCubic(t){ return 1 - Math.pow(1-t, 3); }
+    // Movement controls (forward/back along Z)
+    const btnF = document.getElementById('btnForward');
+    const btnB = document.getElementById('btnBack');
+    btnF.onclick = ()=> moveTargetZ -= 4;
+    btnB.onclick = ()=> moveTargetZ += 4;
 
-    function step(now){
-      const t = Math.min(1, (now - t0)/dur);
-      const e = easeOutCubic(t);
-      // doors rotate ~90 degrees
-      hingeL.rotation.y = THREE.MathUtils.lerp(0, Math.PI/2, e);
-      hingeR.rotation.y = THREE.MathUtils.lerp(0, -Math.PI/2, e);
-      // camera move
-      camera.position.lerpVectors(startCam, endCam, e);
-      camera.lookAt(0, 2.2, -24);
+    let moveTargetZ = camera.position.z; // easing target
 
-      // warm corridor light grows
-      keyLight.intensity = 1.2 + e*1.6;
-
-      if(t < 1){ requestAnimationFrame(step); }
-      else { doorsOpened = true; controls.enabled = true; opening = false; }
+    // Door animation then glide camera through
+    let doorOpened = false;
+    function openDoor(){
+      if(doorOpened) return; doorOpened = true;
+      let t=0; const dur=1200; const start=performance.now();
+      function step(now){
+        t = Math.min(1, (now-start)/dur);
+        const e = t*t*(3-2*t); // smoothstep
+        leftHinge.rotation.y = -e*1.5; rightHinge.rotation.y = e*1.5;
+        camera.position.z = 8 - e*4.5; // dolly toward door
+        if(t<1) requestAnimationFrame(step); else moveTargetZ = -6; // enter hall
+      }
+      requestAnimationFrame(step);
+      document.getElementById('loading').classList.add('fade');
     }
-    requestAnimationFrame(step);
-  }
 
-  // Reset button
-  document.getElementById('btnReset').addEventListener('click', () => {
-    doorsOpened = false; opening = false; hingeL.rotation.y = 0; hingeR.rotation.y = 0;
-    camera.position.set(0, 2, 14); camera.lookAt(0, 2, 0);
-    controls.enabled = false; keyLight.intensity = 2;
-    document.getElementById('hint').style.display='block';
-  });
+    // Auto-open door on first tap anywhere or press Forward
+    btnForward.addEventListener('click', ()=>{ if(!doorOpened) openDoor(); });
 
-  // Lightbox logic
-  const lb = document.getElementById('lightbox');
-  const lbImg = document.getElementById('lbImg');
-  const lbCap = document.getElementById('lbCaption');
-  const lbClose = document.getElementById('lbClose');
-  function openLightbox(src, cap){ lbImg.src = src; lbCap.textContent = cap || 'Happy Birthday!'; lb.classList.add('open'); lb.setAttribute('aria-hidden','false'); }
-  function closeLightbox(){ lb.classList.remove('open'); lb.setAttribute('aria-hidden','true'); }
-  lbClose.addEventListener('click', closeLightbox);
-  lb.addEventListener('click', (e)=>{ if(e.target === lb) closeLightbox(); });
-  document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeLightbox(); });
+    // Swipe to walk
+    let sx=0, dragging=false;
+    canvas.addEventListener('touchstart',e=>{dragging=true; sx=e.touches[0].clientX;},{passive:true});
+    canvas.addEventListener('touchend',e=>{if(!dragging) return; const dx=e.changedTouches[0].clientX - sx; if(Math.abs(dx)>40){ moveTargetZ += (dx>0? 1:-1)*4; } dragging=false;},{passive:true});
 
-  // Resize
-  window.addEventListener('resize', ()=>{
-    camera.aspect = innerWidth/innerHeight; camera.updateProjectionMatrix();
-    renderer.setSize(innerWidth, innerHeight);
-  });
-
-  // Animation loop
-  function animate(){
-    controls.update();
-    // gentle dust float
-    const arr = dust.geometry.attributes.position.array;
-    for(let i=0;i<dustCount;i++){
-      const j = i*3+1; // y
-      arr[j] += Math.sin((performance.now()*0.001 + i)*0.3) * 0.0006;
+    // Resize
+    function resize(){
+      const w = window.innerWidth, h = window.innerHeight;
+      renderer.setSize(w,h,false);
+      camera.aspect = w/h; camera.updateProjectionMatrix();
     }
-    dust.geometry.attributes.position.needsUpdate = true;
+    window.addEventListener('resize', resize); resize();
 
-    renderer.render(scene, camera);
-  }
+    // Animate loop
+    const clock = new THREE.Clock();
+    function animate(){
+      const dt = Math.min(clock.getDelta(), .05);
+      // ease camera toward target Z
+      camera.position.z += (moveTargetZ - camera.position.z) * Math.min(1, dt*2.5);
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    // First render after textures start loading
+    texLoader.manager.onLoad = ()=>{ document.getElementById('loading').classList.add('fade'); };
+
+  })();
   </script>
+
+  <!--
+  ===========================
+  HOW TO USE ON GITHUB PAGES
+  ===========================
+  1) Save this as index.html in your repo root.
+  2) Create /assets with:
+     - assets/birthday_center.png
+     - assets/bunny_room.jpg
+     - assets/cake_room.jpg
+     - assets/tea_room.jpg
+  3) Enable Pages (Settings → Pages → Deploy from branch).
+  4) Tap the wooden doors to enter. Swipe to walk. Tap any frame to open the lightbox.
+  -->
 </body>
 </html>
