@@ -1,6 +1,7 @@
+
 "use strict";
 
-/* Helper so one error can’t break everything */
+/* Helper to isolate errors so one section can't break others */
 const safe = (label, fn) => { try { fn(); } catch (e) { console.error(label, e); } };
 
 /* ========== Confetti ========== */
@@ -118,12 +119,13 @@ safe('timers', () => {
   stopBtn.addEventListener('click', () => { if (tInt) clearInterval(tInt); tInt = null; });
 });
 
-/* ========== Photo Booth (pointer events drag) ========== */
+/* ========== Photo Booth (pointer events) ========== */
 safe('photobooth', () => {
   const area = document.getElementById('polaroids');
   if (!area) return;
   const cards = [...area.querySelectorAll('.polaroid')];
 
+  // Initial placement responsive to container width
   const place = () => {
     const pad = 16, w = area.clientWidth || 900;
     const step = Math.min(240, Math.max(150, (w - pad*2) / Math.max(3, cards.length)));
@@ -136,14 +138,17 @@ safe('photobooth', () => {
   (window.ResizeObserver ? new ResizeObserver(place) : window).addEventListener?.('resize', place);
   if (document.readyState === 'complete') place(); else addEventListener('load', place);
 
+  // Prevent native image drag
   cards.forEach(p => p.addEventListener('dragstart', e => e.preventDefault()));
 
+  // Pointer-based drag
   let z = 1;
   const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
 
   cards.forEach(p => {
     p.style.touchAction = 'none';
     p.addEventListener('dblclick', () => p.classList.toggle('pinned'));
+    // double-tap on touch
     let tapTimer = null;
     p.addEventListener('touchend', () => {
       if (tapTimer) { clearTimeout(tapTimer); tapTimer = null; p.classList.toggle('pinned'); }
@@ -176,6 +181,7 @@ safe('photobooth', () => {
     });
   });
 
+  // Filters
   document.querySelector('.filter-row')?.addEventListener('change', (e) => {
     const v = e.target?.value; if (!v) return;
     area.classList.remove('filter-none','filter-vintage','filter-dreamy','filter-bw');
@@ -183,104 +189,86 @@ safe('photobooth', () => {
   });
 });
 
-/* ========== Compliment Jar — warm, personal, appreciative (not flirty) ========== */
+/* ========== Compliment Jar (supportive, non-flirty) ========== */
 safe('compliments', () => {
   const drawBtn = document.getElementById('drawFortune');
   const addForm = document.getElementById('addFortuneForm');
   const addInput = document.getElementById('addFortune');
   const out = document.getElementById('fortuneText');
-  if(!drawBtn || !addForm || !addInput || !out) return;
+  if (!drawBtn || !addForm || !addInput || !out) return;
 
   const qualities = [
-    'patience','integrity','dependability','empathy','focus',
-    'sense of balance','steady energy','encouragement','honesty',
-    'good judgment','fairness','follow-through','curiosity',
-    'calm presence','attention to detail','thoughtfulness','kindness'
+    'kindness','patience','clarity','calm','empathy','integrity','focus','reliability',
+    'thoughtfulness','fairness','dedication','discipline','humility','consistency',
+    'respectfulness','balance','care for others','responsibility','positivity'
   ];
-
   const strengths = [
-    'make people feel comfortable being themselves',
-    'keep things calm when they could get stressful',
-    'bring out the best in others by how you listen',
-    'notice what needs to be done before anyone asks',
-    'stay kind even when things get complicated',
-    'find words that make people feel understood',
-    'make teamwork feel natural and easy',
-    'help everyone feel included and valued',
-    'turn plans into steady progress',
-    'handle challenges without losing patience',
-    'see both details and the bigger picture clearly'
+    'make challenges manageable','bring steadiness to busy days','notice details that matter',
+    'find solutions with care','help people feel heard','build trust quietly',
+    'stay calm under pressure','keep goals realistic','follow through on promises',
+    'lead by example','approach problems thoughtfully','make teamwork smoother'
   ];
-
   const closers = [
-    'That really stands out about you.',
-    'It makes a real difference every time.',
-    'It’s something people remember about you.',
-    'It quietly lifts the mood around you.',
-    'That quality shows genuine character.',
-    'People notice that more than you think.',
-    'It makes working with you a lot easier.'
+    'That really matters.','It makes a difference.','It helps everyone.',
+    'It stands out.','That brings calm to others.','It’s something to be proud of.',
+    'People notice and appreciate it.','It has real impact.'
   ];
-
   const starters = [
-    'You have a way of','You consistently','You’re really good at','You naturally',
-    'You always seem to','You bring','You remind people to','You make it easier to',
-    'You help others','You tend to'
+    'You have a way of','You consistently','You’re great at','You naturally',
+    'You always','You bring','You show','You remind others to'
   ];
-
-  const softPraises = [
-    'You make ordinary moments feel steady and real.',
-    'You add a quiet kind of encouragement that matters.',
-    'You show care in the small things most people overlook.',
-    'You make spaces feel a bit more grounded and calm.',
-    'You balance patience with getting things done.',
-    'You help people feel safe to be themselves.'
-  ];
-
   const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
 
-  function generateWarm(n = 160){
-    const set = new Set(softPraises);
+  function generate(n = 160){
+    const set = new Set();
+    const base = [
+      'You treat people with respect and patience.',
+      'You make the environment calmer and more focused.',
+      'You approach problems with quiet confidence.',
+      'You care about doing things properly.',
+      'You bring out the best in others.',
+      'You help keep things on track.',
+      'You stay kind, even on hard days.',
+      'You follow through without needing reminders.',
+      'You give thoughtful feedback.',
+      'You make teamwork smoother.'
+    ];
+    base.forEach(b => set.add(b));
     let guard = 0;
     while (set.size < n && guard < 5000){
       guard++;
-      const type = Math.floor(Math.random() * 3);
+      const type = Math.floor(Math.random()*3);
       let line = '';
       if (type === 0){
         line = `${starters[Math.floor(Math.random()*starters.length)]} ${strengths[Math.floor(Math.random()*strengths.length)]}. ${closers[Math.floor(Math.random()*closers.length)]}`;
       } else if (type === 1){
-        line = `Your ${qualities[Math.floor(Math.random()*qualities.length)]} really makes a difference. ${closers[Math.floor(Math.random()*closers.length)]}`;
+        line = `Your ${qualities[Math.floor(Math.random()*qualities.length)]} really shows. ${closers[Math.floor(Math.random()*closers.length)]}`;
       } else {
         line = `It’s clear you ${strengths[Math.floor(Math.random()*strengths.length)]}. ${closers[Math.floor(Math.random()*closers.length)]}`;
       }
-      set.add(cap(line.replace(/\s+/g,' ').trim()));
+      set.add(cap(line.trim()));
     }
     return Array.from(set);
   }
 
   let fortunes = JSON.parse(localStorage.getItem('fortunes') || 'null');
-  if(!fortunes || fortunes.length < 30){
-    fortunes = generateWarm(160);
+  if (!fortunes || fortunes.length < 30){
+    fortunes = generate(160);
     localStorage.setItem('fortunes', JSON.stringify(fortunes));
   }
   const save = () => localStorage.setItem('fortunes', JSON.stringify(fortunes));
 
-  drawBtn.addEventListener('click', ()=>{
-    if(!fortunes.length) fortunes = generateWarm(160);
+  drawBtn.addEventListener('click', () => {
+    if (!fortunes.length) fortunes = generate(160);
     const idx = Math.floor(Math.random()*fortunes.length);
-    out.style.opacity = 0;
-    setTimeout(() => {
-      out.textContent = fortunes.splice(idx, 1)[0];
-      out.style.opacity = 1;
-      save();
-      window._burst?.(innerWidth*0.6, innerHeight*0.65, 60);
-    }, 120);
+    out.textContent = fortunes.splice(idx,1)[0];
+    save();
+    window._burst?.(innerWidth*0.6, innerHeight*0.65, 60);
   });
 
-  addForm.addEventListener('submit', (e)=>{
+  addForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    const v = addInput.value.trim();
-    if(!v) return;
+    const v = addInput.value.trim(); if (!v) return;
     fortunes.push(v); save(); addForm.reset();
   });
 });
@@ -301,110 +289,17 @@ safe('message', () => {
   });
 });
 
-/* ========== Music: autoplay + loop (mobile-safe) ========== */
+/* ========== Music: autoplay & loop (with mobile fallback) ========== */
 safe('music', () => {
   const audio = document.getElementById('player');
   if (!audio) return;
   const tryPlay = () => audio.play().catch(() => {});
+  // Try on load (desktop)
   addEventListener('load', () => { audio.volume = 0.9; tryPlay(); });
-  const nudge = () => { tryPlay(); };
-  addEventListener('pointerdown', nudge, { once: true, capture: true });
+  // Guaranteed on first user interaction (mobile policy)
+  const nudge = () => { tryPlay(); removeEventListener('pointerdown', nudge, {capture:true}); };
+  addEventListener('pointerdown', nudge, { capture: true, once: true });
 });
 
 /* ========== Shortcut ========== */
 addEventListener('keydown', e => { if (e.key.toLowerCase() === 'c') window._burst?.(); });
-
-/* ========== On-scroll reveal (NEW) ========== */
-safe('reveal', () => {
-  const els = [...document.querySelectorAll('.reveal')];
-  if (!els.length || !('IntersectionObserver' in window)) { els.forEach(e=>e.classList.add('is-in')); return; }
-  const io = new IntersectionObserver((entries)=>{
-    entries.forEach(en => { if(en.isIntersecting){ en.target.classList.add('is-in'); io.unobserve(en.target); } });
-  }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
-  els.forEach(e => io.observe(e));
-});
-
-/* ========== Tilt / parallax on pointer (NEW) ========== */
-safe('tilt', () => {
-  const tilts = [...document.querySelectorAll('.tilt, .polaroid')];
-  if (!tilts.length) return;
-  const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
-  tilts.forEach(el => {
-    el.addEventListener('pointermove', (e) => {
-      const r = el.getBoundingClientRect();
-      const x = (e.clientX - r.left) / r.width;  // 0..1
-      const y = (e.clientY - r.top) / r.height; // 0..1
-      const rx = clamp((0.5 - y) * 8, -8, 8);
-      const ry = clamp((x - 0.5) * 8, -8, 8);
-      el.style.setProperty('--rx', rx + 'deg');
-      el.style.setProperty('--ry', ry + 'deg');
-    });
-    el.addEventListener('pointerleave', () => {
-      el.style.setProperty('--rx', '0deg'); el.style.setProperty('--ry', '0deg');
-    });
-  });
-});
-
-/* ========== Persist photobooth filter choice (NEW) ========== */
-safe('filter-persist', () => {
-  const rg = document.querySelector('.filter-row'); if(!rg) return;
-  const area = document.getElementById('polaroids'); if(!area) return;
-  const key = 'pb-filter';
-  const saved = localStorage.getItem(key) || 'none';
-  area.classList.add('filter-' + saved);
-  const radio = rg.querySelector(`input[value="${saved}"]`); if (radio) radio.checked = true;
-  rg.addEventListener('change', (e) => {
-    const v = e.target?.value; if(!v) return;
-    localStorage.setItem(key, v);
-  });
-});
-
-/* ========== Music mute / unmute (NEW) ========== */
-safe('audio-ctrl', () => {
-  const btn = document.getElementById('muteToggle');
-  const audio = document.getElementById('player');
-  if (!btn || !audio) return;
-  const sync = () => {
-    btn.setAttribute('aria-pressed', String(audio.muted));
-    btn.textContent = audio.muted ? '🔈 Music' : '🔊 Music';
-  };
-  btn.addEventListener('click', () => { audio.muted = !audio.muted; sync(); });
-  sync();
-});
-
-/* ========== Better keyboard support for polaroids (NEW) ========== */
-safe('photobooth-a11y', () => {
-  const cards = [...document.querySelectorAll('.polaroid')];
-  if(!cards.length) return;
-  cards.forEach(c => {
-    c.setAttribute('tabindex', '0');
-    c.addEventListener('keydown', (e) => {
-      const step = 10;
-      const left = parseInt(c.style.left || '0', 10);
-      const top  = parseInt(c.style.top  || '0', 10);
-      if (['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key)) e.preventDefault();
-      if (e.key === 'ArrowLeft')  c.style.left = (left - step) + 'px';
-      if (e.key === 'ArrowRight') c.style.left = (left + step) + 'px';
-      if (e.key === 'ArrowUp')    c.style.top  = (top  - step) + 'px';
-      if (e.key === 'ArrowDown')  c.style.top  = (top  + step) + 'px';
-      if (e.key.toLowerCase() === 'p') c.classList.toggle('pinned'); // press "p" to pin
-    });
-  });
-});
-
-/* ========== Share button (NEW) ========== */
-safe('share', () => {
-  const b = document.getElementById('shareBtn');
-  if(!b || !navigator.share) return;
-  b.hidden = false;
-  b.addEventListener('click', () => {
-    navigator.share({ title: document.title, text: 'Open this birthday surprise ✨', url: location.href }).catch(()=>{});
-  });
-});
-
-/* ========== PWA registration (optional) (NEW) ========== */
-safe('pwa', () => {
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js').catch(()=>{});
-  }
-});
