@@ -4,26 +4,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Happy Birthday — Cherry & Cream</title>
-  <meta name="description" content="A cherry & cream birthday page with confetti, photo booth, compliments, music and sweet surprises." />
   <meta name="theme-color" content="#cc2035" />
-
-  <!-- Social preview -->
-  <meta property="og:title" content="Happy Birthday — Cherry & Cream" />
-  <meta property="og:description" content="Open me for confetti, compliments and cake!" />
-  <meta property="og:image" content="og-cover.jpg" />
-  <meta property="og:type" content="website" />
-  <meta name="twitter:card" content="summary_large_image" />
-
-  <!-- Performance: fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Pacifico&display=swap" rel="stylesheet">
-
   <link rel="stylesheet" href="style.css" />
-
-  <!-- PWA (optional — add manifest + sw.js, see files below) -->
-  <link rel="manifest" href="manifest.webmanifest">
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Pacifico&display=swap" rel="stylesheet">
 </head>
 <body>
   <canvas id="confetti" aria-hidden="true"></canvas>
@@ -47,15 +30,14 @@
   <main class="wrap">
 
     <!-- 🎂 Centered Cake -->
-    <section class="card hero-centered reveal">
-      <img class="tilt" src="birthday_center.png" alt="Birthday cake"
-           width="840" height="560" loading="lazy" decoding="async" />
+    <section class="card hero-centered">
+      <img src="birthday_center.png" alt="Birthday cake" />
       <h2>Happy Birthday!</h2>
       <p class="muted">Wishing you a day filled with warmth, laughter, and sweet memories 🍒✨</p>
     </section>
 
     <!-- ✅ Checklist + Baking -->
-    <section class="grid-two reveal">
+    <section class="grid-two">
       <article class="card">
         <h3>Party Checklist</h3>
         <form id="todoForm" autocomplete="off">
@@ -74,9 +56,9 @@
         <h3>Baking Corner</h3>
         <p class="muted">Timers for your sweet treats — one tap to start!</p>
         <div class="recipe-grid">
-          <button class="recipe btn small" data-min="0"  data-sec="90" type="button">🍪 Cookies 1:30</button>
-          <button class="recipe btn small" data-min="12" data-sec="0"  type="button">🧁 Cupcakes 12:00</button>
-          <button class="recipe btn small" data-min="25" data-sec="0"  type="button">🍰 Sponge 25:00</button>
+          <button class="recipe btn small" data-min="0" data-sec="90" type="button">🍪 Cookies 1:30</button>
+          <button class="recipe btn small" data-min="12" data-sec="0" type="button">🧁 Cupcakes 12:00</button>
+          <button class="recipe btn small" data-min="25" data-sec="0" type="button">🍰 Sponge 25:00</button>
           <span id="timeLeft" class="time" aria-live="polite">00:00</span>
           <div class="timer-ctrl"><button id="stopTimer" class="btn small outline" type="button">Stop</button></div>
         </div>
@@ -84,7 +66,7 @@
     </section>
 
     <!-- 📸 Photo Booth -->
-    <section class="card gallery reveal">
+    <section class="card gallery">
       <h3>Photo Booth</h3>
       <p class="muted">Drag polaroids, double-click/tap to pin, and try filters.</p>
       <div class="filter-row" role="radiogroup" aria-label="Photo filter">
@@ -94,14 +76,14 @@
         <label><input type="radio" name="f" value="bw"> B&amp;W</label>
       </div>
       <div class="polaroids" id="polaroids">
-        <figure class="polaroid tilt"><img src="bunny_room.jpg" alt="Soft bunny" width="420" height="560" loading="lazy" decoding="async"><figcaption>Bunny mornings</figcaption></figure>
-        <figure class="polaroid tilt"><img src="cake_room.jpg"  alt="Cake"       width="420" height="560" loading="lazy" decoding="async"><figcaption>Floral cake love</figcaption></figure>
-        <figure class="polaroid tilt"><img src="tea_room.jpg"   alt="Tea"        width="420" height="560" loading="lazy" decoding="async"><figcaption>Tea &amp; croissant</figcaption></figure>
+        <figure class="polaroid"><img src="bunny_room.jpg" alt="Soft bunny"><figcaption>Bunny mornings</figcaption></figure>
+        <figure class="polaroid"><img src="cake_room.jpg" alt="Cake"><figcaption>Floral cake love</figcaption></figure>
+        <figure class="polaroid"><img src="tea_room.jpg" alt="Tea"><figcaption>Tea & croissant</figcaption></figure>
       </div>
     </section>
 
     <!-- 💬 Compliment Jar -->
-    <section class="card fortunes reveal">
+    <section class="card fortunes">
       <h3>Compliment Jar</h3>
       <div class="jar">
         <button id="drawFortune" class="btn" type="button">Pick a Note</button>
@@ -117,7 +99,7 @@
     <audio id="player" src="./track.mp3" autoplay loop preload="auto"></audio>
 
     <!-- 📝 Message -->
-    <section class="card message reveal">
+    <section class="card message">
       <h3>Your Birthday Message</h3>
       <p class="muted">Write something just for her. It stays on this device.</p>
       <div class="message-grid">
@@ -134,17 +116,10 @@
 
   </main>
 
-  <!-- Floating controls -->
-  <div class="audio-ctrl">
-    <button id="muteToggle" class="btn small outline" type="button" aria-pressed="false" aria-label="Toggle music">🔊 Music</button>
-    <button id="shareBtn" class="btn small outline" type="button" hidden>Share</button>
-  </div>
-
   <footer class="wrap footer">
     <p>Made with care — press <kbd>C</kbd> for confetti!</p>
   </footer>
 
-  <!-- Defer for better performance -->
-  <script src="script.js?v=102" defer></script>
+  <script src="script.js?v=101"></script>
 </body>
 </html>
