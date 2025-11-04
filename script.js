@@ -313,3 +313,98 @@ safe('music', () => {
 
 /* ========== Shortcut ========== */
 addEventListener('keydown', e => { if (e.key.toLowerCase() === 'c') window._burst?.(); });
+
+/* ========== On-scroll reveal (NEW) ========== */
+safe('reveal', () => {
+  const els = [...document.querySelectorAll('.reveal')];
+  if (!els.length || !('IntersectionObserver' in window)) { els.forEach(e=>e.classList.add('is-in')); return; }
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(en => { if(en.isIntersecting){ en.target.classList.add('is-in'); io.unobserve(en.target); } });
+  }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+  els.forEach(e => io.observe(e));
+});
+
+/* ========== Tilt / parallax on pointer (NEW) ========== */
+safe('tilt', () => {
+  const tilts = [...document.querySelectorAll('.tilt, .polaroid')];
+  if (!tilts.length) return;
+  const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
+  tilts.forEach(el => {
+    el.addEventListener('pointermove', (e) => {
+      const r = el.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width;  // 0..1
+      const y = (e.clientY - r.top) / r.height; // 0..1
+      const rx = clamp((0.5 - y) * 8, -8, 8);
+      const ry = clamp((x - 0.5) * 8, -8, 8);
+      el.style.setProperty('--rx', rx + 'deg');
+      el.style.setProperty('--ry', ry + 'deg');
+    });
+    el.addEventListener('pointerleave', () => {
+      el.style.setProperty('--rx', '0deg'); el.style.setProperty('--ry', '0deg');
+    });
+  });
+});
+
+/* ========== Persist photobooth filter choice (NEW) ========== */
+safe('filter-persist', () => {
+  const rg = document.querySelector('.filter-row'); if(!rg) return;
+  const area = document.getElementById('polaroids'); if(!area) return;
+  const key = 'pb-filter';
+  const saved = localStorage.getItem(key) || 'none';
+  area.classList.add('filter-' + saved);
+  const radio = rg.querySelector(`input[value="${saved}"]`); if (radio) radio.checked = true;
+  rg.addEventListener('change', (e) => {
+    const v = e.target?.value; if(!v) return;
+    localStorage.setItem(key, v);
+  });
+});
+
+/* ========== Music mute / unmute (NEW) ========== */
+safe('audio-ctrl', () => {
+  const btn = document.getElementById('muteToggle');
+  const audio = document.getElementById('player');
+  if (!btn || !audio) return;
+  const sync = () => {
+    btn.setAttribute('aria-pressed', String(audio.muted));
+    btn.textContent = audio.muted ? '🔈 Music' : '🔊 Music';
+  };
+  btn.addEventListener('click', () => { audio.muted = !audio.muted; sync(); });
+  sync();
+});
+
+/* ========== Better keyboard support for polaroids (NEW) ========== */
+safe('photobooth-a11y', () => {
+  const cards = [...document.querySelectorAll('.polaroid')];
+  if(!cards.length) return;
+  cards.forEach(c => {
+    c.setAttribute('tabindex', '0');
+    c.addEventListener('keydown', (e) => {
+      const step = 10;
+      const left = parseInt(c.style.left || '0', 10);
+      const top  = parseInt(c.style.top  || '0', 10);
+      if (['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key)) e.preventDefault();
+      if (e.key === 'ArrowLeft')  c.style.left = (left - step) + 'px';
+      if (e.key === 'ArrowRight') c.style.left = (left + step) + 'px';
+      if (e.key === 'ArrowUp')    c.style.top  = (top  - step) + 'px';
+      if (e.key === 'ArrowDown')  c.style.top  = (top  + step) + 'px';
+      if (e.key.toLowerCase() === 'p') c.classList.toggle('pinned'); // press "p" to pin
+    });
+  });
+});
+
+/* ========== Share button (NEW) ========== */
+safe('share', () => {
+  const b = document.getElementById('shareBtn');
+  if(!b || !navigator.share) return;
+  b.hidden = false;
+  b.addEventListener('click', () => {
+    navigator.share({ title: document.title, text: 'Open this birthday surprise ✨', url: location.href }).catch(()=>{});
+  });
+});
+
+/* ========== PWA registration (optional) (NEW) ========== */
+safe('pwa', () => {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js').catch(()=>{});
+  }
+});
